@@ -1,0 +1,91 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using JZK.Utility;
+using System.Linq;
+using Random = System.Random;
+using UnityEngine.Tilemaps;
+
+namespace Framework
+{
+    public class RandomWalkTestSceneInit : SceneInit
+    {
+        ISystemReference<MonoBehaviour>[] _systems = new ISystemReference<MonoBehaviour>[]
+        {
+            new SystemReference<Input.InputSystem>(),
+
+            new SystemReference<UI.UIStateSystem>(),
+
+        };
+
+        [SerializeField] private bool _useDebugSeed = false;
+        [SerializeField] private int _debugSeed;
+        private int _currentSeed;
+        public int CurrentSeed => _currentSeed;
+
+        [SerializeField] protected Vector2Int _startPos;
+        [SerializeField] RandomWalkSettingsSO _settings;
+        /*[SerializeField] private int _iterations;
+        public int WalkLength;
+        [Tooltip("If on, each iteration starts at random point on existing floor - if off, each walk starts from origin point. Turn off for filled-in island shape")]
+        public bool StartRandomlyEachIteration;*/
+
+        [SerializeField] bool _printDebug;
+
+        [SerializeField] private Tilemap _floorTilemap;
+        [SerializeField] private TileBase _floortile;
+        [SerializeField] private TileBase _wallTile_Full;
+
+        
+
+        public void Start()
+        {
+            Setup(_systems);
+
+            InitialiseSeed();
+
+            GenerateDungeon();
+        }
+
+        private void Update()
+        {
+            UpdateScene();
+        }
+
+        void InitialiseSeed()
+        {
+            _currentSeed = _useDebugSeed ? _debugSeed : System.DateTime.Now.Millisecond;
+            UnityEngine.Random.InitState(_currentSeed);
+        }
+
+        public void GenerateDungeon()
+        {
+            System.Random random = _useDebugSeed ? new(_debugSeed) : new();
+
+            HashSet<Vector2Int> floorPositions = ProceduralGeneration.RunRandomWalk(_startPos, _settings.Iterations, _settings.WalkLength, _settings.StartRandomEachIteration, random);
+            PaintTiles(floorPositions, _floorTilemap, _floortile);
+
+            HashSet<Vector2Int> wallPositions = ProceduralGeneration.FindWallsInDirections(floorPositions, Direction2D.DIRECTIONS);
+            PaintTiles(wallPositions, _floorTilemap, _wallTile_Full);
+        }
+
+        void PaintTiles(IEnumerable<Vector2Int> positions, Tilemap tileMap, TileBase tile)
+        {
+            foreach(var pos in positions)
+            {
+                PaintTile(tileMap, tile, pos);
+            }
+        }
+
+        void PaintTile(Tilemap tileMap, TileBase tile, Vector2Int position)
+        {
+            var tilePosition = tileMap.WorldToCell((Vector3Int)position);
+            tileMap.SetTile(tilePosition, tile);
+        }
+
+        public void ClearTiles()
+        {
+            _floorTilemap.ClearAllTiles();
+        }
+    }
+}
