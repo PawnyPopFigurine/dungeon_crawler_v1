@@ -41,7 +41,7 @@ namespace JZK.Utility
                 }
             }
 
-            if (true)
+            if (false)
             {
                 foreach (var position in floorPositions)
                 {

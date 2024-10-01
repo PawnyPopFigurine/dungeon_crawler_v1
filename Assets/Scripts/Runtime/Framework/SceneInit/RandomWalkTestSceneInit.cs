@@ -27,13 +27,14 @@ namespace Framework
         [SerializeField] RandomWalkSettingsSO _settings;
         /*[SerializeField] private int _iterations;
         public int WalkLength;
-        [Tooltip("If on, each iteration starts at random point on existing floor - if off, each walk starts from origin point. Turn off for filled-in island shape")]
+        
         public bool StartRandomlyEachIteration;*/
 
         [SerializeField] bool _printDebug;
 
         [SerializeField] private Tilemap _floorTilemap;
         [SerializeField] private TileBase _floortile;
+        [SerializeField] private Tilemap _wallTilemap;
         [SerializeField] private TileBase _wallTile_Full;
 
         
@@ -66,7 +67,7 @@ namespace Framework
             PaintTiles(floorPositions, _floorTilemap, _floortile);
 
             HashSet<Vector2Int> wallPositions = ProceduralGeneration.FindWallsInDirections(floorPositions, Direction2D.DIRECTIONS);
-            PaintTiles(wallPositions, _floorTilemap, _wallTile_Full);
+            PaintTiles(wallPositions, _wallTilemap, _wallTile_Full);
         }
 
         void PaintTiles(IEnumerable<Vector2Int> positions, Tilemap tileMap, TileBase tile)
@@ -86,6 +87,7 @@ namespace Framework
         public void ClearTiles()
         {
             _floorTilemap.ClearAllTiles();
+            _wallTilemap.ClearAllTiles();
         }
     }
 }
