@@ -52,6 +52,22 @@ namespace JZK.Utility
             return floorPositions;
         }
 
+        public static List<Vector2Int> RandomWalkCorridor(Vector2Int startPos, int corridorLength, Random random)
+        {
+            List<Vector2Int> corridor = new();
+            Vector2Int direction = Direction2D.GetRandomCardinalDirection(random);
+            Vector2Int currentPos = startPos;
+            corridor.Add(currentPos);
+
+            for (int stepIndex = 0; stepIndex < corridorLength; stepIndex++)
+            {
+                currentPos += direction;
+                corridor.Add(currentPos);
+            }
+
+            return corridor;
+        }
+
         public static HashSet<Vector2Int> FindWallsInDirections(HashSet<Vector2Int> floorPositions, List<Vector2Int> directionList)
         {
             HashSet<Vector2Int> wallPositions = new();
