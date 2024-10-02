@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEditor;
 using Framework;
 
-[CustomEditor(typeof(RandomWalkTestSceneInit))]
-public class RandomWalkTestSceneInitEditor : Editor
+[CustomEditor(typeof(DungeonGenerationTestSceneInit))]
+public class DungeonGenerationTestSceneInitEditor : Editor
 {
-    RandomWalkTestSceneInit _sceneInit;
+    DungeonGenerationTestSceneInit _sceneInit;
 
     private void Awake()
     {
-        _sceneInit = (RandomWalkTestSceneInit)target;
+        _sceneInit = (DungeonGenerationTestSceneInit)target;
     }
     public override void OnInspectorGUI()
     {

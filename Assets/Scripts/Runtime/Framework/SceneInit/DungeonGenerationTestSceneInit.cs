@@ -5,10 +5,11 @@ using JZK.Utility;
 using System.Linq;
 using Random = System.Random;
 using UnityEngine.Tilemaps;
+using Level;
 
 namespace Framework
 {
-    public class RandomWalkTestSceneInit : SceneInit
+    public class DungeonGenerationTestSceneInit : SceneInit
     {
         ISystemReference<MonoBehaviour>[] _systems = new ISystemReference<MonoBehaviour>[]
         {
@@ -23,12 +24,7 @@ namespace Framework
         private int _currentSeed;
         public int CurrentSeed => _currentSeed;
 
-        [SerializeField] protected Vector2Int _startPos;
-        [SerializeField] RandomWalkSettingsSO _settings;
-        /*[SerializeField] private int _iterations;
-        public int WalkLength;
         
-        public bool StartRandomlyEachIteration;*/
 
         [SerializeField] bool _printDebug;
 
@@ -36,6 +32,8 @@ namespace Framework
         [SerializeField] private TileBase _floortile;
         [SerializeField] private Tilemap _wallTilemap;
         [SerializeField] private TileBase _wallTile_Full;
+
+        [SerializeField] DungeonGenerator _generator;
 
         
 
@@ -63,11 +61,17 @@ namespace Framework
         {
             System.Random random = _useDebugSeed ? new(_debugSeed) : new();
 
-            HashSet<Vector2Int> floorPositions = ProceduralGeneration.RunRandomWalk(_startPos, _settings.Iterations, _settings.WalkLength, _settings.StartRandomEachIteration, random);
+            HashSet<Vector2Int> floorPositions = _generator.CreateFloorPositions(random);
             PaintTiles(floorPositions, _floorTilemap, _floortile);
 
             HashSet<Vector2Int> wallPositions = ProceduralGeneration.FindWallsInDirections(floorPositions, Direction2D.DIRECTIONS);
             PaintTiles(wallPositions, _wallTilemap, _wallTile_Full);
+
+            /*HashSet<Vector2Int> floorPositions = ProceduralGeneration.RunRandomWalk(_startPos, _settings.Iterations, _settings.WalkLength, _settings.StartRandomEachIteration, random);
+            PaintTiles(floorPositions, _floorTilemap, _floortile);
+
+            HashSet<Vector2Int> wallPositions = ProceduralGeneration.FindWallsInDirections(floorPositions, Direction2D.DIRECTIONS);
+            PaintTiles(wallPositions, _wallTilemap, _wallTile_Full);*/
         }
 
         void PaintTiles(IEnumerable<Vector2Int> positions, Tilemap tileMap, TileBase tile)

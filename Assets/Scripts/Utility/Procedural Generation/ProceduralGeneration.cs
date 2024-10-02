@@ -32,7 +32,7 @@ namespace JZK.Utility
             for (int iteration = 0; iteration < iterations; iteration++)
             {
                 //System.Random random = _useDebugSeed ? new(_debugSeed) : new();
-                var path = ProceduralGeneration.SimpleRandomWalk(currentPos, walkLength, random);
+                var path = SimpleRandomWalk(currentPos, walkLength, random);
                 floorPositions.UnionWith(path);
                 if (startRandomlyEachIteration)
                 {
