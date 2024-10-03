@@ -110,6 +110,70 @@ namespace JZK.Utility
 
             return deadEnds;
 		}
+
+        public static List<BoundsInt> BinarySpacePartitioning(BoundsInt spaceToSplit, int minWidth, int minHeight, Random random)
+		{
+            Queue<BoundsInt> roomsQueue = new Queue<BoundsInt>();
+            List<BoundsInt> roomsList = new List<BoundsInt>();
+            roomsQueue.Enqueue(spaceToSplit);
+            while(roomsQueue.Count > 0)
+			{
+                var room = roomsQueue.Dequeue();
+                if(room.size.y >= minHeight && room.size.x >= minWidth)
+				{
+                    if(random.NextDouble() <= 0.5)
+					{
+                        if(room.size.y >= minHeight * 2)
+						{
+                            SplitRoomHorizontally(minHeight, roomsQueue, room, random);
+						}
+                        else if(room.size.x >= minWidth * 2)
+						{
+                            SplitRoomVertically(minWidth, roomsQueue, room, random);
+						}
+                        else
+						{
+                            roomsList.Add(room);
+						}
+					}
+                    else
+					{
+                        if(room.size.x >= minWidth * 2)
+						{
+                            SplitRoomVertically(minWidth, roomsQueue, room, random);
+						}
+                        else if(room.size.y >= minHeight * 2)
+						{
+                            SplitRoomHorizontally(minHeight, roomsQueue, room, random);
+						}
+                        else
+						{
+                            roomsList.Add(room);
+						}
+					}
+				}
+			}
+		}
+
+        static void SplitRoomVertically(int minWidth, Queue<BoundsInt> roomsQueue, BoundsInt roomToSplit, Random random)
+		{
+            var xSplit = random.Next(1, roomToSplit.size.x);    //random.Next(minWidth, room.size.x - minWidth)
+            BoundsInt splitRoom1 = new BoundsInt(roomToSplit.min, new Vector3Int(xSplit, roomToSplit.min.y, roomToSplit.min.z));
+            BoundsInt splitRoom2 = new BoundsInt(new Vector3Int(roomToSplit.min.x + xSplit, roomToSplit.min.y, roomToSplit.min.z),
+                new Vector3Int(roomToSplit.size.x - xSplit, roomToSplit.size.y, roomToSplit.size.z));
+            roomsQueue.Enqueue(splitRoom1);
+            roomsQueue.Enqueue(splitRoom2);
+		}
+
+        static void SplitRoomHorizontally(int minHeight, Queue<BoundsInt> roomsQueue, BoundsInt roomToSplit, Random random)
+        {
+            var ySplit = random.Next(1, roomToSplit.size.y);    //random.Next(minHeight, room.size.y - minHeight)
+            BoundsInt splitRoom1 = new BoundsInt(roomToSplit.min, new Vector3Int(roomToSplit.size.x, ySplit, roomToSplit.size.z));
+            BoundsInt splitRoom2 = new BoundsInt(new Vector3Int(roomToSplit.min.x, roomToSplit.min.y + ySplit, roomToSplit.min.z),
+                new Vector3Int(roomToSplit.size.x, roomToSplit.size.y - ySplit, roomToSplit.size.z));
+            roomsQueue.Enqueue(splitRoom1);
+            roomsQueue.Enqueue(splitRoom2);
+        }
     }
 }
 
