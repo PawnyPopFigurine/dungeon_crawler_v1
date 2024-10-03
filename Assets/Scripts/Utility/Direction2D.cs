@@ -17,7 +17,7 @@ namespace JZK.Utility
 
         public static Vector2Int GetRandomCardinalDirection(Random random)
         {
-            int directionIndex = random.Next(0, 3);
+            int directionIndex = random.Next(0, 4);
             switch (directionIndex)
             {
                 case 0:

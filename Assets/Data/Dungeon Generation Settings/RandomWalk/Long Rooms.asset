@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Long Rooms
   m_EditorClassIdentifier: 
   Iterations: 10
-  WalkLength: 50
+  WalkLength: 70
   StartRandomEachIteration: 1
