@@ -153,6 +153,8 @@ namespace JZK.Utility
 					}
 				}
 			}
+
+            return roomsList;
 		}
 
         static void SplitRoomVertically(int minWidth, Queue<BoundsInt> roomsQueue, BoundsInt roomToSplit, Random random)
