@@ -85,6 +85,31 @@ namespace JZK.Utility
 
             return wallPositions;
         }
+
+        public static List<Vector2Int> FindAllDeadEnds(HashSet<Vector2Int> floorPositions)
+		{
+            List<Vector2Int> deadEnds = new();
+            foreach(var floorPos in floorPositions)
+			{
+                int numNeighbours = 0;
+                foreach(Vector2Int direction in Direction2D.DIRECTIONS)
+				{
+                    if(!floorPositions.Contains(floorPos + direction))
+					{
+                        continue;
+					}
+
+                    numNeighbours++;
+				}
+
+                if(numNeighbours == 1)
+				{
+                    deadEnds.Add(floorPos);
+				}
+			}
+
+            return deadEnds;
+		}
     }
 }
 
