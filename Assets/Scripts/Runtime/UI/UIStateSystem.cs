@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Framework;
+using JZK.Framework;
 
-namespace UI
+namespace JZK.UI
 {
 	public class UIStateSystem : PersistentSystem<UIStateSystem>
 	{

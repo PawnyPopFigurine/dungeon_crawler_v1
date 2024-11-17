@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Framework;
+using JZK.Framework;
 
 [CustomEditor(typeof(DungeonGenerationTestSceneInit))]
 public class DungeonGenerationTestSceneInitEditor : Editor

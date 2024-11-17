@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Framework;
+using JZK.Framework;
 
-namespace UI
+namespace JZK.UI
 {
 	public class PressStartUISystem : PersistentSystem<PressStartUISystem>, IUISystem
 	{

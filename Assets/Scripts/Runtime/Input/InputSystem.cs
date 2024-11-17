@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.InputSystem;
-using Framework;
+using JZK.Framework;
 
-namespace Input
+namespace JZK.Input
 {
 	public enum EControllerType
 	{
@@ -30,7 +30,7 @@ namespace Input
 		private static readonly string[] INPUT_ACTION_MAP_IDS =
 		{
 			"UI",
-			//"Player",
+			"Player",
 		};
 
 		public delegate void ControllerChangeEvent(EControllerType previous, EControllerType current);
@@ -87,24 +87,17 @@ namespace Input
 		public bool UICancel { get; private set; }
 		public bool UICancelPressed { get; private set; }
 
-		/*public bool UIQuickRespawn { get; private set; }
-		public bool UIQuickRespawnPressed { get; private set; }
-
-		public bool LevelPause { get; private set; }
-		public bool LevelPausePressed { get; private set; }
-
 		public float PlayerMoveHorizontal { get; private set; }
 		public bool PlayerMoveLeft { get; private set; }
 		public bool PlayerMoveLeftPressed { get; private set; }
 		public bool PlayerMoveRight { get; private set; }
 		public bool PlayerMoveRightPressed { get; private set; }
-		public bool PlayerJump { get; private set; }
-		public bool PlayerJumpPressed { get; private set; }
-		public bool PlayerJumpReleased { get; private set; }
-		public bool PlayerJumpHeld { get; private set; }
-		public bool PlayerDash { get; private set; }
-		public bool PlayerDashPressed { get; private set; }
-		public bool PlayerDashHeld { get; private set; }*/
+
+		public float PlayerMoveVertical { get; private set; }
+		public bool PlayerMoveUp { get; private set; }
+		public bool PlayerMoveUpPressed { get; private set; }
+		public bool PlayerMoveDown { get; private set; }
+		public bool PlayerMoveDownPressed { get; private set; }
 
 		EControllerType _lastControllerType;
 		public EControllerType LastControllerType
@@ -183,20 +176,11 @@ namespace Input
 			UICancelPressed = false;
 			UIConfirmPressed = false;
 
-			/*UIQuickRespawnPressed = false;
-
 			PlayerMoveLeftPressed = false;
 			PlayerMoveRightPressed = false;
 
-			PlayerJumpPressed = false;
-			PlayerJumpReleased = false;
-
-			PlayerJumpHeld = false;
-
-			LevelPausePressed = false;
-
-			PlayerDashHeld = false;
-			PlayerDashPressed = false;*/
+			PlayerMoveDownPressed = false;
+			PlayerMoveUpPressed = false;
 
 			EControllerPlatformType platformType = LastControllerPlatformType;
 			LastControllerType = GetCurrentController(out platformType, out LastInputDevice);
@@ -245,7 +229,7 @@ namespace Input
 			#region PlayerMovement
 
 			//Move Horizontal
-			/*bool lastMoveLeft = PlayerMoveLeft;
+			bool lastMoveLeft = PlayerMoveLeft;
 			bool lastMoveRight = PlayerMoveRight;
 
 			PlayerMoveHorizontal = inputAction_PlayerMoveHorizontal.ReadValue<float>();
@@ -261,58 +245,28 @@ namespace Input
 			if (!lastMoveRight && PlayerMoveRight)
 			{
 				PlayerMoveRightPressed = true;
-			}*/
-
-			//Jump
-			/*bool lastPlayerJump = PlayerJump;
-
-			PlayerJump = (inputAction_PlayerJump.ReadValue<float>() > 0.5f);
-
-			if (!lastPlayerJump && PlayerJump)
-			{
-				PlayerJumpPressed = true;
 			}
 
-			if (lastPlayerJump && !PlayerJump)
+			//Move Vertical
+			bool lastMoveUp = PlayerMoveUp;
+			bool lastMoveDown = PlayerMoveDown;
+
+			PlayerMoveVertical = inputAction_PlayerMoveVertical.ReadValue<float>();
+
+			PlayerMoveUp = (PlayerMoveVertical > 0);
+			PlayerMoveDown = (PlayerMoveVertical < 0);
+
+			if(!lastMoveUp && PlayerMoveUp)
 			{
-				PlayerJumpReleased = true;
+				PlayerMoveUpPressed = true;
 			}
 
-			if (lastPlayerJump && PlayerJump)
+			if(!lastMoveDown && PlayerMoveDown)
 			{
-				PlayerJumpHeld = true;
-			}*/
+				PlayerMoveDownPressed = true;
+			}
 
 			#endregion //PlayerMovement
-
-			//Pause
-			/*bool lastPause = LevelPause;
-			LevelPause = inputAction_LevelPause.triggered;
-
-			if (!lastPause && LevelPause)
-			{
-				LevelPausePressed = true;
-			}*/
-
-			//Dash
-			/*bool lastPlayerDash = PlayerDash;
-
-			PlayerDash = (inputAction_PlayerDash.ReadValue<float>() > 0.5f);
-
-			if (!lastPlayerDash && PlayerDash)
-			{
-				PlayerDashPressed = true;
-			}
-
-			if (lastPlayerDash && !PlayerDash)
-			{
-				//PlayerDashReleased = true;
-			}
-
-			if (lastPlayerDash && PlayerDash)
-			{
-				PlayerDashHeld = true;
-			}*/
 		}
 		#endregion // PersistentSystem
 
@@ -365,28 +319,17 @@ namespace Input
 		private InputAction inputAction_Confirm;
 		private InputAction inputAction_Cancel;
 
-		/*private InputAction inputAction_PlayerMoveHorizontal;
-		private InputAction inputAction_PlayerJump;
+		private InputAction inputAction_PlayerMoveHorizontal;
+		private InputAction inputAction_PlayerMoveVertical;
 
-		private InputAction inputAction_LevelPause;
-
-		private InputAction inputAction_PlayerDash;
-
-		private InputAction inputAction_QuickRespawn;*/
 
 		private void SetUpActions()
 		{
 			inputAction_Cancel = _playerInput.actions["UI/Cancel"];
 			inputAction_Confirm = _playerInput.actions["UI/Confirm"];
 
-			/*inputAction_PlayerMoveHorizontal = _playerInput.actions["Player/MoveHorizontal"];
-			inputAction_PlayerJump = _playerInput.actions["Player/Jump"];
-
-			inputAction_LevelPause = _playerInput.actions["Player/Pause"];
-
-			inputAction_PlayerDash = _playerInput.actions["Player/Run"];
-
-			inputAction_QuickRespawn = _playerInput.actions["UI/QuickRespawn"];*/
+			inputAction_PlayerMoveHorizontal = _playerInput.actions["Player/MovementHorizontal"];
+			inputAction_PlayerMoveVertical = _playerInput.actions["Player/MovementVertical"];
 		}
 
 		public void Clear()
@@ -397,24 +340,13 @@ namespace Input
 			UIConfirm = false;
 			UIConfirmPressed = false;
 
-			/*PlayerJump = false;
-			PlayerJumpHeld = false;
-			PlayerJumpPressed = false;
-			PlayerJumpReleased = false;
-
 			PlayerMoveHorizontal = 0;
 			PlayerMoveLeft = false;
 			PlayerMoveRight = false;
 
-			LevelPause = false;
-			LevelPausePressed = false;
-
-			PlayerDash = false;
-			PlayerDashHeld = false;
-			PlayerDashPressed = false;
-
-			UIQuickRespawn = false;
-			UIQuickRespawnPressed = false;*/
+			PlayerMoveVertical = 0;
+			PlayerMoveUp = false;
+			PlayerMoveDown = false;
 		}
 
 		EControllerType GetCurrentController(out EControllerPlatformType lastPlatformType, out InputDevice lastDevice)
@@ -532,7 +464,5 @@ namespace Input
 			UIConfirm = false;
 			UIConfirmPressed = false;
 		}
-
-
 	}
 }

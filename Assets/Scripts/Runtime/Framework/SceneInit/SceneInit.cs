@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Framework
+namespace JZK.Framework
 {
 
 	public interface ISystemReference<out T> where T : MonoBehaviour
@@ -367,6 +367,7 @@ namespace Framework
 				return;
 			}
 
+			LoadingStateComplete(_currentLoadingState);
 			OnLoadingStateComplete?.Invoke(_currentLoadingState);
 			StartLoadingState((ELoadingState)((int)CurrentLoadingState + 1));
 		}
@@ -374,6 +375,11 @@ namespace Framework
 		public static bool HasCompletedLoadingState(ELoadingState state)
 		{
 			return CurrentLoadingState > state;
+		}
+
+		public virtual void LoadingStateComplete(ELoadingState state)
+		{
+
 		}
 	}
 }

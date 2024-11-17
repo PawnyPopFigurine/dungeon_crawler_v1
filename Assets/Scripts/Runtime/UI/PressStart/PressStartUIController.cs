@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace JZK.UI
 {
 	public class PressStartUIController : UI.UIController
 	{

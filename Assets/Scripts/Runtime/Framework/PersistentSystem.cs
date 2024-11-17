@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Profiling;
 
-namespace Framework
+namespace JZK.Framework
 {
 
 	public abstract class PersistentSystem<T> : MonoBehaviour where T : MonoBehaviour

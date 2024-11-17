@@ -1,0 +1,81 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using JZK.Framework;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+
+namespace JZK.Gameplay
+{
+	public class PlayerSystem : PersistentSystem<PlayerSystem>
+	{
+		private SystemLoadData _loadData = new SystemLoadData()
+		{
+			LoadStates = new SystemLoadState[] { new SystemLoadState { LoadStartState = ELoadingState.FrontEndData, BlockStateUntilFinished = ELoadingState.FrontEndData } },
+			UpdateAfterLoadingState = ELoadingState.FrontEndData,
+		};
+
+		public override SystemLoadData LoadData
+		{
+			get { return _loadData; }
+		}
+
+		public override void StartLoading(ELoadingState state)
+		{
+			base.StartLoading(state);
+
+			Load();
+		}
+
+		private PlayerController _controller;
+
+		public override void UpdateSystem()
+		{
+			base.UpdateSystem();
+
+			_controller.UpdateController();
+		}
+
+		#region Load
+
+		public void Load()
+		{
+			Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/Player/Player.prefab").Completed += LoadCompleted;
+		}
+
+		void LoadCompleted(AsyncOperationHandle<GameObject> op)
+		{
+			if (op.Result == null)
+			{
+				Debug.LogError(this.GetType().ToString() + "- Failed to load addressable.");
+				return;
+			}
+
+			_initPerfMarker.Begin(this);
+			float startTime = Time.realtimeSinceStartup;
+
+			GameObject playerPrefab = Instantiate(op.Result);
+			playerPrefab.transform.SetParent(transform);
+			playerPrefab.transform.position = Vector3.zero;
+
+			PlayerController controller = playerPrefab.GetComponent<PlayerController>();
+			_controller = controller;
+
+			_controller.SetActive(false);
+
+			FinishLoading(ELoadingState.FrontEndData);
+
+			float endTime = Time.realtimeSinceStartup - startTime;
+			_initPerfMarker.End();
+			Debug.Log("INIT: " + GetType() + ".InputLoadCompleted " + endTime.ToString("F2") + " sec.)");
+
+		}
+
+		#endregion //Load
+
+		public void StartForPlayerTestScene()
+		{
+			_controller.SetActive(true);
+		}
+	}
+}

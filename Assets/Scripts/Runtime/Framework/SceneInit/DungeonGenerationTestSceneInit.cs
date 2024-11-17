@@ -7,7 +7,7 @@ using Random = System.Random;
 using UnityEngine.Tilemaps;
 using Level;
 
-namespace Framework
+namespace JZK.Framework
 {
     public class DungeonGenerationTestSceneInit : SceneInit
     {
