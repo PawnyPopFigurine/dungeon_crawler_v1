@@ -6,7 +6,14 @@ namespace JZK.Gameplay
 {
     public class GnomePelletController : ProjectileController
     {
-		public void CollisionEnter(Collision collision)
+		private void OnTriggerEnter2D(Collider2D collider)
+		{
+			if (collider.gameObject.tag == "DestroyPlayerProjectiles")
+			{
+				ProjectileSystem.Instance.ClearProjectile(this);
+			}
+		}
+		/*public void CollisionEnter(Collision collision)
 		{
 			if(collision.gameObject.tag == "DestroyPlayerProjectiles")
 			{
@@ -21,5 +28,21 @@ namespace JZK.Gameplay
 				ProjectileSystem.Instance.ClearProjectile(this);
 			}
 		}
+
+		public void TriggerEnter2D(Collider2D collision)
+		{
+			if(collision.gameObject.tag == "DestroyPlayerProjectiles")
+			{
+				ProjectileSystem.Instance.ClearProjectile(this);
+			}
+		}
+
+		public void CollisionEnter2D(Collision2D collision)
+		{
+			if (collision.gameObject.tag == "DestroyPlayerProjectiles")
+			{
+				ProjectileSystem.Instance.ClearProjectile(this);
+			}
+		}*/
 	}
 }
