@@ -10,6 +10,7 @@ namespace JZK.Framework
 			new SystemReference<Input.InputSystem>(),
 
 			new SystemReference<Gameplay.PlayerSystem>(),
+			new SystemReference<Gameplay.ProjectileSystem>(),
 
 			new SystemReference<UI.PressStartUISystem>(),
 			new SystemReference<UI.UIStateSystem>(),

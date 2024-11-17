@@ -99,6 +99,9 @@ namespace JZK.Input
 		public bool PlayerMoveDown { get; private set; }
 		public bool PlayerMoveDownPressed { get; private set; }
 
+		public bool PlayerShoot { get; private set; }
+		public bool PlayerShootPressed { get; private set; }
+
 		EControllerType _lastControllerType;
 		public EControllerType LastControllerType
 		{
@@ -182,6 +185,8 @@ namespace JZK.Input
 			PlayerMoveDownPressed = false;
 			PlayerMoveUpPressed = false;
 
+			PlayerShootPressed = false;
+
 			EControllerPlatformType platformType = LastControllerPlatformType;
 			LastControllerType = GetCurrentController(out platformType, out LastInputDevice);
 			LastControllerPlatformType = platformType;
@@ -226,7 +231,7 @@ namespace JZK.Input
 			}*/
 			#endregion //UI
 
-			#region PlayerMovement
+			#region Player
 
 			//Move Horizontal
 			bool lastMoveLeft = PlayerMoveLeft;
@@ -266,7 +271,17 @@ namespace JZK.Input
 				PlayerMoveDownPressed = true;
 			}
 
-			#endregion //PlayerMovement
+			//Player shoot
+			bool lastShoot = PlayerShoot;
+
+			PlayerShoot = inputAction_PlayerShoot.ReadValue<float>() > 0;
+
+			if(!lastShoot && PlayerShoot)
+			{
+				PlayerShootPressed = true;
+			}
+
+			#endregion //Player
 		}
 		#endregion // PersistentSystem
 
@@ -322,6 +337,8 @@ namespace JZK.Input
 		private InputAction inputAction_PlayerMoveHorizontal;
 		private InputAction inputAction_PlayerMoveVertical;
 
+		private InputAction inputAction_PlayerShoot;
+
 
 		private void SetUpActions()
 		{
@@ -330,6 +347,8 @@ namespace JZK.Input
 
 			inputAction_PlayerMoveHorizontal = _playerInput.actions["Player/MovementHorizontal"];
 			inputAction_PlayerMoveVertical = _playerInput.actions["Player/MovementVertical"];
+
+			inputAction_PlayerShoot = _playerInput.actions["Player/Shoot"];
 		}
 
 		public void Clear()
@@ -347,6 +366,9 @@ namespace JZK.Input
 			PlayerMoveVertical = 0;
 			PlayerMoveUp = false;
 			PlayerMoveDown = false;
+
+			PlayerShoot = false;
+			PlayerShootPressed = false;
 		}
 
 		EControllerType GetCurrentController(out EControllerPlatformType lastPlatformType, out InputDevice lastDevice)

@@ -92,6 +92,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""48b03bd6-e78d-4992-9929-0a965b2e1378"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -226,6 +235,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""MovementVertical"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""871dc10b-4f62-4c73-8cb6-7a6c4bc2a1a3"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -240,6 +260,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_MovementHorizontal = m_Player.FindAction("MovementHorizontal", throwIfNotFound: true);
         m_Player_MovementVertical = m_Player.FindAction("MovementVertical", throwIfNotFound: true);
+        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -357,12 +378,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_MovementHorizontal;
     private readonly InputAction m_Player_MovementVertical;
+    private readonly InputAction m_Player_Shoot;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @MovementHorizontal => m_Wrapper.m_Player_MovementHorizontal;
         public InputAction @MovementVertical => m_Wrapper.m_Player_MovementVertical;
+        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -378,6 +401,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MovementVertical.started += instance.OnMovementVertical;
             @MovementVertical.performed += instance.OnMovementVertical;
             @MovementVertical.canceled += instance.OnMovementVertical;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -388,6 +414,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MovementVertical.started -= instance.OnMovementVertical;
             @MovementVertical.performed -= instance.OnMovementVertical;
             @MovementVertical.canceled -= instance.OnMovementVertical;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -414,5 +443,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnMovementHorizontal(InputAction.CallbackContext context);
         void OnMovementVertical(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

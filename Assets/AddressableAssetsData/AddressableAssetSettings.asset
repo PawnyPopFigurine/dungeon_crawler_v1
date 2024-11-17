@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: c805c52bc6783b44fbc1e6899904ddbd
   m_currentHash:
     serializedVersion: 2
-    Hash: 9fbd931555054f54f106917f22904fd7
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -90,6 +90,7 @@ MonoBehaviour:
     - default
     - input
     - ui
+    - projectile_prefabs
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: a02584dc34281de40938dab1b5d4ef24, type: 2}

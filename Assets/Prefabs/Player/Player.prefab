@@ -209,6 +209,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _walkSpeed: 3
+  _projectileSpeed: 10
+  _projectileLifetime: 2
   _rigidbody: {fileID: 868215981276151808}
   _renderer: {fileID: 3695575380780348078}
   _faceDown: {fileID: 21300000, guid: 9ed86bf76c995fc419c39871c75ac5c1, type: 3}

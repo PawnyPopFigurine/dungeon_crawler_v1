@@ -8,6 +8,10 @@ namespace JZK.Gameplay
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] float _walkSpeed;
+        [SerializeField] float _projectileSpeed;
+        [SerializeField] float _projectileLifetime;
+
+
         [SerializeField] Rigidbody2D _rigidbody;
 
         [SerializeField] SpriteRenderer _renderer;
@@ -20,6 +24,8 @@ namespace JZK.Gameplay
         bool _active;
         public bool Active => _active;
 
+        private EFacing _faceDirection;
+
         public void UpdateController()
         {
             if (!_active)
@@ -29,6 +35,7 @@ namespace JZK.Gameplay
 
             UpdateInput();
             UpdateFacingVisuals();
+            UpdateShooting();
         }
 
         void UpdateInput()
@@ -62,26 +69,64 @@ namespace JZK.Gameplay
             _rigidbody.velocity = new(newVelocityX, newVelocityY);
 		}
 
+        void UpdateShooting()
+		{
+            if(InputSystem.Instance.PlayerShootPressed)
+			{
+                Vector2 projectileVel = new(0, 0);
+                switch(_faceDirection)
+				{
+                    case EFacing.Up:
+                        projectileVel = new(0, 1);
+                        break;
+                    case EFacing.Right:
+                        projectileVel = new(1, 0);
+                        break;
+                    case EFacing.Down:
+                        projectileVel = new(0, -1);
+                        break;
+                    case EFacing.Left:
+                        projectileVel = new(-1, 0);
+                        break;
+				}
+
+                ProjectileSystem.Instance.RequestProjectileLaunch(EProjectile.Gnome_Pellet, projectileVel, _projectileSpeed, transform.position, _projectileLifetime, 1, out _);
+			}
+		}
+
         void UpdateFacingVisuals()
 		{
             if(InputSystem.Instance.PlayerMoveUp)
 			{
-                _renderer.sprite = _faceUp;
+                _faceDirection = EFacing.Up;
 			}
-
             if(InputSystem.Instance.PlayerMoveDown)
 			{
-                _renderer.sprite = _faceDown;
+                _faceDirection = EFacing.Down;
 			}
-
             if(InputSystem.Instance.PlayerMoveLeft)
 			{
-                _renderer.sprite = _faceLeft;
+                _faceDirection = EFacing.Left;
 			}
-
             if(InputSystem.Instance.PlayerMoveRight)
 			{
-                _renderer.sprite = _faceRight;
+                _faceDirection = EFacing.Right;
+			}
+
+            switch(_faceDirection)
+			{
+                case EFacing.Up:
+                    _renderer.sprite = _faceUp;
+                    break;
+                case EFacing.Right:
+                    _renderer.sprite = _faceRight;
+                    break;
+                case EFacing.Down:
+                    _renderer.sprite = _faceDown;
+                    break;
+                case EFacing.Left:
+                    _renderer.sprite = _faceLeft;
+                    break;
 			}
 		}
 
