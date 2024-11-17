@@ -10,6 +10,13 @@ namespace JZK.Gameplay
         [SerializeField] float _walkSpeed;
         [SerializeField] Rigidbody2D _rigidbody;
 
+        [SerializeField] SpriteRenderer _renderer;
+
+        [SerializeField] Sprite _faceDown;
+        [SerializeField] Sprite _faceUp;
+        [SerializeField] Sprite _faceLeft;
+        [SerializeField] Sprite _faceRight;
+
         bool _active;
         public bool Active => _active;
 
@@ -21,6 +28,7 @@ namespace JZK.Gameplay
             }
 
             UpdateInput();
+            UpdateFacingVisuals();
         }
 
         void UpdateInput()
@@ -52,6 +60,29 @@ namespace JZK.Gameplay
 			}
 
             _rigidbody.velocity = new(newVelocityX, newVelocityY);
+		}
+
+        void UpdateFacingVisuals()
+		{
+            if(InputSystem.Instance.PlayerMoveUp)
+			{
+                _renderer.sprite = _faceUp;
+			}
+
+            if(InputSystem.Instance.PlayerMoveDown)
+			{
+                _renderer.sprite = _faceDown;
+			}
+
+            if(InputSystem.Instance.PlayerMoveLeft)
+			{
+                _renderer.sprite = _faceLeft;
+			}
+
+            if(InputSystem.Instance.PlayerMoveRight)
+			{
+                _renderer.sprite = _faceRight;
+			}
 		}
 
 
