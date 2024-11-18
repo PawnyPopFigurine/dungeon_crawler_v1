@@ -7,6 +7,8 @@ namespace JZK.Framework
 
 		ISystemReference<MonoBehaviour>[] _systems = new ISystemReference<MonoBehaviour>[]
 		{
+			new SystemReference<Camera.CameraSystem>(),
+
 			new SystemReference<Input.InputSystem>(),
 
 			new SystemReference<Gameplay.PlayerSystem>(),

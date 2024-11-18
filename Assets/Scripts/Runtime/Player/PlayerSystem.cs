@@ -29,6 +29,7 @@ namespace JZK.Gameplay
 
 		private PlayerController _controller;
 
+
 		public override void UpdateSystem()
 		{
 			base.UpdateSystem();
@@ -76,6 +77,16 @@ namespace JZK.Gameplay
 		public void StartForPlayerTestScene()
 		{
 			_controller.SetActive(true);
+		}
+
+		public Vector2 GetPlayerPos()
+		{
+			if (null == _controller)
+			{
+				return GameplayHelper.INVALID_PLAYER_POS;
+			}
+
+			return _controller.transform.position;
 		}
 	}
 }

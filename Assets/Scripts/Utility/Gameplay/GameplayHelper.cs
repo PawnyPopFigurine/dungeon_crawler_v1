@@ -14,6 +14,7 @@ namespace JZK.Gameplay
 
     public static class GameplayHelper
     {
-        
+		public static Vector2 INVALID_PLAYER_POS = new(-1, -1);
+
     }
 }
