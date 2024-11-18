@@ -35,6 +35,11 @@ namespace JZK.Gameplay
 			base.UpdateSystem();
 
 			_controller.UpdateController();
+
+			if(!_controller.PlayerAlive)
+			{
+				Debug.Log("[HELLO] PLAYER DEAD");
+			}
 		}
 
 		#region Load
@@ -62,6 +67,7 @@ namespace JZK.Gameplay
 			PlayerController controller = playerPrefab.GetComponent<PlayerController>();
 			_controller = controller;
 
+			_controller.Initialise();
 			_controller.SetActive(false);
 
 			FinishLoading(ELoadingState.Game);
@@ -87,6 +93,11 @@ namespace JZK.Gameplay
 			}
 
 			return _controller.transform.position;
+		}
+
+		public void OnPlayerHitHazard(GameObject hazard)
+		{
+			_controller.OnPlayerHitHazard(hazard);
 		}
 	}
 }

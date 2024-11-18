@@ -9,6 +9,7 @@ TagManager:
   - PlayerProjectile
   - DestroyAndDestroyedByPlayerProj
   - DestroyedByPlayerProj
+  - PlayerTrigger
   layers:
   - Default
   - TransparentFX

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6980148519242823442}
   m_Layer: 0
   m_Name: TriggerCollision
-  m_TagString: Untagged
+  m_TagString: PlayerTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -289,6 +289,8 @@ MonoBehaviour:
   _walkSpeed: 3
   _projectileSpeed: 10
   _projectileLifetime: 2
+  _maxHealth: 3
+  _invincibilityTime: 2
   _rigidbody: {fileID: 868215981276151808}
   _renderer: {fileID: 3695575380780348078}
   _faceDown: {fileID: 21300000, guid: 9ed86bf76c995fc419c39871c75ac5c1, type: 3}

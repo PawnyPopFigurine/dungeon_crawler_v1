@@ -11,6 +11,18 @@ namespace JZK.Gameplay
         [SerializeField] float _projectileSpeed;
         [SerializeField] float _projectileLifetime;
 
+        [SerializeField] int _maxHealth;
+        [SerializeField] float _invincibilityTime;
+
+        float _timeSinceLastHit;
+
+        int _currentHealth;
+
+        bool _playerAlive;
+        public bool PlayerAlive => _playerAlive;
+
+        bool _inInvincibilityPeriod;
+
 
         [SerializeField] Rigidbody2D _rigidbody;
 
@@ -26,6 +38,12 @@ namespace JZK.Gameplay
 
         private EFacing _faceDirection;
 
+        public void Initialise()
+		{
+            _currentHealth = _maxHealth;
+            _playerAlive = true;
+		}
+
         public void UpdateController()
         {
             if (!_active)
@@ -36,6 +54,9 @@ namespace JZK.Gameplay
             UpdateInput();
             UpdateFacingVisuals();
             UpdateShooting();
+            UpdateInvincibilityPeriod();
+
+            _timeSinceLastHit += Time.deltaTime;
         }
 
         void UpdateInput()
@@ -130,6 +151,26 @@ namespace JZK.Gameplay
 			}
 		}
 
+        void UpdateInvincibilityPeriod()
+        {
+            if(!_inInvincibilityPeriod)
+			{
+                return;
+			}
+
+            _timeSinceLastHit += Time.deltaTime;
+
+            Color invincibilityColour = new(1, 1, 1, 0.5f);
+
+            if(_timeSinceLastHit >= _invincibilityTime)
+			{
+                _inInvincibilityPeriod = false;
+                invincibilityColour = Color.white;
+			}
+
+            _renderer.color = invincibilityColour;
+        }
+
 
         public void SetActive(bool active)
 		{
@@ -141,5 +182,20 @@ namespace JZK.Gameplay
             gameObject.SetActive(active);
             _active = active;
 		}
+
+        public void OnPlayerHitHazard(GameObject hazard)
+        {
+            if (_currentHealth > 0 &&
+                !_inInvincibilityPeriod)
+			{
+                _timeSinceLastHit = 0;
+                _inInvincibilityPeriod = true;
+                _currentHealth -= 1;
+                if(_currentHealth <= 0)
+				{
+                    _playerAlive = false;
+				}
+			}
+        }
     }
 }
