@@ -11,8 +11,8 @@ namespace JZK.Gameplay
 	{
 		private SystemLoadData _loadData = new SystemLoadData()
 		{
-			LoadStates = new SystemLoadState[] { new SystemLoadState { LoadStartState = ELoadingState.FrontEndData, BlockStateUntilFinished = ELoadingState.FrontEndData } },
-			UpdateAfterLoadingState = ELoadingState.FrontEndData,
+			LoadStates = new SystemLoadState[] { new SystemLoadState { LoadStartState = ELoadingState.Game, BlockStateUntilFinished = ELoadingState.Game } },
+			UpdateAfterLoadingState = ELoadingState.Game,
 		};
 
 		public override SystemLoadData LoadData
@@ -64,7 +64,7 @@ namespace JZK.Gameplay
 
 			_controller.SetActive(false);
 
-			FinishLoading(ELoadingState.FrontEndData);
+			FinishLoading(ELoadingState.Game);
 
 			float endTime = Time.realtimeSinceStartup - startTime;
 			_initPerfMarker.End();

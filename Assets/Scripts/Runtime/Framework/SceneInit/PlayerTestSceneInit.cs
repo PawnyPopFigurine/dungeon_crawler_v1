@@ -48,7 +48,7 @@ namespace JZK.Framework
 		{
 			base.LoadingStateComplete(state);
 
-			if(state != ELoadingState.FrontEnd)
+			if(state != ELoadingState.Game)
 			{
 				return;
 			}
