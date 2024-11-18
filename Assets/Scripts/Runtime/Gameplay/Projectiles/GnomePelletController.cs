@@ -8,41 +8,20 @@ namespace JZK.Gameplay
     {
 		private void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (collider.gameObject.tag == "DestroyPlayerProjectiles")
+			switch(collider.gameObject.tag)
 			{
-				ProjectileSystem.Instance.ClearProjectile(this);
+				case "DestroyPlayerProjectiles":
+					ProjectileSystem.Instance.ClearProjectile(this);
+					break;
+				case "DestroyAndDestroyedByPlayerProj":
+					DestructibleObject destructibleObject = collider.gameObject.GetComponent<DestructibleObject>();
+					if(null != destructibleObject)
+					{
+						destructibleObject.OnHitByPlayerProjectile();
+					}
+					ProjectileSystem.Instance.ClearProjectile(this);
+					break;
 			}
 		}
-		/*public void CollisionEnter(Collision collision)
-		{
-			if(collision.gameObject.tag == "DestroyPlayerProjectiles")
-			{
-				ProjectileSystem.Instance.ClearProjectile(this);
-			}
-		}
-
-		public void TriggerEnter(Collider other)
-		{
-			if(other.gameObject.tag == "DestroyPlayerProjectiles")
-			{
-				ProjectileSystem.Instance.ClearProjectile(this);
-			}
-		}
-
-		public void TriggerEnter2D(Collider2D collision)
-		{
-			if(collision.gameObject.tag == "DestroyPlayerProjectiles")
-			{
-				ProjectileSystem.Instance.ClearProjectile(this);
-			}
-		}
-
-		public void CollisionEnter2D(Collision2D collision)
-		{
-			if (collision.gameObject.tag == "DestroyPlayerProjectiles")
-			{
-				ProjectileSystem.Instance.ClearProjectile(this);
-			}
-		}*/
 	}
 }

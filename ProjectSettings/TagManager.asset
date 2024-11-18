@@ -6,6 +6,9 @@ TagManager:
   tags:
   - DestroyPlayerProjectiles
   - Wall
+  - PlayerProjectile
+  - DestroyAndDestroyedByPlayerProj
+  - DestroyedByPlayerProj
   layers:
   - Default
   - TransparentFX
@@ -13,8 +16,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - PlayerSolid
+  - PlayerWalkThrough
   - 
   - 
   - 
