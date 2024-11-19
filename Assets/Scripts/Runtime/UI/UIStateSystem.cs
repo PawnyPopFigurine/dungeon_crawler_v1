@@ -72,6 +72,7 @@ namespace JZK.UI
 			None,
 			PressStart,
 			MainMenu,
+			Gameplay,
 
 			Max
 		}
@@ -108,6 +109,8 @@ namespace JZK.UI
 			{
                 case EUIState.PressStart:
                     return PressStartUISystem.Instance;
+				case EUIState.Gameplay:
+					return GameplayUISystem.Instance;
                 default:
 					Debug.LogWarning("[UI] No UI System found for UI State " + state.ToString());
 					return null;
@@ -195,22 +198,25 @@ namespace JZK.UI
 
 		private void OnLoadingStateComplete(ELoadingState state)
 		{
-			if(state != ELoadingState.FrontEnd)
+			switch(state)
 			{
-				return;
+				case ELoadingState.FrontEnd:
+					if (!SceneInit.IsTestScene)
+					{
+						EnterScreen(EUIState.PressStart);
+					}
+					break;
+				case ELoadingState.Game:
+					if (SceneInit.CurrentSceneInit is PlayerTestSceneInit playerSceneInit)
+					{
+						GameplayUISystem.Instance.RefreshHealthBarForCurrentHealth();
+						EnterScreen(EUIState.Gameplay);
+					}
+					break;
 			}
-
-			if(SceneInit.IsTestScene)
-			{
-				return;
-			}
-
-			EnterScreen(EUIState.PressStart);
 		}
 
 		#endregion //Callbacks
-
-
 
 	}
 }

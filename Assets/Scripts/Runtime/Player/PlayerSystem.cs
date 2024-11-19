@@ -29,6 +29,9 @@ namespace JZK.Gameplay
 
 		private PlayerController _controller;
 
+		public delegate void PlayerEvent();
+		public event PlayerEvent OnPlayerHit;
+
 
 		public override void UpdateSystem()
 		{
@@ -98,6 +101,17 @@ namespace JZK.Gameplay
 		public void OnPlayerHitHazard(GameObject hazard)
 		{
 			_controller.OnPlayerHitHazard(hazard);
+			OnPlayerHit?.Invoke();
+		}
+
+		public void KillPlayer()
+		{
+			//probs want a kill player event here
+		}
+
+		public int GetPlayerHealth()
+		{
+			return _controller.CurrentHealth;
 		}
 	}
 }

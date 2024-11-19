@@ -14,6 +14,7 @@ namespace JZK.Framework
 			new SystemReference<Gameplay.PlayerSystem>(),
 			new SystemReference<Gameplay.ProjectileSystem>(),
 
+			new SystemReference<UI.GameplayUISystem>(),
 			new SystemReference<UI.PressStartUISystem>(),
 			new SystemReference<UI.UIStateSystem>(),
 
@@ -55,6 +56,5 @@ namespace JZK.Framework
 
 			Gameplay.PlayerSystem.Instance.StartForPlayerTestScene();
 		}
-
 	}
 }

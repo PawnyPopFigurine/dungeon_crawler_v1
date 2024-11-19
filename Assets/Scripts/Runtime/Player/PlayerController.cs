@@ -17,6 +17,7 @@ namespace JZK.Gameplay
         float _timeSinceLastHit;
 
         int _currentHealth;
+        public int CurrentHealth => _currentHealth;
 
         bool _playerAlive;
         public bool PlayerAlive => _playerAlive;
@@ -51,10 +52,13 @@ namespace JZK.Gameplay
                 return;
             }
 
-            UpdateInput();
-            UpdateFacingVisuals();
-            UpdateShooting();
-            UpdateInvincibilityPeriod();
+            if(_playerAlive)
+			{
+                UpdateInput();
+                UpdateFacingVisuals();
+                UpdateShooting();
+                UpdateInvincibilityPeriod();
+            }
 
             _timeSinceLastHit += Time.deltaTime;
         }
@@ -193,7 +197,9 @@ namespace JZK.Gameplay
                 _currentHealth -= 1;
                 if(_currentHealth <= 0)
 				{
+                    PlayerSystem.Instance.KillPlayer();
                     _playerAlive = false;
+                    _rigidbody.velocity = Vector2.zero;
 				}
 			}
         }
