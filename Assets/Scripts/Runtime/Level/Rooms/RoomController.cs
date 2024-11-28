@@ -58,5 +58,16 @@ namespace JZK.Gameplay
 
             _currentWallTile = repaintToTile;
         }
+
+        public void OpenAllDoors()
+        {
+            foreach(RoomDoor door in _doors)
+            {
+                if(!door.DoorEnabled)
+                {
+                    continue;
+                }
+            }
+        }
     }
 }

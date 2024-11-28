@@ -45,9 +45,13 @@ namespace JZK.Framework
 			_testingRoom.RepaintFloorTiles(_theme1FloorTile);
 			_testingRoom.RepaintWallTiles(_theme1WallTile);
 
-			_testingRoom.Doors[0].SetActive(true);
-			_testingRoom.Doors[1].SetActive(false);
-		}
+			_testingRoom.Doors[0].SetDoorEnabled(true);
+			_testingRoom.Doors[1].SetDoorEnabled(false);
+            _testingRoom.Doors[2].SetDoorEnabled(false);
+            _testingRoom.Doors[3].SetDoorEnabled(true);
+
+			_testingRoom.Doors[0].SetIsOpen(true);
+        }
 
 		private void Update()
 		{
