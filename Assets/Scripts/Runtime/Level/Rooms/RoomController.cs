@@ -18,6 +18,11 @@ namespace JZK.Gameplay
         private TileBase _currentFloorTile;
         private TileBase _currentWallTile;
 
+        [SerializeField] List<RoomDoor> _doors;
+        public List<RoomDoor> Doors => _doors;
+
+        [SerializeField] List<Tilemap> _fillInWalls = new();
+
         private void Start()
         {
             _currentFloorTile = _initialFloorTile;
@@ -45,6 +50,12 @@ namespace JZK.Gameplay
             }
 
             _wallTilemap.SwapTile(_currentWallTile, repaintToTile);
+
+            foreach(Tilemap fillInWall in _fillInWalls)
+            {
+                fillInWall.SwapTile(_currentWallTile, repaintToTile);
+            }
+
             _currentWallTile = repaintToTile;
         }
     }

@@ -44,6 +44,9 @@ namespace JZK.Framework
 
 			_testingRoom.RepaintFloorTiles(_theme1FloorTile);
 			_testingRoom.RepaintWallTiles(_theme1WallTile);
+
+			_testingRoom.Doors[0].SetActive(true);
+			_testingRoom.Doors[1].SetActive(false);
 		}
 
 		private void Update()
