@@ -83,9 +83,10 @@ namespace JZK.Gameplay
 
 		#endregion //Load
 
-		public void StartForPlayerTestScene()
+		public void StartForPlayerTestScene(Transform spawnPoint)
 		{
 			_controller.SetActive(true);
+			_controller.transform.position = spawnPoint.position;
 		}
 
 		public Vector2 GetPlayerPos()

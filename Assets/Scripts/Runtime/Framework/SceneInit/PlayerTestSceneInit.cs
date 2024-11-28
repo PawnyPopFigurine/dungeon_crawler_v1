@@ -1,4 +1,6 @@
+using JZK.Gameplay;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace JZK.Framework
 {
@@ -25,6 +27,13 @@ namespace JZK.Framework
 		private int _currentSeed;
 		public int CurrentSeed => _currentSeed;
 
+		[SerializeField] RoomController _testingRoom;
+
+		[SerializeField] TileBase _theme1WallTile;
+		[SerializeField] TileBase _theme1FloorTile;
+
+		[SerializeField] Transform _playerSpawnPoint;
+
 		public void Start()
 		{
 			_isTestScene = true;
@@ -32,6 +41,9 @@ namespace JZK.Framework
 			Setup(_systems);
 
 			InitialiseSeed();
+
+			_testingRoom.RepaintFloorTiles(_theme1FloorTile);
+			_testingRoom.RepaintWallTiles(_theme1WallTile);
 		}
 
 		private void Update()
@@ -54,7 +66,7 @@ namespace JZK.Framework
 				return;
 			}
 
-			Gameplay.PlayerSystem.Instance.StartForPlayerTestScene();
+			Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_playerSpawnPoint);
 		}
 	}
 }
