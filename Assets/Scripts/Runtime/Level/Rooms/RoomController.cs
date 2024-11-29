@@ -23,10 +23,15 @@ namespace JZK.Gameplay
 
         [SerializeField] List<Tilemap> _fillInWalls = new();
 
-        private void Start()
+        bool _hasClearedRoom;
+        public bool HasClearedRoom => _hasClearedRoom;
+
+        public void Initialise()
         {
             _currentFloorTile = _initialFloorTile;
             _currentWallTile = _initialWallTile;
+
+            _hasClearedRoom = false;
         }
 
         public void RepaintFloorTiles(TileBase repaintToTile)
@@ -59,6 +64,31 @@ namespace JZK.Gameplay
             _currentWallTile = repaintToTile;
         }
 
+        public void CloseAllDoors()
+        {
+            foreach(RoomDoor door in _doors)
+            {
+                if(!door.DoorEnabled)
+                {
+                    continue;
+                }
+
+                door.SetIsOpen(false);
+            }
+        }
+
+        public void ClearRoom()
+        {
+            if(_hasClearedRoom)
+            {
+                Debug.LogWarning("[ROOM] tried to clear already claered room " + this.name + " - aborting action");
+                return;
+            }
+
+            OpenAllDoors();
+            _hasClearedRoom = true;
+        }
+
         public void OpenAllDoors()
         {
             foreach(RoomDoor door in _doors)
@@ -67,6 +97,20 @@ namespace JZK.Gameplay
                 {
                     continue;
                 }
+
+                door.SetIsOpen(true);
+            }
+        }
+
+        public void OnPlayerEnterRoom()
+        {
+            Debug.Log("[HELLO] player has entered room " + this.gameObject.name);
+
+            GameplaySystem.Instance.OnPlayerEnterRoom(this);
+
+            if(!_hasClearedRoom)
+            {
+                CloseAllDoors();
             }
         }
     }

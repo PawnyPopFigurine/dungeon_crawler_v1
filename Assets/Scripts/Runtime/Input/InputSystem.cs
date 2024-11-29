@@ -31,6 +31,7 @@ namespace JZK.Input
 		{
 			"UI",
 			"Player",
+			"Debug",
 		};
 
 		public delegate void ControllerChangeEvent(EControllerType previous, EControllerType current);
@@ -101,6 +102,9 @@ namespace JZK.Input
 
 		public bool PlayerShoot { get; private set; }
 		public bool PlayerShootPressed { get; private set; }
+
+		public bool Debug_ClearCurrentRoom { get; private set; }
+		public bool Debug_ClearCurrentRoomPressed { get; private set; }
 
 		EControllerType _lastControllerType;
 		public EControllerType LastControllerType
@@ -186,6 +190,8 @@ namespace JZK.Input
 			PlayerMoveUpPressed = false;
 
 			PlayerShootPressed = false;
+
+			Debug_ClearCurrentRoomPressed = false;
 
 			EControllerPlatformType platformType = LastControllerPlatformType;
 			LastControllerType = GetCurrentController(out platformType, out LastInputDevice);
@@ -282,12 +288,27 @@ namespace JZK.Input
 			}
 
 			#endregion //Player
-		}
-		#endregion // PersistentSystem
 
-			#region Load
+			#region Debug
 
-			public void Load()
+			//Complete current room
+
+			bool lastClearCurrentRoom = Debug_ClearCurrentRoom;
+
+			Debug_ClearCurrentRoom = inputAction_DebugCompleteRoom.ReadValue<float>() > 0;
+			
+			if(!lastClearCurrentRoom && Debug_ClearCurrentRoom)
+			{
+				Debug_ClearCurrentRoomPressed = true;
+			}
+
+            #endregion //Debug
+        }
+        #endregion // PersistentSystem
+
+        #region Load
+
+        public void Load()
 		{
 			Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/Input/PlayerInput.prefab").Completed += InputLoadCompleted;
 		}
@@ -339,6 +360,8 @@ namespace JZK.Input
 
 		private InputAction inputAction_PlayerShoot;
 
+		private InputAction inputAction_DebugCompleteRoom;
+
 
 		private void SetUpActions()
 		{
@@ -349,6 +372,8 @@ namespace JZK.Input
 			inputAction_PlayerMoveVertical = _playerInput.actions["Player/MovementVertical"];
 
 			inputAction_PlayerShoot = _playerInput.actions["Player/Shoot"];
+
+			inputAction_DebugCompleteRoom = _playerInput.actions["Debug/CompleteCurrentRoom"];
 		}
 
 		public void Clear()
@@ -369,6 +394,9 @@ namespace JZK.Input
 
 			PlayerShoot = false;
 			PlayerShootPressed = false;
+
+			Debug_ClearCurrentRoom = false;
+			Debug_ClearCurrentRoomPressed = false;
 		}
 
 		EControllerType GetCurrentController(out EControllerPlatformType lastPlatformType, out InputDevice lastDevice)

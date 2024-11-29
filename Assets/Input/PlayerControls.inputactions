@@ -226,6 +226,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Debug",
+            "id": "59b2d2f0-ee2c-419c-9970-16ed2f78e432",
+            "actions": [
+                {
+                    "name": "CompleteCurrentRoom",
+                    "type": "Button",
+                    "id": "19c6dcfa-71a0-496c-b519-70a70c93bc12",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "24528c42-d7b6-4ded-8906-c35ee2162313",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CompleteCurrentRoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

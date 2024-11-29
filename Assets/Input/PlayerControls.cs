@@ -248,6 +248,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""id"": ""59b2d2f0-ee2c-419c-9970-16ed2f78e432"",
+            ""actions"": [
+                {
+                    ""name"": ""CompleteCurrentRoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""19c6dcfa-71a0-496c-b519-70a70c93bc12"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""24528c42-d7b6-4ded-8906-c35ee2162313"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CompleteCurrentRoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -261,6 +289,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_MovementHorizontal = m_Player.FindAction("MovementHorizontal", throwIfNotFound: true);
         m_Player_MovementVertical = m_Player.FindAction("MovementVertical", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        // Debug
+        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+        m_Debug_CompleteCurrentRoom = m_Debug.FindAction("CompleteCurrentRoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -434,6 +465,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Debug
+    private readonly InputActionMap m_Debug;
+    private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
+    private readonly InputAction m_Debug_CompleteCurrentRoom;
+    public struct DebugActions
+    {
+        private @PlayerControls m_Wrapper;
+        public DebugActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CompleteCurrentRoom => m_Wrapper.m_Debug_CompleteCurrentRoom;
+        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+        public void AddCallbacks(IDebugActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DebugActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Add(instance);
+            @CompleteCurrentRoom.started += instance.OnCompleteCurrentRoom;
+            @CompleteCurrentRoom.performed += instance.OnCompleteCurrentRoom;
+            @CompleteCurrentRoom.canceled += instance.OnCompleteCurrentRoom;
+        }
+
+        private void UnregisterCallbacks(IDebugActions instance)
+        {
+            @CompleteCurrentRoom.started -= instance.OnCompleteCurrentRoom;
+            @CompleteCurrentRoom.performed -= instance.OnCompleteCurrentRoom;
+            @CompleteCurrentRoom.canceled -= instance.OnCompleteCurrentRoom;
+        }
+
+        public void RemoveCallbacks(IDebugActions instance)
+        {
+            if (m_Wrapper.m_DebugActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDebugActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DebugActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DebugActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DebugActions @Debug => new DebugActions(this);
     public interface IUIActions
     {
         void OnConfirm(InputAction.CallbackContext context);
@@ -444,5 +521,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMovementHorizontal(InputAction.CallbackContext context);
         void OnMovementVertical(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+    }
+    public interface IDebugActions
+    {
+        void OnCompleteCurrentRoom(InputAction.CallbackContext context);
     }
 }

@@ -13,6 +13,7 @@ namespace JZK.Framework
 
 			new SystemReference<Input.InputSystem>(),
 
+			new SystemReference<Gameplay.GameplaySystem>(),
 			new SystemReference<Gameplay.PlayerSystem>(),
 			new SystemReference<Gameplay.ProjectileSystem>(),
 
@@ -42,15 +43,19 @@ namespace JZK.Framework
 
 			InitialiseSeed();
 
+			_testingRoom.Initialise();
+
 			_testingRoom.RepaintFloorTiles(_theme1FloorTile);
 			_testingRoom.RepaintWallTiles(_theme1WallTile);
 
 			_testingRoom.Doors[0].SetDoorEnabled(true);
-			_testingRoom.Doors[1].SetDoorEnabled(false);
-            _testingRoom.Doors[2].SetDoorEnabled(false);
+			_testingRoom.Doors[1].SetDoorEnabled(true);
+            _testingRoom.Doors[2].SetDoorEnabled(true);
             _testingRoom.Doors[3].SetDoorEnabled(true);
 
-			_testingRoom.Doors[0].SetIsOpen(true);
+			_testingRoom.OpenAllDoors();
+
+			//_testingRoom.Doors[0].SetIsOpen(true);
         }
 
 		private void Update()

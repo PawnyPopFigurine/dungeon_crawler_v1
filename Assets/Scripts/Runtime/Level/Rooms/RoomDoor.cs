@@ -13,6 +13,8 @@ namespace JZK.Gameplay
         [SerializeField] Sprite _openSprite;
         [SerializeField] Collider2D _doorCollision;
         [SerializeField] SpriteRenderer _renderer;
+        [SerializeField] Collider2D _openCollisionLeft;
+        [SerializeField] Collider2D _openCollisionRight;
 
         bool _doorEnabled;
         public bool DoorEnabled => _doorEnabled;
@@ -34,6 +36,8 @@ namespace JZK.Gameplay
             }
 
             _doorCollision.enabled = !isOpen;
+            _openCollisionLeft.enabled = isOpen;
+            _openCollisionRight.enabled = isOpen;
 
             _renderer.sprite = isOpen ? _openSprite : _shutSprite;
         }
