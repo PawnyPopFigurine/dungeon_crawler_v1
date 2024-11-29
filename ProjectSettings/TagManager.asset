@@ -47,6 +47,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: TileFloor
+    uniqueID: 2304125183
+    locked: 0
+  - name: TileWall
+    uniqueID: 1253395171
+    locked: 0
   - name: Entity
     uniqueID: 2708324133
     locked: 0

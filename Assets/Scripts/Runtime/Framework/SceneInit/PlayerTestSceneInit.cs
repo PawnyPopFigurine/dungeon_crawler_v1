@@ -51,10 +51,7 @@ namespace JZK.Framework
                 room.RepaintFloorTiles(_theme1FloorTile);
                 room.RepaintWallTiles(_theme1WallTile);
 
-                room.Doors[0].SetDoorEnabled(true);
-                room.Doors[1].SetDoorEnabled(true);
-                room.Doors[2].SetDoorEnabled(true);
-                room.Doors[3].SetDoorEnabled(true);
+				room.EnableAllDoors();
 
                 room.OpenAllDoors();
             }

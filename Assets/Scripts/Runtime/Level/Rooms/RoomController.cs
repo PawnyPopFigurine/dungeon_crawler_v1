@@ -106,6 +106,22 @@ namespace JZK.Gameplay
             }
         }
 
+        public void EnableAllDoors()
+        {
+            foreach(RoomDoor door in _doors)
+            {
+                door.SetDoorEnabled(true);
+            }
+        }
+
+        public void DisableAllDoors()
+        {
+            foreach (RoomDoor door in _doors)
+            {
+                door.SetDoorEnabled(false);
+            }
+        }
+
         public void OnPlayerEnterRoom()
         {
             Debug.Log("[HELLO] player has entered room " + this.gameObject.name);
