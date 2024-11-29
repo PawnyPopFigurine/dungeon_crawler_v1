@@ -26,12 +26,16 @@ namespace JZK.Gameplay
         bool _hasClearedRoom;
         public bool HasClearedRoom => _hasClearedRoom;
 
+        [SerializeField] SpriteRenderer _debugRoomCentreSprite;
+
         public void Initialise()
         {
             _currentFloorTile = _initialFloorTile;
             _currentWallTile = _initialWallTile;
 
             _hasClearedRoom = false;
+
+            _debugRoomCentreSprite.enabled = false;
         }
 
         public void RepaintFloorTiles(TileBase repaintToTile)

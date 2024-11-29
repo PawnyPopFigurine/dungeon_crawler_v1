@@ -1,6 +1,7 @@
 using JZK.Gameplay;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
 namespace JZK.Framework
 {
@@ -28,7 +29,7 @@ namespace JZK.Framework
 		private int _currentSeed;
 		public int CurrentSeed => _currentSeed;
 
-		[SerializeField] RoomController _testingRoom;
+		[SerializeField] List<RoomController> _testingRooms;
 
 		[SerializeField] TileBase _theme1WallTile;
 		[SerializeField] TileBase _theme1FloorTile;
@@ -43,19 +44,20 @@ namespace JZK.Framework
 
 			InitialiseSeed();
 
-			_testingRoom.Initialise();
+			foreach(RoomController room in _testingRooms)
+			{
+                room.Initialise();
 
-			_testingRoom.RepaintFloorTiles(_theme1FloorTile);
-			_testingRoom.RepaintWallTiles(_theme1WallTile);
+                room.RepaintFloorTiles(_theme1FloorTile);
+                room.RepaintWallTiles(_theme1WallTile);
 
-			_testingRoom.Doors[0].SetDoorEnabled(true);
-			_testingRoom.Doors[1].SetDoorEnabled(true);
-            _testingRoom.Doors[2].SetDoorEnabled(true);
-            _testingRoom.Doors[3].SetDoorEnabled(true);
+                room.Doors[0].SetDoorEnabled(true);
+                room.Doors[1].SetDoorEnabled(true);
+                room.Doors[2].SetDoorEnabled(true);
+                room.Doors[3].SetDoorEnabled(true);
 
-			_testingRoom.OpenAllDoors();
-
-			//_testingRoom.Doors[0].SetIsOpen(true);
+                room.OpenAllDoors();
+            }
         }
 
 		private void Update()
