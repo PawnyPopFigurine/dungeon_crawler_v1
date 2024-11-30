@@ -21,6 +21,11 @@ namespace JZK.Gameplay
 
         public void OnPlayerEnterRoom(RoomController roomController)
         {
+            if(roomController == _currentPlayerOccupiedRoom)
+            {
+                return;
+            }
+
             _currentPlayerOccupiedRoom = roomController;
         }
 
