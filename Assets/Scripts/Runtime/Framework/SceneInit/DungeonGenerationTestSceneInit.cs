@@ -5,7 +5,7 @@ using JZK.Utility;
 using System.Linq;
 using Random = System.Random;
 using UnityEngine.Tilemaps;
-using Level;
+using JZK.Level;
 
 namespace JZK.Framework
 {

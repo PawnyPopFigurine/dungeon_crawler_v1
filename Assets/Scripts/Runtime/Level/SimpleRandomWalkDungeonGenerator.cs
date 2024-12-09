@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using JZK.Utility;
 
-namespace Level
+namespace JZK.Level
 {
     public class SimpleRandomWalkDungeonGenerator : DungeonGenerator
     {

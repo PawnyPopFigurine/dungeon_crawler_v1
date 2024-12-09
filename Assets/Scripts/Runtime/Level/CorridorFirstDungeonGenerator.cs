@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Level
+namespace JZK.Level
 {
     public class CorridorFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
     {
