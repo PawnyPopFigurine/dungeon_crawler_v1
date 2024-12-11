@@ -28,25 +28,22 @@ namespace JZK.Framework
 
         [SerializeField] bool _printDebug;
 
-        //[SerializeField] private Tilemap _floorTilemap;
+        [SerializeField] private Tilemap _floorTilemap;
         [SerializeField] private TileBase _floortile;
-        //[SerializeField] private Tilemap _wallTilemap;
+
         [SerializeField] private TileBase _wallTile_Full;
 
-        [SerializeField] GameObject _roomSpaceParent;
-
-        [SerializeField] DungeonGenerator _generator;
-
-        [SerializeField] List<Color> _roomSpaceColours;
+        [SerializeField] List<Tile> DebugRoomBoundsTiles;
 
         [SerializeField] protected Vector2Int _startPos;
         [SerializeField]
         private int minRoomWidth = 4, minRoomHeight = 4;
         [SerializeField]
         private int dungeonWidth = 20, dungeonHeight = 20;
-        [SerializeField]
-        [Range(0, 10)]
-        private int offset = 1;
+
+        [SerializeField] bool _showRoomBounds;
+
+        private int _currentDebugTileIndex;
 
 
 
@@ -76,31 +73,40 @@ namespace JZK.Framework
 
             var roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)_startPos, new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight, random);
 
-            int roomSpaceIndex = 0;
+            if(_showRoomBounds)
+			{
+                VisualiseRoomBounds(roomsList, random);
+            }
+        }
 
-            foreach ( var room in roomsList )
+        Tile GetNextDebugTile()
+		{
+            int nextTileIndex = _currentDebugTileIndex + 1;
+            if(nextTileIndex >= DebugRoomBoundsTiles.Count)
+			{
+                nextTileIndex = 0;
+			}
+
+            _currentDebugTileIndex = nextTileIndex;
+            return DebugRoomBoundsTiles[_currentDebugTileIndex];
+		}
+
+        void VisualiseRoomBounds(List<BoundsInt> roomBoundsList, Random random)
+		{
+            foreach (var roomBounds in roomBoundsList)
             {
-                print("[GENERATION] Room " + roomSpaceIndex.ToString() + " has room at centre " + room.center.ToString() + " and position " + room.position.ToString() + " and size " + room.size.ToString());
-                roomSpaceIndex++;
-                if(true)
+                Tile visualTile = GetNextDebugTile();
+                HashSet<Vector2Int> roomBoundsPositions = new HashSet<Vector2Int>();
+                for (int xPos = roomBounds.xMin; xPos < roomBounds.xMax; ++xPos)
                 {
-                    GameObject roomSpaceGO = new GameObject();
-                    roomSpaceGO.transform.SetParent(_roomSpaceParent.transform);
-                    Tilemap roomSpaceTilemap = roomSpaceGO.AddComponent<Tilemap>();
-                    TilemapRenderer tilemapRenderer = roomSpaceGO.AddComponent<TilemapRenderer>();
-                    Color roomSpaceColour = GetRandomRoomSpaceColour(random);
-                    roomSpaceTilemap.color = roomSpaceColour;
-
-                    for (int column = 0; column < room.size.x; column++)
+                    for (int yPos = roomBounds.yMin; yPos < roomBounds.yMax; ++yPos)
                     {
-                        for (int row = 0; row < room.size.y; row++)
-                        {
-                            Vector2Int position = (Vector2Int)room.min + new Vector2Int(column, row);
-                            PaintTile(roomSpaceTilemap, _floortile, position);
-                        }
+                        Vector2Int tilePos = new Vector2Int(xPos, yPos);
+                        roomBoundsPositions.Add(tilePos);
                     }
                 }
-                
+
+                PaintTiles(roomBoundsPositions, _floorTilemap, visualTile);
             }
         }
 
@@ -118,23 +124,9 @@ namespace JZK.Framework
             tileMap.SetTile(tilePosition, tile);
         }
 
-        Color GetRandomRoomSpaceColour(Random random)
-        {
-            return _roomSpaceColours[random.Next(0, _roomSpaceColours.Count)];
-        }
-
         public void ClearTiles()
         {
-            foreach(Transform child in _roomSpaceParent.transform)
-            {
-                DestroyImmediate(child.gameObject);
-            }
-        }
-
-        /*public void ClearTiles()
-        {
             _floorTilemap.ClearAllTiles();
-            _wallTilemap.ClearAllTiles();
-        }*/
+        }
     }
 }
