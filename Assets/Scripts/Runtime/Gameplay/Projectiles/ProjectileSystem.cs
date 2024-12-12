@@ -30,9 +30,6 @@ namespace JZK.Gameplay
 		public override void SetCallbacks()
 		{
 			base.SetCallbacks();
-
-			/*LevelSystem.Instance.OnLevelReset -= OnLevelReset;
-			LevelSystem.Instance.OnLevelReset += OnLevelReset;*/
 		}
 
 		public override void StartLoading(ELoadingState state)
@@ -48,7 +45,7 @@ namespace JZK.Gameplay
 			UpdateProjectiles(Time.timeSinceLevelLoad, Time.deltaTime);	//TODO: move to a gameplay system when that exists
 		}
 
-		#endregion //PersistentSystem
+		#endregion //PersistentSystema
 
 
 

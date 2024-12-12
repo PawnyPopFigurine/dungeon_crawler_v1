@@ -20,11 +20,13 @@ public class BSPTestSceneEditor : Editor
         if (GUILayout.Button("Clear Dungeon"))
         {
             _sceneInit.ClearTiles();
+            _sceneInit.ClearRooms();
         }
 
         if (GUILayout.Button("Generate New Dungeon"))
         {
             _sceneInit.ClearTiles();
+            _sceneInit.ClearRooms();
             _sceneInit.GenerateDungeon();
         }
     }

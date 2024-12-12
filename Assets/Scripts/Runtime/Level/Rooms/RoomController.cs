@@ -28,8 +28,22 @@ namespace JZK.Gameplay
 
         [SerializeField] SpriteRenderer _debugRoomCentreSprite;
 
+        bool _hasInitialised;
+
+        public void InitialiseOnLoad()
+		{
+            Initialise();
+		}
+
         public void Initialise()
         {
+            if(_hasInitialised)
+			{
+                return;
+			}
+
+            _hasInitialised = true;
+
             _currentFloorTile = _initialFloorTile;
             _currentWallTile = _initialWallTile;
 
@@ -133,5 +147,10 @@ namespace JZK.Gameplay
                 CloseAllDoors();
             }
         }
+
+        public void ResetController()
+		{
+            //TODO: stuff here
+		}
     }
 }

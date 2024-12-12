@@ -15,6 +15,9 @@ namespace JZK.Framework
         {
             new SystemReference<Input.InputSystem>(),
 
+            new SystemReference<Level.DungeonLayoutGenerationSystem>(),
+            new SystemReference<Level.RoomLoadSystem>(),
+
             new SystemReference<UI.UIStateSystem>(),
 
         };
@@ -35,15 +38,21 @@ namespace JZK.Framework
 
         [SerializeField] List<Tile> DebugRoomBoundsTiles;
 
-        [SerializeField] protected Vector2Int _startPos;
+        //[SerializeField] protected Vector2Int _startPos;
+        [SerializeField] LayoutGenerationSettings _settings;
+        /*private int minRoomWidth = 4, minRoomHeight = 4;
         [SerializeField]
-        private int minRoomWidth = 4, minRoomHeight = 4;
-        [SerializeField]
-        private int dungeonWidth = 20, dungeonHeight = 20;
+        private int dungeonWidth = 20, dungeonHeight = 20;*/
 
         [SerializeField] bool _showRoomBounds;
 
         private int _currentDebugTileIndex;
+
+        [SerializeField] GameObject _roomPrefab;
+
+        private List<BoundsInt> _roomBoundsList;
+
+        private List<GameObject> _activeRoomsList;
 
 
 
@@ -53,8 +62,12 @@ namespace JZK.Framework
 
             InitialiseSeed();
 
-            GenerateDungeon();
+            /*_roomBoundsList = new List<BoundsInt>();
+            _activeRoomsList = new List<GameObject>();
+
+            GenerateDungeon();*/
         }
+
 
         private void Update()
         {
@@ -65,19 +78,46 @@ namespace JZK.Framework
         {
             _currentSeed = _useDebugSeed ? _debugSeed : System.DateTime.Now.Millisecond;
             UnityEngine.Random.InitState(_currentSeed);
+
+            if(_useDebugSeed)
+			{
+                _settings.Seed = _debugSeed;
+			}
         }
 
         public void GenerateDungeon()
         {
-            System.Random random = _useDebugSeed ? new(_debugSeed) : new();
+            System.Random random = new(_settings.Seed);
 
-            var roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)_startPos, new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight, random);
+            DungeonLayoutGenerationSystem.Instance.GenerateLayout(_settings);
+           // var roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)_settings.StartPos, new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight, random);
 
-            if(_showRoomBounds)
+            if (_showRoomBounds)
 			{
-                VisualiseRoomBounds(roomsList, random);
+                VisualiseRoomBounds(DungeonLayoutGenerationSystem.Instance.RoomBoundsList, random);
             }
+
+            DungeonLayoutGenerationSystem.Instance.SimpleRoomPrefabPlacement(random, _floorTilemap);
+            //SimpleRoomPrefabPlacement(random);
         }
+
+        void SimpleRoomPrefabPlacement(Random random)
+		{
+            foreach(BoundsInt roomBounds in _roomBoundsList)
+			{
+                CreateRoomAtCoordinate(roomBounds.center, _roomPrefab);
+			}
+		}
+
+        void CreateRoomAtCoordinate(Vector3 coordinate, GameObject prefab)
+		{
+            Vector3Int intCoord = new Vector3Int((int)coordinate.x, (int)coordinate.y, (int)coordinate.z);
+            GameObject roomGO = Instantiate(prefab);
+            _activeRoomsList.Add(roomGO);
+
+            Vector3 roomWorldPos = _floorTilemap.CellToWorld(intCoord);
+            roomGO.transform.position = roomWorldPos;
+		}
 
         Tile GetNextDebugTile()
 		{
@@ -127,6 +167,27 @@ namespace JZK.Framework
         public void ClearTiles()
         {
             _floorTilemap.ClearAllTiles();
+        }
+
+        public void ClearRooms()
+		{
+            List<GameObject> activeCache = new(_activeRoomsList);
+            foreach(GameObject room in activeCache)
+			{
+                DestroyImmediate(room);
+			}
+
+            _activeRoomsList.Clear();
+		}
+
+        public override void LoadingStateComplete(ELoadingState state)
+        {
+            switch (state)
+            {
+                case ELoadingState.Game:
+                    GenerateDungeon();
+                    break;
+            }
         }
     }
 }
