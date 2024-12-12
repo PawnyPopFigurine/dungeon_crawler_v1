@@ -431,7 +431,7 @@ MonoBehaviour:
     Seed: 0
     StartPos: {x: 0, y: 0}
     MinRoomWidth: 25
-    MinRoomHeight: 20
+    MinRoomHeight: 18
     DungeonWidth: 300
     DungeonHeight: 200
   _showRoomBounds: 1
