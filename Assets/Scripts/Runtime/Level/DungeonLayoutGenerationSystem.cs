@@ -21,6 +21,30 @@ namespace JZK.Level
 		public int DungeonHeight;
 	}
 
+	[System.Serializable]
+	public class LayoutData
+	{
+		[System.Serializable]
+		public class LayoutTileData
+		{
+			
+		}
+
+		private List<BoundsInt> _roomBoundsList = new();
+		public List<BoundsInt> RoomBoundsList => _roomBoundsList;
+		public void SetRoomBounds(List<BoundsInt> roomBounds)
+		{
+			_roomBoundsList = roomBounds;
+		}
+
+		private List<RoomController> _activeRoomsList = new();
+		public List<RoomController> ActiveRoomsList => _activeRoomsList;
+		public void SetActiveRooms(List<RoomController> activeRooms)
+		{
+			_activeRoomsList = activeRooms;
+		}
+	}
+
 	public class DungeonLayoutGenerationSystem : PersistentSystem<DungeonLayoutGenerationSystem>
     {
 		private SystemLoadData _loadData = new SystemLoadData()
@@ -31,12 +55,10 @@ namespace JZK.Level
 
 		public override SystemLoadData LoadData => _loadData;
 
+
 		public override void Initialise()
 		{
 			base.Initialise();
-
-			_roomBoundsList = new();
-			_activeRoomsList = new();
 		}
 
 		public override void StartLoading(ELoadingState state)
@@ -44,53 +66,20 @@ namespace JZK.Level
 			base.StartLoading(state);
 		}
 
+		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random, Tilemap tileMap)
+		{
+			LayoutData layoutData = new();
+			CreateRoomBounds(settings, layoutData);
+			return layoutData;
+		}
 		
 
-		public void GenerateLayout(LayoutGenerationSettings settings)
+		public void CreateRoomBounds(LayoutGenerationSettings settings, LayoutData layoutData)
 		{
 			System.Random random = new(settings.Seed);
 			var roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)settings.StartPos, new Vector3Int(settings.DungeonWidth, settings.DungeonHeight, 0)), settings.MinRoomWidth, settings.MinRoomHeight, random);
 
-			_roomBoundsList = roomsList;
-
-			//SimpleRoomPrefabPlacement(random);
-
+			layoutData.SetRoomBounds(roomsList);
 		}
-
-		public void SimpleRoomPrefabPlacement(System.Random random, Tilemap tileMap)
-		{
-			foreach (BoundsInt roomBounds in _roomBoundsList)
-			{
-				if(RoomLoadSystem.Instance.GetRandomRoom(random, out Gameplay.RoomController controller))
-				{
-					controller.transform.parent = transform;
-					Vector3Int intCentreCoord = new((int)roomBounds.center.x, (int)roomBounds.center.y, (int)roomBounds.center.z);
-					Vector3 roomWorldPos = tileMap.CellToWorld(intCentreCoord);
-					controller.transform.position = roomWorldPos;
-					controller.gameObject.SetActive(true);
-					_activeRoomsList.Add(controller);
-				}
-			}
-		}
-
-		public void ClearDungeon()
-		{
-			List<RoomController> activeCache = new(_activeRoomsList);
-			foreach (RoomController room in activeCache)
-			{
-				RoomLoadSystem.Instance.ClearRoom(room);
-			}
-
-			_activeRoomsList.Clear();
-		}
-
-
-
-		private List<BoundsInt> _roomBoundsList;
-		public List<BoundsInt> RoomBoundsList => _roomBoundsList;
-
-		private List<RoomController> _activeRoomsList;
-		public List<RoomController> ActiveRoomsList => _activeRoomsList;
-
 	}
 }

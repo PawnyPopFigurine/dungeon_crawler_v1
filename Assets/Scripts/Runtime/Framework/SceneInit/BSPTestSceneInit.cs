@@ -6,6 +6,7 @@ using System.Linq;
 using Random = System.Random;
 using UnityEngine.Tilemaps;
 using JZK.Level;
+using JZK.Gameplay;
 
 namespace JZK.Framework
 {
@@ -24,8 +25,6 @@ namespace JZK.Framework
 
         [SerializeField] private bool _useDebugSeed = false;
         [SerializeField] private int _debugSeed;
-        /*private int _currentSeed;
-        public int CurrentSeed => _currentSeed;*/
 
 
 
@@ -38,11 +37,7 @@ namespace JZK.Framework
 
         [SerializeField] List<Tile> DebugRoomBoundsTiles;
 
-        //[SerializeField] protected Vector2Int _startPos;
         [SerializeField] LayoutGenerationSettings _settings;
-        /*private int minRoomWidth = 4, minRoomHeight = 4;
-        [SerializeField]
-        private int dungeonWidth = 20, dungeonHeight = 20;*/
 
         [SerializeField] bool _showRoomBounds;
 
@@ -50,9 +45,7 @@ namespace JZK.Framework
 
         [SerializeField] GameObject _roomPrefab;
 
-        private List<BoundsInt> _roomBoundsList;
-
-        private List<GameObject> _activeRoomsList;
+        LayoutData _currentLayout;
 
 
 
@@ -61,11 +54,6 @@ namespace JZK.Framework
             Setup(_systems);
 
             InitialiseSeed();
-
-            /*_roomBoundsList = new List<BoundsInt>();
-            _activeRoomsList = new List<GameObject>();
-
-            GenerateDungeon();*/
         }
 
 
@@ -78,11 +66,6 @@ namespace JZK.Framework
         {
             _settings.Seed = _useDebugSeed ? _debugSeed : System.DateTime.Now.Millisecond;
             UnityEngine.Random.InitState(_settings.Seed);
-
-            /*if(_useDebugSeed)
-			{
-                _settings.Seed = _debugSeed;
-			}*/
         }
 
         public void GenerateDungeon()
@@ -91,35 +74,15 @@ namespace JZK.Framework
 
             System.Random random = new(_settings.Seed);
 
-            DungeonLayoutGenerationSystem.Instance.GenerateLayout(_settings);
-           // var roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)_settings.StartPos, new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight, random);
+            _currentLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_settings, random, _floorTilemap);
 
             if (_showRoomBounds)
 			{
-                VisualiseRoomBounds(DungeonLayoutGenerationSystem.Instance.RoomBoundsList, random);
+                VisualiseRoomBounds(_currentLayout.RoomBoundsList, random);
             }
 
-            DungeonLayoutGenerationSystem.Instance.SimpleRoomPrefabPlacement(random, _floorTilemap);
-            //SimpleRoomPrefabPlacement(random);
+            SimpleRoomPrefabPlacement(random, _floorTilemap, _currentLayout);
         }
-
-        void SimpleRoomPrefabPlacement(Random random)
-		{
-            foreach(BoundsInt roomBounds in _roomBoundsList)
-			{
-                CreateRoomAtCoordinate(roomBounds.center, _roomPrefab);
-			}
-		}
-
-        void CreateRoomAtCoordinate(Vector3 coordinate, GameObject prefab)
-		{
-            Vector3Int intCoord = new Vector3Int((int)coordinate.x, (int)coordinate.y, (int)coordinate.z);
-            GameObject roomGO = Instantiate(prefab);
-            _activeRoomsList.Add(roomGO);
-
-            Vector3 roomWorldPos = _floorTilemap.CellToWorld(intCoord);
-            roomGO.transform.position = roomWorldPos;
-		}
 
         Tile GetNextDebugTile()
 		{
@@ -173,8 +136,19 @@ namespace JZK.Framework
 
         public void ClearRooms()
 		{
-            DungeonLayoutGenerationSystem.Instance.ClearDungeon();
-		}
+            if(null == _currentLayout)
+			{
+                return;
+			}
+
+            List<RoomController> activeCache = new(_currentLayout.ActiveRoomsList);
+            foreach (RoomController room in activeCache)
+            {
+                RoomLoadSystem.Instance.ClearRoom(room);
+            }
+
+            _currentLayout = null;
+        }
 
         public override void LoadingStateComplete(ELoadingState state)
         {
@@ -184,6 +158,27 @@ namespace JZK.Framework
                     GenerateDungeon();
                     break;
             }
+        }
+
+        void SimpleRoomPrefabPlacement(System.Random random, Tilemap tileMap, LayoutData layoutData)
+        {
+            layoutData.ActiveRoomsList.Clear();
+            List<RoomController> activeRoomsCache = new();
+
+            foreach (BoundsInt roomBounds in layoutData.RoomBoundsList)
+            {
+                if (RoomLoadSystem.Instance.GetRandomRoom(random, out Gameplay.RoomController controller))
+                {
+                    controller.transform.parent = transform;
+                    Vector3Int intCentreCoord = new((int)roomBounds.center.x, (int)roomBounds.center.y, (int)roomBounds.center.z);
+                    Vector3 roomWorldPos = tileMap.CellToWorld(intCentreCoord);
+                    controller.transform.position = roomWorldPos;
+                    controller.gameObject.SetActive(true);
+                    activeRoomsCache.Add(controller);
+                }
+            }
+
+            layoutData.SetActiveRooms(activeRoomsCache);
         }
     }
 }
