@@ -102,7 +102,7 @@ namespace JZK.Level
 					continue;
 				}
 
-				string roomId = prefab.name;
+				string roomId = roomComponent.Id;
 
 				List<RoomController> roomsOfId = new(MAX_ROOMS_PER_TYPE);
 				for(int roomIndex = 0; roomIndex < MAX_ROOMS_PER_TYPE; ++roomIndex)
@@ -130,7 +130,7 @@ namespace JZK.Level
 				return;
 			}
 
-			_roomsPool[controller.name].Add(controller);
+			_roomsPool[controller.Id].Add(controller);
 			_activeRooms.Remove(controller);
 		}
 
@@ -138,7 +138,7 @@ namespace JZK.Level
 		{
 			if (!_activeRooms.Contains(controller))
 			{
-				Debug.LogWarning(this.name + " - tried to clear projectile controller " + controller.name.ToString() + " but it is not active - aborting action");
+				Debug.LogWarning(this.name + " - tried to clear projectile controller " + controller.Id.ToString() + " but it is not active - aborting action");
 				return;
 			}
 

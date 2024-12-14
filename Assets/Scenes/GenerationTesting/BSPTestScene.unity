@@ -410,8 +410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _useDebugSeed: 0
-  _debugSeed: 33
+  _useDebugSeed: 1
+  _debugSeed: 111
   _printDebug: 0
   _floorTilemap: {fileID: 422580434}
   _floortile: {fileID: 11400000, guid: cc5eb133ca5a88341a4e3429828dbdb2, type: 2}
@@ -430,10 +430,10 @@ MonoBehaviour:
   _settings:
     Seed: 0
     StartPos: {x: 0, y: 0}
-    MinRoomWidth: 25
-    MinRoomHeight: 18
-    DungeonWidth: 300
-    DungeonHeight: 200
+    MinRoomWidth: 26
+    MinRoomHeight: 20
+    DungeonWidth: 350
+    DungeonHeight: 250
   _showRoomBounds: 1
   _roomPrefab: {fileID: 2667284999973894481, guid: 7386683e9d350a846a37a8d086fc6e61, type: 3}
 --- !u!4 &1576247005

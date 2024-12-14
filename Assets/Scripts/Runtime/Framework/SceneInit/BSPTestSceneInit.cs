@@ -24,8 +24,8 @@ namespace JZK.Framework
 
         [SerializeField] private bool _useDebugSeed = false;
         [SerializeField] private int _debugSeed;
-        private int _currentSeed;
-        public int CurrentSeed => _currentSeed;
+        /*private int _currentSeed;
+        public int CurrentSeed => _currentSeed;*/
 
 
 
@@ -76,17 +76,19 @@ namespace JZK.Framework
 
         void InitialiseSeed()
         {
-            _currentSeed = _useDebugSeed ? _debugSeed : System.DateTime.Now.Millisecond;
-            UnityEngine.Random.InitState(_currentSeed);
+            _settings.Seed = _useDebugSeed ? _debugSeed : System.DateTime.Now.Millisecond;
+            UnityEngine.Random.InitState(_settings.Seed);
 
-            if(_useDebugSeed)
+            /*if(_useDebugSeed)
 			{
                 _settings.Seed = _debugSeed;
-			}
+			}*/
         }
 
         public void GenerateDungeon()
         {
+            InitialiseSeed();
+
             System.Random random = new(_settings.Seed);
 
             DungeonLayoutGenerationSystem.Instance.GenerateLayout(_settings);
@@ -171,13 +173,7 @@ namespace JZK.Framework
 
         public void ClearRooms()
 		{
-            List<GameObject> activeCache = new(_activeRoomsList);
-            foreach(GameObject room in activeCache)
-			{
-                DestroyImmediate(room);
-			}
-
-            _activeRoomsList.Clear();
+            DungeonLayoutGenerationSystem.Instance.ClearDungeon();
 		}
 
         public override void LoadingStateComplete(ELoadingState state)

@@ -6,6 +6,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using JZK.Utility;
 using UnityEngine.Tilemaps;
+using JZK.Gameplay;
 
 namespace JZK.Level
 {
@@ -34,8 +35,8 @@ namespace JZK.Level
 		{
 			base.Initialise();
 
-			_roomBoundsList = new List<BoundsInt>();
-			_activeRoomsList = new List<GameObject>();
+			_roomBoundsList = new();
+			_activeRoomsList = new();
 		}
 
 		public override void StartLoading(ELoadingState state)
@@ -67,17 +68,29 @@ namespace JZK.Level
 					Vector3 roomWorldPos = tileMap.CellToWorld(intCentreCoord);
 					controller.transform.position = roomWorldPos;
 					controller.gameObject.SetActive(true);
+					_activeRoomsList.Add(controller);
 				}
-				/*string randomRoomId =RoomLoadSystem.Instance.getr
-				CreateRoomAtCoordinate(roomBounds.center, _roomPrefab);*/
 			}
 		}
+
+		public void ClearDungeon()
+		{
+			List<RoomController> activeCache = new(_activeRoomsList);
+			foreach (RoomController room in activeCache)
+			{
+				RoomLoadSystem.Instance.ClearRoom(room);
+			}
+
+			_activeRoomsList.Clear();
+		}
+
+
 
 		private List<BoundsInt> _roomBoundsList;
 		public List<BoundsInt> RoomBoundsList => _roomBoundsList;
 
-		private List<GameObject> _activeRoomsList;
-		public List<GameObject> ActiveRoomsList => _activeRoomsList;
+		private List<RoomController> _activeRoomsList;
+		public List<RoomController> ActiveRoomsList => _activeRoomsList;
 
 	}
 }

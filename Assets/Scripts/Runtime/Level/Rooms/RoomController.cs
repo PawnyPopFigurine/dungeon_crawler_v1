@@ -7,6 +7,10 @@ namespace JZK.Gameplay
 {
     public class RoomController : MonoBehaviour
     {
+        [SerializeField] string _id;
+        public string Id => _id;
+        public int HashedId => Animator.StringToHash(_id);
+
         [SerializeField] Grid _grid;
 
         [SerializeField] Tilemap _floorTilemap;

@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c781a5fbb75fc14eb5ad8ca1a1bec23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: RectRoom_10x8_Var1
   _grid: {fileID: 7748630465605781004}
   _floorTilemap: {fileID: 5542266954260353577}
   _wallTilemap: {fileID: 1595334291878105143}
