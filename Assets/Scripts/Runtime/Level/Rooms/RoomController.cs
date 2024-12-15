@@ -54,7 +54,73 @@ namespace JZK.Gameplay
             _hasClearedRoom = false;
 
             _debugRoomCentreSprite.enabled = false;
+
+            _floorTilemap.CompressBounds();
+            _wallTilemap.CompressBounds();
+            foreach(Tilemap fillInWall in _fillInWalls)
+			{
+                fillInWall.CompressBounds();
+			}
         }
+
+        public List<(int, int)> GetFloorNodePositions(Vector3Int roomCentre)
+		{
+            List<(int, int)> floorNodes = new();
+            BoundsInt floorBounds = _floorTilemap.cellBounds;
+            TileBase[] floorTiles = _floorTilemap.GetTilesBlock(floorBounds);
+            for (int x = 0; x < floorBounds.size.x; ++x)
+            {
+                for (int y = 0; y < floorBounds.size.y; ++y)
+                {
+                    TileBase tile = floorTiles[x + y * floorBounds.size.x];
+                    if (null != tile)
+                    {
+                        Debug.Log("Has floor tile at LOCAL position X " + x.ToString() + ", Y " + y.ToString() + " - GRID position X " + (x + floorBounds.x + roomCentre.x).ToString() + ", Y " + (y + floorBounds.y + roomCentre.y).ToString());
+                        floorNodes.Add((x + floorBounds.x + roomCentre.x, y + floorBounds.y + roomCentre.y));
+                    }
+                }
+            }
+
+            return floorNodes;
+        }
+
+        public List<(int, int)> GetWallNodePositions(Vector3Int roomCentre)
+		{
+            List<(int, int)> wallNodes = new();
+            BoundsInt wallBounds = _wallTilemap.cellBounds;
+            TileBase[] wallTiles = _wallTilemap.GetTilesBlock(wallBounds);
+            for (int x = 0; x < wallBounds.size.x; ++x)
+            {
+                for (int y = 0; y < wallBounds.size.y; ++y)
+                {
+                    TileBase tile = wallTiles[x + y * wallBounds.size.x];
+                    if (null != tile)
+                    {
+                        Debug.Log("Has wall tile at LOCAL position X " + x.ToString() + ", Y " + y.ToString() + " - GRID position X " + (x + wallBounds.x + roomCentre.x).ToString() + ", Y " + (y + wallBounds.y + roomCentre.y).ToString());
+                        wallNodes.Add((x + wallBounds.x + roomCentre.x, y + wallBounds.y + roomCentre.y));
+                    }
+                }
+            }
+
+            return wallNodes;
+        }
+
+        public void PrintFloorNodePositions(Vector3Int roomCentre)
+		{
+            BoundsInt floorBounds = _floorTilemap.cellBounds;
+            TileBase[] floorTiles = _floorTilemap.GetTilesBlock(floorBounds);
+            for(int x = 0; x < floorBounds.size.x; ++x)
+			{
+                for(int y = 0; y < floorBounds.size.y; ++y)
+				{
+                    TileBase tile = floorTiles[x + y * floorBounds.size.x];
+                    if(null != tile)
+					{
+                        Debug.Log("Has floor tile at LOCAL position X " + x.ToString() + ", Y " + y.ToString() + " - GRID position X " + (x + floorBounds.x + roomCentre.x).ToString() + ", Y " + (y + floorBounds.y + roomCentre.y).ToString());
+					}
+				}
+			}
+		}
 
         public void RepaintFloorTiles(TileBase repaintToTile)
         {

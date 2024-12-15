@@ -165,17 +165,39 @@ namespace JZK.Framework
             layoutData.ActiveRoomsList.Clear();
             List<RoomController> activeRoomsCache = new();
 
+            int numRooms = 0;
+            int maxRooms = 2;
+
             foreach (BoundsInt roomBounds in layoutData.RoomBoundsList)
             {
+                if(numRooms >= maxRooms)
+				{
+                    continue;
+				}
                 if (RoomLoadSystem.Instance.GetRandomRoom(random, out Gameplay.RoomController controller))
                 {
                     controller.transform.parent = transform;
+                    Debug.Log("[HELLO] placing room " + controller.name + " at bounds centre " + roomBounds.center.ToString());
                     Vector3Int intCentreCoord = new((int)roomBounds.center.x, (int)roomBounds.center.y, (int)roomBounds.center.z);
                     Vector3 roomWorldPos = tileMap.CellToWorld(intCentreCoord);
                     controller.transform.position = roomWorldPos;
                     controller.gameObject.SetActive(true);
                     activeRoomsCache.Add(controller);
+                    controller.DisableAllDoors();
+                    List<(int, int)> roomFloorPositions = controller.GetFloorNodePositions(intCentreCoord);
+                    foreach((int, int) pos in roomFloorPositions)
+					{
+                        layoutData.Nodes[pos.Item1, pos.Item2].IsFloor = true;
+					}
+
+                    List<(int, int)> roomWallPositions = controller.GetWallNodePositions(intCentreCoord);
+                    foreach((int, int) pos in roomWallPositions)
+					{
+                        layoutData.Nodes[pos.Item1, pos.Item2].IsWall = true;
+                    }
+                    //controller.PrintFloorNodePositions(intCentreCoord);
                 }
+                numRooms++;
             }
 
             layoutData.SetActiveRooms(activeRoomsCache);

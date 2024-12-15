@@ -108,6 +108,7 @@ namespace JZK.Level
 				for(int roomIndex = 0; roomIndex < MAX_ROOMS_PER_TYPE; ++roomIndex)
 				{
 					GameObject prefabGO = Instantiate(prefab);
+					prefabGO.name = roomId + "_" + roomIndex.ToString();
 					RoomController controller = prefabGO.GetComponent<RoomController>();
 					controller.InitialiseOnLoad();
 					roomsOfId.Add(controller);
@@ -145,6 +146,7 @@ namespace JZK.Level
 			controller.transform.position = ROOM_RESET_POS;
 			controller.gameObject.SetActive(false);
 			controller.ResetController();
+			controller.transform.parent = transform;
 
 			ReturnRoomToPool(controller);
 		}

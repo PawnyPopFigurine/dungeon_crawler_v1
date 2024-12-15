@@ -22,12 +22,33 @@ namespace JZK.Level
 	}
 
 	[System.Serializable]
+	public class NodeData
+	{
+		private int _xPos;
+		public int XPos => _xPos;
+		private int _yPos;
+		public int YPos => _yPos;
+
+		public NodeData(int x, int y)
+		{
+			_xPos = x;
+			_yPos = y;
+		}
+
+		public bool IsWall;
+		public bool IsFloor;
+	}
+
+	[System.Serializable]
 	public class LayoutData
 	{
-		[System.Serializable]
-		public class LayoutTileData
+		
+
+		NodeData[,] _nodes;
+		public NodeData[,] Nodes => _nodes;
+		public void SetNodesArray(NodeData[,] newNodes)
 		{
-			
+			_nodes = newNodes;
 		}
 
 		private List<BoundsInt> _roomBoundsList = new();
@@ -43,6 +64,8 @@ namespace JZK.Level
 		{
 			_activeRoomsList = activeRooms;
 		}
+
+		
 	}
 
 	public class DungeonLayoutGenerationSystem : PersistentSystem<DungeonLayoutGenerationSystem>
@@ -69,6 +92,15 @@ namespace JZK.Level
 		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random, Tilemap tileMap)
 		{
 			LayoutData layoutData = new();
+			NodeData[,] nodeData = new NodeData[settings.DungeonWidth, settings.DungeonHeight];
+			for (int x = 0; x < settings.DungeonWidth; ++x)
+			{
+				for (int y = 0; y < settings.DungeonHeight; ++y)
+				{
+					nodeData[x, y] = new NodeData(x, y);
+				}
+			}
+			layoutData.SetNodesArray(nodeData);
 			CreateRoomBounds(settings, layoutData);
 			return layoutData;
 		}

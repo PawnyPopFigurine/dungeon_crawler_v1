@@ -411,7 +411,7 @@ MonoBehaviour:
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
   _useDebugSeed: 1
-  _debugSeed: 111
+  _debugSeed: 999
   _printDebug: 0
   _floorTilemap: {fileID: 422580434}
   _floortile: {fileID: 11400000, guid: cc5eb133ca5a88341a4e3429828dbdb2, type: 2}
@@ -428,7 +428,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a573a4e1b62bae4b9d624ee36519b31, type: 2}
   - {fileID: 11400000, guid: 546d624ce295b514db47219e16642c96, type: 2}
   _settings:
-    Seed: 0
+    Seed: 999
     StartPos: {x: 0, y: 0}
     MinRoomWidth: 26
     MinRoomHeight: 20
