@@ -43,7 +43,7 @@ namespace JZK.Framework
 
         private int _currentDebugTileIndex;
 
-        [SerializeField] GameObject _roomPrefab;
+        [SerializeField] RoomController _roomPrefab;
 
         LayoutData _currentLayout;
 
@@ -82,7 +82,51 @@ namespace JZK.Framework
             }
 
             SimpleRoomPrefabPlacement(random, _floorTilemap, _currentLayout);
+
+            RoomController room1 = _currentLayout.ActiveRoomsList[0];
+            RoomController room2 = _currentLayout.ActiveRoomsList[1];
+
+            TryConnectRooms(room1, room2);
         }
+
+        void TryConnectRooms(RoomController room1, RoomController room2)
+		{
+            FindDoorsWithShortestPath(room1, room2, out RoomDoor door1, out RoomDoor door2);
+
+            Debug.Log("[DOORS] door 1 is " + door1.name);
+            Debug.Log("[DOORS] door 2 is " + door2.name);
+		}
+
+        void FindDoorsWithShortestPath(RoomController room1, RoomController room2, out RoomDoor room1Door, out RoomDoor room2Door)
+		{
+            room1Door = null;
+            room2Door = null;
+
+            float shortestDistance = float.MaxValue;
+
+            foreach(RoomDoor doorRoom1 in room1.Doors)
+			{
+                Vector3 doorPos1 = doorRoom1.transform.position;
+
+                foreach(RoomDoor doorRoom2 in room2.Doors)
+				{
+                    Vector3 doorPos2 = doorRoom2.transform.position;
+
+                    float distance = Vector3.Distance(doorPos1, doorPos2);
+                    if(distance < shortestDistance)
+					{
+                        room1Door = doorRoom1;
+                        room2Door = doorRoom2;
+                        shortestDistance = distance;
+					}
+				}
+			}
+		}
+
+        void TryConnectDoors(RoomDoor door1, RoomDoor door2)
+		{
+
+		}
 
         Tile GetNextDebugTile()
 		{
@@ -174,28 +218,28 @@ namespace JZK.Framework
 				{
                     continue;
 				}
-                if (RoomLoadSystem.Instance.GetRandomRoom(random, out Gameplay.RoomController controller))
-                {
+                if(RoomLoadSystem.Instance.RequestRoom(_roomPrefab.Id, out RoomController controller))
+				{
                     controller.transform.parent = transform;
-                    Debug.Log("[HELLO] placing room " + controller.name + " at bounds centre " + roomBounds.center.ToString());
                     Vector3Int intCentreCoord = new((int)roomBounds.center.x, (int)roomBounds.center.y, (int)roomBounds.center.z);
+                    Debug.Log("[HELLO] placing room " + controller.name + " at bounds centre " + intCentreCoord.ToString());
                     Vector3 roomWorldPos = tileMap.CellToWorld(intCentreCoord);
                     controller.transform.position = roomWorldPos;
                     controller.gameObject.SetActive(true);
                     activeRoomsCache.Add(controller);
                     controller.DisableAllDoors();
+                    //controller.OnGridPlacement();
                     List<(int, int)> roomFloorPositions = controller.GetFloorNodePositions(intCentreCoord);
-                    foreach((int, int) pos in roomFloorPositions)
-					{
+                    foreach ((int, int) pos in roomFloorPositions)
+                    {
                         layoutData.Nodes[pos.Item1, pos.Item2].IsFloor = true;
-					}
+                    }
 
                     List<(int, int)> roomWallPositions = controller.GetWallNodePositions(intCentreCoord);
-                    foreach((int, int) pos in roomWallPositions)
-					{
+                    foreach ((int, int) pos in roomWallPositions)
+                    {
                         layoutData.Nodes[pos.Item1, pos.Item2].IsWall = true;
                     }
-                    //controller.PrintFloorNodePositions(intCentreCoord);
                 }
                 numRooms++;
             }

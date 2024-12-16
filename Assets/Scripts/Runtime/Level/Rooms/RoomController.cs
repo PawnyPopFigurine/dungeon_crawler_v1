@@ -34,6 +34,8 @@ namespace JZK.Gameplay
 
         bool _hasInitialised;
 
+        List<(int, int)> _doorNodePositions = new();
+
         public void InitialiseOnLoad()
 		{
             Initialise();
@@ -61,7 +63,37 @@ namespace JZK.Gameplay
 			{
                 fillInWall.CompressBounds();
 			}
+
+            RefreshDoorNodePositions();
         }
+
+        public void RefreshDoorNodePositions()
+		{
+            _doorNodePositions.Clear();
+
+            BoundsInt floorBounds = _floorTilemap.cellBounds;
+
+           // _floorTilemap.LocalToCell(door)
+
+            foreach (RoomDoor door in _doors)
+			{
+                Vector3 localPosToCell = _floorTilemap.WorldToCell(door.transform.localPosition);
+                float pureXPos = localPosToCell.x;
+                float pureYPos = localPosToCell.y;
+                /*float pureXPos = door.transform.position.x + floorBounds.x;
+                float pureYPos = door.transform.position.y + floorBounds.y;*/
+                bool sidewaysDoor = door.transform.eulerAngles.z == 90 || door.transform.eulerAngles.z == 270;
+                Debug.Log("[DOOR] + " + gameObject.name + " - door " + door.name + " has pure x " + pureXPos.ToString() + " and pure y " + pureYPos.ToString());
+			}
+		}
+
+        /*public void OnGridPlacement()
+		{
+            foreach(RoomDoor door in _doors)
+			{
+                door.transform.localPosition
+			}
+		}*/
 
         public List<(int, int)> GetFloorNodePositions(Vector3Int roomCentre)
 		{
