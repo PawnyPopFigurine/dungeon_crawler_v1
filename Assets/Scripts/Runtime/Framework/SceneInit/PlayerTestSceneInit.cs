@@ -51,10 +51,19 @@ namespace JZK.Framework
                 room.RepaintFloorTiles(_theme1FloorTile);
                 room.RepaintWallTiles(_theme1WallTile);
 
-				room.EnableAllDoors();
+				room.DisableAllDoors();
+				/*room.EnableAllDoors();
 
-                room.OpenAllDoors();
+                room.OpenAllDoors();*/
             }
+
+			RoomDoor room1RightDoor = _testingRooms[0].Doors[3];
+			RoomDoor room2LeftDoor = _testingRooms[1].Doors[2];
+
+			room1RightDoor.SetDoorEnabled(true);
+			room2LeftDoor.SetDoorEnabled(true);
+
+			room1RightDoor.LinkToDoor(room2LeftDoor);
         }
 
 		private void Update()
@@ -78,6 +87,14 @@ namespace JZK.Framework
 			}
 
 			Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_playerSpawnPoint);
+		}
+
+		public void OpenAllRoomDoors()
+		{
+			foreach(RoomController room in _testingRooms)
+			{
+				room.OpenAllDoors();
+			}
 		}
 	}
 }

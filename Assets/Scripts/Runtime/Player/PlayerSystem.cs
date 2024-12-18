@@ -99,6 +99,16 @@ namespace JZK.Gameplay
 			return _controller.transform.position;
 		}
 
+		public void SetPlayerPos(Vector2 newPos)
+		{
+			if (null == _controller)
+			{
+				return;
+			}
+
+			_controller.transform.position = newPos;
+		}
+
 		public void OnPlayerHitHazard(GameObject hazard)
 		{
 			_controller.OnPlayerHitHazard(hazard);

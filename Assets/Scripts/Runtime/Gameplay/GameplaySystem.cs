@@ -41,6 +41,11 @@ namespace JZK.Gameplay
                 }
 
                 _currentPlayerOccupiedRoom.ClearRoom();
+
+                if(SceneInit.CurrentSceneInit is PlayerTestSceneInit playerSceneInit)
+				{
+                    playerSceneInit.OpenAllRoomDoors();
+				}
             }
         }
     }

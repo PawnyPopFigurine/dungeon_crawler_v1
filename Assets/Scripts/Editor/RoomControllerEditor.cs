@@ -18,10 +18,5 @@ public class RoomControllerEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		base.OnInspectorGUI();
-
-		if(GUILayout.Button("Refresh Door Nodes"))
-		{
-			_target.RefreshDoorNodePositions();
-		}
 	}
 }

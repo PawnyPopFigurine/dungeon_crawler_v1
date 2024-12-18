@@ -64,10 +64,10 @@ namespace JZK.Gameplay
                 fillInWall.CompressBounds();
 			}
 
-            RefreshDoorNodePositions();
+            //RefreshDoorNodePositions();
         }
 
-        public void RefreshDoorNodePositions()
+        /*public void RefreshDoorNodePositions()
 		{
             _doorNodePositions.Clear();
 
@@ -80,12 +80,12 @@ namespace JZK.Gameplay
                 Vector3 localPosToCell = _floorTilemap.WorldToCell(door.transform.localPosition);
                 float pureXPos = localPosToCell.x;
                 float pureYPos = localPosToCell.y;
-                /*float pureXPos = door.transform.position.x + floorBounds.x;
-                float pureYPos = door.transform.position.y + floorBounds.y;*/
+                *//*float pureXPos = door.transform.position.x + floorBounds.x;
+                float pureYPos = door.transform.position.y + floorBounds.y;*//*
                 bool sidewaysDoor = door.transform.eulerAngles.z == 90 || door.transform.eulerAngles.z == 270;
                 Debug.Log("[DOOR] + " + gameObject.name + " - door " + door.name + " has pure x " + pureXPos.ToString() + " and pure y " + pureYPos.ToString());
 			}
-		}
+		}*/
 
         /*public void OnGridPlacement()
 		{
@@ -205,7 +205,7 @@ namespace JZK.Gameplay
                 return;
             }
 
-            OpenAllDoors();
+            //OpenAllDoors();
             _hasClearedRoom = true;
         }
 
