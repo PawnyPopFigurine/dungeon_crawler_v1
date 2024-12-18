@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 namespace JZK.Gameplay
 {
+
+
     public class RoomDoor : MonoBehaviour
     {
 
@@ -27,6 +29,33 @@ namespace JZK.Gameplay
 
         [SerializeField] Transform _setPlayerPos;
         public Transform SetPlayerPos => _setPlayerPos;
+
+        private EOrthogonalDirection _sideOfRoom;
+        public EOrthogonalDirection SideOfRoom => _sideOfRoom;
+
+        bool _isLinked = false;
+        public bool IsLinked => _isLinked;
+
+        public void Initialise()
+		{
+            float rotation = transform.eulerAngles.z;
+            switch(rotation)
+			{
+                case 0:
+                    _sideOfRoom = EOrthogonalDirection.Up;
+                    break;
+                case 90:
+                    _sideOfRoom = EOrthogonalDirection.Left;
+                    break;
+                case 180:
+                    _sideOfRoom = EOrthogonalDirection.Down;
+                    break;
+                case 270:
+                    _sideOfRoom = EOrthogonalDirection.Right;
+                    break;
+
+            }
+		}
 
 
         public void SetDoorEnabled(bool enabled)
@@ -59,10 +88,12 @@ namespace JZK.Gameplay
             if(null == newDestination)
 			{
                 _travelToDoor = null;
+                _isLinked = false;
                 return;
 			}
 
             _travelToDoor = newDestination;
+            _isLinked = true;
             if(updateLinkingDoor)
 			{
                 _travelToDoor.LinkToDoor(this, false);

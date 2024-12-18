@@ -37,7 +37,7 @@ namespace JZK.Gameplay
         bool _active;
         public bool Active => _active;
 
-        private EFacing _faceDirection;
+        private EOrthogonalDirection _faceDirection;
 
         public void Initialise()
 		{
@@ -101,16 +101,16 @@ namespace JZK.Gameplay
                 Vector2 projectileVel = new(0, 0);
                 switch(_faceDirection)
 				{
-                    case EFacing.Up:
+                    case EOrthogonalDirection.Up:
                         projectileVel = new(0, 1);
                         break;
-                    case EFacing.Right:
+                    case EOrthogonalDirection.Right:
                         projectileVel = new(1, 0);
                         break;
-                    case EFacing.Down:
+                    case EOrthogonalDirection.Down:
                         projectileVel = new(0, -1);
                         break;
-                    case EFacing.Left:
+                    case EOrthogonalDirection.Left:
                         projectileVel = new(-1, 0);
                         break;
 				}
@@ -123,33 +123,33 @@ namespace JZK.Gameplay
 		{
             if(InputSystem.Instance.PlayerMoveUp)
 			{
-                _faceDirection = EFacing.Up;
+                _faceDirection = EOrthogonalDirection.Up;
 			}
             if(InputSystem.Instance.PlayerMoveDown)
 			{
-                _faceDirection = EFacing.Down;
+                _faceDirection = EOrthogonalDirection.Down;
 			}
             if(InputSystem.Instance.PlayerMoveLeft)
 			{
-                _faceDirection = EFacing.Left;
+                _faceDirection = EOrthogonalDirection.Left;
 			}
             if(InputSystem.Instance.PlayerMoveRight)
 			{
-                _faceDirection = EFacing.Right;
+                _faceDirection = EOrthogonalDirection.Right;
 			}
 
             switch(_faceDirection)
 			{
-                case EFacing.Up:
+                case EOrthogonalDirection.Up:
                     _renderer.sprite = _faceUp;
                     break;
-                case EFacing.Right:
+                case EOrthogonalDirection.Right:
                     _renderer.sprite = _faceRight;
                     break;
-                case EFacing.Down:
+                case EOrthogonalDirection.Down:
                     _renderer.sprite = _faceDown;
                     break;
-                case EFacing.Left:
+                case EOrthogonalDirection.Left:
                     _renderer.sprite = _faceLeft;
                     break;
 			}

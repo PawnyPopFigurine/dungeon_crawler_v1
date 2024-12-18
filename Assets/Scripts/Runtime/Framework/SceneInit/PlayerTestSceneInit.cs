@@ -69,8 +69,17 @@ namespace JZK.Framework
 			room1TopDoor.SetDoorEnabled(true);
 			room3BottomDoor.SetDoorEnabled(true);
 
-			room1RightDoor.LinkToDoor(room2LeftDoor);
-			room1TopDoor.LinkToDoor(room3BottomDoor);
+			if(!_testingRooms[0].TryLinkToRoom(_testingRooms[1], EOrthogonalDirection.Right))
+			{
+				//complain here
+			}
+
+			if(!_testingRooms[0].TryLinkToRoom(_testingRooms[2], EOrthogonalDirection.Up))
+			{
+				//complain here
+			}
+			/*room1RightDoor.LinkToDoor(room2LeftDoor);
+			room1TopDoor.LinkToDoor(room3BottomDoor);*/
         }
 
 		private void Update()

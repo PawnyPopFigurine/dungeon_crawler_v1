@@ -34,8 +34,6 @@ namespace JZK.Gameplay
 
         bool _hasInitialised;
 
-        List<(int, int)> _doorNodePositions = new();
-
         public void InitialiseOnLoad()
 		{
             Initialise();
@@ -64,36 +62,53 @@ namespace JZK.Gameplay
                 fillInWall.CompressBounds();
 			}
 
-            //RefreshDoorNodePositions();
+            foreach(RoomDoor door in _doors)
+			{
+                door.Initialise();
+			}
         }
 
-        /*public void RefreshDoorNodePositions()
-		{
-            _doorNodePositions.Clear();
-
-            BoundsInt floorBounds = _floorTilemap.cellBounds;
-
-           // _floorTilemap.LocalToCell(door)
-
-            foreach (RoomDoor door in _doors)
-			{
-                Vector3 localPosToCell = _floorTilemap.WorldToCell(door.transform.localPosition);
-                float pureXPos = localPosToCell.x;
-                float pureYPos = localPosToCell.y;
-                *//*float pureXPos = door.transform.position.x + floorBounds.x;
-                float pureYPos = door.transform.position.y + floorBounds.y;*//*
-                bool sidewaysDoor = door.transform.eulerAngles.z == 90 || door.transform.eulerAngles.z == 270;
-                Debug.Log("[DOOR] + " + gameObject.name + " - door " + door.name + " has pure x " + pureXPos.ToString() + " and pure y " + pureYPos.ToString());
-			}
-		}*/
-
-        /*public void OnGridPlacement()
+        public bool TryGetDoorOnSide(EOrthogonalDirection roomSide, out RoomDoor foundDoor, bool mustBeUnlinked = false)
 		{
             foreach(RoomDoor door in _doors)
 			{
-                door.transform.localPosition
+                if(door.SideOfRoom != roomSide)
+				{
+                    continue;
+				}
+
+                if(mustBeUnlinked)
+				{
+                    if(door.IsLinked)
+					{
+                        continue;
+					}
+				}
+
+                foundDoor = door;
+                return true;
 			}
-		}*/
+
+            foundDoor = null;
+            return false;
+		}
+
+        public bool TryLinkToRoom(RoomController linkToRoom, EOrthogonalDirection requiredSide)
+		{
+            if(!TryGetDoorOnSide(requiredSide, out RoomDoor foundDoor, true))
+			{
+                return false;
+			}
+
+            EOrthogonalDirection oppositeSide = GameplayHelper.GetOppositeDirection(requiredSide);
+            if(!linkToRoom.TryGetDoorOnSide(oppositeSide, out RoomDoor otherRoomDoor, true))
+			{
+                return false;
+			}
+
+            foundDoor.LinkToDoor(otherRoomDoor);
+            return true;
+		}
 
         public List<(int, int)> GetFloorNodePositions(Vector3Int roomCentre)
 		{
