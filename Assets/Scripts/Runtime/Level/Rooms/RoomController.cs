@@ -93,6 +93,18 @@ namespace JZK.Gameplay
             return false;
 		}
 
+        public void TrySetDoorEnabledOnSide(EOrthogonalDirection requiredSide, bool enabled, out bool success)
+		{
+            if(!TryGetDoorOnSide(requiredSide, out RoomDoor roomDoor))
+			{
+                success = false;
+                return;
+			}
+
+            roomDoor.SetDoorEnabled(enabled);
+            success = true;
+		}
+
         public bool TryLinkToRoom(RoomController linkToRoom, EOrthogonalDirection requiredSide)
 		{
             if(!TryGetDoorOnSide(requiredSide, out RoomDoor foundDoor, true))

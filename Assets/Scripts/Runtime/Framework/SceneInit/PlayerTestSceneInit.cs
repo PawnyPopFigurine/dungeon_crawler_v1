@@ -57,19 +57,13 @@ namespace JZK.Framework
                 room.OpenAllDoors();*/
             }
 
-			RoomDoor room1RightDoor = _testingRooms[0].Doors[3];
-			RoomDoor room2LeftDoor = _testingRooms[1].Doors[2];
+			_testingRooms[0].EnableAllDoors();
+			_testingRooms[1].TrySetDoorEnabledOnSide(EOrthogonalDirection.Left, true, out _);
+			_testingRooms[2].TrySetDoorEnabledOnSide(EOrthogonalDirection.Down, true, out _);
+			_testingRooms[3].TrySetDoorEnabledOnSide(EOrthogonalDirection.Right, true, out _);
+			_testingRooms[4].TrySetDoorEnabledOnSide(EOrthogonalDirection.Up, true, out _);
 
-			RoomDoor room1TopDoor = _testingRooms[0].Doors[0];
-			RoomDoor room3BottomDoor = _testingRooms[2].Doors[1];
-
-			room1RightDoor.SetDoorEnabled(true);
-			room2LeftDoor.SetDoorEnabled(true);
-
-			room1TopDoor.SetDoorEnabled(true);
-			room3BottomDoor.SetDoorEnabled(true);
-
-			if(!_testingRooms[0].TryLinkToRoom(_testingRooms[1], EOrthogonalDirection.Right))
+			if (!_testingRooms[0].TryLinkToRoom(_testingRooms[1], EOrthogonalDirection.Right))
 			{
 				//complain here
 			}
@@ -78,8 +72,16 @@ namespace JZK.Framework
 			{
 				//complain here
 			}
-			/*room1RightDoor.LinkToDoor(room2LeftDoor);
-			room1TopDoor.LinkToDoor(room3BottomDoor);*/
+
+			if(!_testingRooms[0].TryLinkToRoom(_testingRooms[3], EOrthogonalDirection.Left))
+			{
+				//complain
+			}
+
+			if(!_testingRooms[0].TryLinkToRoom(_testingRooms[4], EOrthogonalDirection.Down))
+			{
+				//complain
+			}
         }
 
 		private void Update()
