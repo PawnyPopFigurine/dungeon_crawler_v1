@@ -60,10 +60,17 @@ namespace JZK.Framework
 			RoomDoor room1RightDoor = _testingRooms[0].Doors[3];
 			RoomDoor room2LeftDoor = _testingRooms[1].Doors[2];
 
+			RoomDoor room1TopDoor = _testingRooms[0].Doors[0];
+			RoomDoor room3BottomDoor = _testingRooms[2].Doors[1];
+
 			room1RightDoor.SetDoorEnabled(true);
 			room2LeftDoor.SetDoorEnabled(true);
 
+			room1TopDoor.SetDoorEnabled(true);
+			room3BottomDoor.SetDoorEnabled(true);
+
 			room1RightDoor.LinkToDoor(room2LeftDoor);
+			room1TopDoor.LinkToDoor(room3BottomDoor);
         }
 
 		private void Update()
