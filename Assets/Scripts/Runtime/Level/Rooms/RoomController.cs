@@ -1,285 +1,291 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace JZK.Gameplay
 {
-    public class RoomController : MonoBehaviour
-    {
-        [SerializeField] string _id;
-        public string Id => _id;
-        public int HashedId => Animator.StringToHash(_id);
+	public class RoomController : MonoBehaviour
+	{
+		[SerializeField] string _id;
+		public string Id => _id;
+		public int HashedId => Animator.StringToHash(_id);
 
-        [SerializeField] Grid _grid;
+		[SerializeField] Grid _grid;
 
-        [SerializeField] Tilemap _floorTilemap;
-        [SerializeField] Tilemap _wallTilemap;
+		[SerializeField] Tilemap _floorTilemap;
+		[SerializeField] Tilemap _wallTilemap;
 
-        [SerializeField] TileBase _initialFloorTile;
-        [SerializeField] TileBase _initialWallTile;
+		[SerializeField] TileBase _initialFloorTile;
+		[SerializeField] TileBase _initialWallTile;
 
-        private TileBase _currentFloorTile;
-        private TileBase _currentWallTile;
+		private TileBase _currentFloorTile;
+		private TileBase _currentWallTile;
 
-        [SerializeField] List<RoomDoor> _doors;
-        public List<RoomDoor> Doors => _doors;
+		[SerializeField] List<RoomDoor> _doors;
+		public List<RoomDoor> Doors => _doors;
 
-        [SerializeField] List<Tilemap> _fillInWalls = new();
+		[SerializeField] List<Tilemap> _fillInWalls = new();
 
-        bool _hasClearedRoom;
-        public bool HasClearedRoom => _hasClearedRoom;
+		bool _hasClearedRoom;
+		public bool HasClearedRoom => _hasClearedRoom;
 
-        [SerializeField] SpriteRenderer _debugRoomCentreSprite;
+		[SerializeField] SpriteRenderer _debugRoomCentreSprite;
 
-        bool _hasInitialised;
+		bool _hasInitialised;
 
-        public void InitialiseOnLoad()
+		List<RoomDoor> _leftSideDoors = new();
+		List<RoomDoor> _rightSideDoors = new();
+		List<RoomDoor> _topSideDoors = new();
+		List<RoomDoor> _btmSideDoors = new();
+
+		public void InitialiseOnLoad()
 		{
-            Initialise();
+			Initialise();
 		}
 
-        public void Initialise()
-        {
-            if(_hasInitialised)
-			{
-                return;
-			}
-
-            _hasInitialised = true;
-
-            _currentFloorTile = _initialFloorTile;
-            _currentWallTile = _initialWallTile;
-
-            _hasClearedRoom = false;
-
-            _debugRoomCentreSprite.enabled = false;
-
-            _floorTilemap.CompressBounds();
-            _wallTilemap.CompressBounds();
-            foreach(Tilemap fillInWall in _fillInWalls)
-			{
-                fillInWall.CompressBounds();
-			}
-
-            foreach(RoomDoor door in _doors)
-			{
-                door.Initialise();
-			}
-        }
-
-        public bool TryGetDoorOnSide(EOrthogonalDirection roomSide, out RoomDoor foundDoor, bool mustBeUnlinked = false)
+		public void Initialise()
 		{
-            foreach(RoomDoor door in _doors)
+			if (_hasInitialised)
 			{
-                if(door.SideOfRoom != roomSide)
-				{
-                    continue;
-				}
+				return;
+			}
 
-                if(mustBeUnlinked)
+			_hasInitialised = true;
+
+			_currentFloorTile = _initialFloorTile;
+			_currentWallTile = _initialWallTile;
+
+			_hasClearedRoom = false;
+
+			_debugRoomCentreSprite.enabled = false;
+
+			_floorTilemap.CompressBounds();
+			_wallTilemap.CompressBounds();
+			foreach (Tilemap fillInWall in _fillInWalls)
+			{
+				fillInWall.CompressBounds();
+			}
+
+			foreach (RoomDoor door in _doors)
+			{
+				door.Initialise();
+
+				switch (door.SideOfRoom)
 				{
-                    if(door.IsLinked)
+					case EOrthogonalDirection.Up:
+						_topSideDoors.Add(door);
+						break;
+					case EOrthogonalDirection.Right:
+						_rightSideDoors.Add(door);
+						break;
+					case EOrthogonalDirection.Down:
+						_btmSideDoors.Add(door);
+						break;
+					case EOrthogonalDirection.Left:
+						_leftSideDoors.Add(door);
+						break;
+				}
+			}
+		}
+
+		public List<RoomDoor> GetDoorListForSide(EOrthogonalDirection roomSide)
+		{
+			switch (roomSide)
+			{
+				case EOrthogonalDirection.Up:
+					return _topSideDoors;
+				case EOrthogonalDirection.Right:
+					return _rightSideDoors;
+				case EOrthogonalDirection.Down:
+					return _btmSideDoors;
+				case EOrthogonalDirection.Left:
+					return _leftSideDoors;
+				default:
+					return null;
+			}
+		}
+
+		//public List<RoomDoor> GetAllDoorsOnSide()
+
+		public bool TryGetDoorOnSide(EOrthogonalDirection roomSide, out RoomDoor foundDoor, bool mustBeUnlinked = false)
+		{
+			List<RoomDoor> doorsOnSide = GetDoorListForSide(roomSide);
+
+			foundDoor = null;
+
+			if (null == doorsOnSide)
+			{
+				return false;
+			}
+
+			if (doorsOnSide.Count == 0)
+			{
+				return false;
+			}
+
+			foreach (RoomDoor door in doorsOnSide)
+			{
+				if (mustBeUnlinked)
+				{
+					if (door.IsLinked)
 					{
-                        continue;
+						continue;
 					}
 				}
 
-                foundDoor = door;
-                return true;
+				foundDoor = door;
+				return true;
 			}
 
-            foundDoor = null;
-            return false;
+			foundDoor = null;
+			return false;
 		}
 
-        public void TrySetDoorEnabledOnSide(EOrthogonalDirection requiredSide, bool enabled, out bool success)
+		public void TrySetDoorEnabledOnSide(EOrthogonalDirection requiredSide, bool enabled, out bool success)
 		{
-            if(!TryGetDoorOnSide(requiredSide, out RoomDoor roomDoor))
+			List<RoomDoor> doorsOnSide = GetDoorListForSide(requiredSide);
+
+			success = false;
+
+			if (null == doorsOnSide)
 			{
-                success = false;
-                return;
+				return;
 			}
 
-            roomDoor.SetDoorEnabled(enabled);
-            success = true;
-		}
-
-        public bool TryLinkToRoom(RoomController linkToRoom, EOrthogonalDirection requiredSide)
-		{
-            if(!TryGetDoorOnSide(requiredSide, out RoomDoor foundDoor, true))
+			if (doorsOnSide.Count == 0)
 			{
-                return false;
+				return;
 			}
 
-            EOrthogonalDirection oppositeSide = GameplayHelper.GetOppositeDirection(requiredSide);
-            if(!linkToRoom.TryGetDoorOnSide(oppositeSide, out RoomDoor otherRoomDoor, true))
+			foreach (RoomDoor door in doorsOnSide)
 			{
-                return false;
-			}
-
-            foundDoor.LinkToDoor(otherRoomDoor);
-            return true;
-		}
-
-        public List<(int, int)> GetFloorNodePositions(Vector3Int roomCentre)
-		{
-            List<(int, int)> floorNodes = new();
-            BoundsInt floorBounds = _floorTilemap.cellBounds;
-            TileBase[] floorTiles = _floorTilemap.GetTilesBlock(floorBounds);
-            for (int x = 0; x < floorBounds.size.x; ++x)
-            {
-                for (int y = 0; y < floorBounds.size.y; ++y)
-                {
-                    TileBase tile = floorTiles[x + y * floorBounds.size.x];
-                    if (null != tile)
-                    {
-                        Debug.Log("Has floor tile at LOCAL position X " + x.ToString() + ", Y " + y.ToString() + " - GRID position X " + (x + floorBounds.x + roomCentre.x).ToString() + ", Y " + (y + floorBounds.y + roomCentre.y).ToString());
-                        floorNodes.Add((x + floorBounds.x + roomCentre.x, y + floorBounds.y + roomCentre.y));
-                    }
-                }
-            }
-
-            return floorNodes;
-        }
-
-        public List<(int, int)> GetWallNodePositions(Vector3Int roomCentre)
-		{
-            List<(int, int)> wallNodes = new();
-            BoundsInt wallBounds = _wallTilemap.cellBounds;
-            TileBase[] wallTiles = _wallTilemap.GetTilesBlock(wallBounds);
-            for (int x = 0; x < wallBounds.size.x; ++x)
-            {
-                for (int y = 0; y < wallBounds.size.y; ++y)
-                {
-                    TileBase tile = wallTiles[x + y * wallBounds.size.x];
-                    if (null != tile)
-                    {
-                        Debug.Log("Has wall tile at LOCAL position X " + x.ToString() + ", Y " + y.ToString() + " - GRID position X " + (x + wallBounds.x + roomCentre.x).ToString() + ", Y " + (y + wallBounds.y + roomCentre.y).ToString());
-                        wallNodes.Add((x + wallBounds.x + roomCentre.x, y + wallBounds.y + roomCentre.y));
-                    }
-                }
-            }
-
-            return wallNodes;
-        }
-
-        public void PrintFloorNodePositions(Vector3Int roomCentre)
-		{
-            BoundsInt floorBounds = _floorTilemap.cellBounds;
-            TileBase[] floorTiles = _floorTilemap.GetTilesBlock(floorBounds);
-            for(int x = 0; x < floorBounds.size.x; ++x)
-			{
-                for(int y = 0; y < floorBounds.size.y; ++y)
+				if (door.DoorEnabled == enabled)
 				{
-                    TileBase tile = floorTiles[x + y * floorBounds.size.x];
-                    if(null != tile)
-					{
-                        Debug.Log("Has floor tile at LOCAL position X " + x.ToString() + ", Y " + y.ToString() + " - GRID position X " + (x + floorBounds.x + roomCentre.x).ToString() + ", Y " + (y + floorBounds.y + roomCentre.y).ToString());
-					}
+					continue;
 				}
+
+				door.SetDoorEnabled(enabled);
+				success = true;
+				return;
 			}
 		}
 
-        public void RepaintFloorTiles(TileBase repaintToTile)
-        {
-            if (repaintToTile == _currentFloorTile)
-            {
-                Debug.LogWarning("[ROOM] tried to repaint floor tile to current tile " + _currentFloorTile.name + " - aborting action");
-                return;
-            }
-
-            _floorTilemap.SwapTile(_currentFloorTile, repaintToTile);
-            _currentFloorTile = repaintToTile;
-        }
-
-        public void RepaintWallTiles(TileBase repaintToTile)
-        {
-            if (repaintToTile == _currentWallTile)
-            {
-                Debug.LogWarning("[ROOM] tried to repaint wall tile to current tile " + _currentWallTile.name + " - aborting action");
-                return;
-            }
-
-            _wallTilemap.SwapTile(_currentWallTile, repaintToTile);
-
-            foreach(Tilemap fillInWall in _fillInWalls)
-            {
-                fillInWall.SwapTile(_currentWallTile, repaintToTile);
-            }
-
-            _currentWallTile = repaintToTile;
-        }
-
-        public void CloseAllDoors()
-        {
-            foreach(RoomDoor door in _doors)
-            {
-                if(!door.DoorEnabled)
-                {
-                    continue;
-                }
-
-                door.SetIsOpen(false);
-            }
-        }
-
-        public void ClearRoom()
-        {
-            if(_hasClearedRoom)
-            {
-                Debug.LogWarning("[ROOM] tried to clear already claered room " + this.name + " - aborting action");
-                return;
-            }
-
-            //OpenAllDoors();
-            _hasClearedRoom = true;
-        }
-
-        public void OpenAllDoors()
-        {
-            foreach(RoomDoor door in _doors)
-            {
-                if(!door.DoorEnabled)
-                {
-                    continue;
-                }
-
-                door.SetIsOpen(true);
-            }
-        }
-
-        public void EnableAllDoors()
-        {
-            foreach(RoomDoor door in _doors)
-            {
-                door.SetDoorEnabled(true);
-            }
-        }
-
-        public void DisableAllDoors()
-        {
-            foreach (RoomDoor door in _doors)
-            {
-                door.SetDoorEnabled(false);
-            }
-        }
-
-        public void OnPlayerEnterRoom()
-        {
-            Debug.Log("[HELLO] player has entered room " + this.gameObject.name);
-
-            GameplaySystem.Instance.OnPlayerEnterRoom(this);
-
-            if(!_hasClearedRoom)
-            {
-                CloseAllDoors();
-            }
-        }
-
-        public void ResetController()
+		public bool TryLinkToRoom(RoomController linkToRoom, EOrthogonalDirection requiredSide)
 		{
-            //TODO: stuff here
+			if (!TryGetDoorOnSide(requiredSide, out RoomDoor foundDoor, true))
+			{
+				return false;
+			}
+
+			EOrthogonalDirection oppositeSide = GameplayHelper.GetOppositeDirection(requiredSide);
+			if (!linkToRoom.TryGetDoorOnSide(oppositeSide, out RoomDoor otherRoomDoor, true))
+			{
+				return false;
+			}
+
+			foundDoor.LinkToDoor(otherRoomDoor);
+			return true;
 		}
-    }
+
+		public void RepaintFloorTiles(TileBase repaintToTile)
+		{
+			if (repaintToTile == _currentFloorTile)
+			{
+				Debug.LogWarning("[ROOM] tried to repaint floor tile to current tile " + _currentFloorTile.name + " - aborting action");
+				return;
+			}
+
+			_floorTilemap.SwapTile(_currentFloorTile, repaintToTile);
+			_currentFloorTile = repaintToTile;
+		}
+
+		public void RepaintWallTiles(TileBase repaintToTile)
+		{
+			if (repaintToTile == _currentWallTile)
+			{
+				Debug.LogWarning("[ROOM] tried to repaint wall tile to current tile " + _currentWallTile.name + " - aborting action");
+				return;
+			}
+
+			_wallTilemap.SwapTile(_currentWallTile, repaintToTile);
+
+			foreach (Tilemap fillInWall in _fillInWalls)
+			{
+				fillInWall.SwapTile(_currentWallTile, repaintToTile);
+			}
+
+			_currentWallTile = repaintToTile;
+		}
+
+		public void CloseAllDoors()
+		{
+			foreach (RoomDoor door in _doors)
+			{
+				if (!door.DoorEnabled)
+				{
+					continue;
+				}
+
+				door.SetIsOpen(false);
+			}
+		}
+
+		public void ClearRoom()
+		{
+			if (_hasClearedRoom)
+			{
+				Debug.LogWarning("[ROOM] tried to clear already claered room " + this.name + " - aborting action");
+				return;
+			}
+
+			//OpenAllDoors();
+			_hasClearedRoom = true;
+		}
+
+		public void OpenAllDoors()
+		{
+			foreach (RoomDoor door in _doors)
+			{
+				if (!door.DoorEnabled)
+				{
+					continue;
+				}
+
+				door.SetIsOpen(true);
+			}
+		}
+
+		public void EnableAllDoors()
+		{
+			foreach (RoomDoor door in _doors)
+			{
+				door.SetDoorEnabled(true);
+			}
+		}
+
+		public void DisableAllDoors()
+		{
+			foreach (RoomDoor door in _doors)
+			{
+				door.SetDoorEnabled(false);
+			}
+		}
+
+		public void OnPlayerEnterRoom()
+		{
+			Debug.Log("[HELLO] player has entered room " + this.gameObject.name);
+
+			GameplaySystem.Instance.OnPlayerEnterRoom(this);
+
+			if (!_hasClearedRoom)
+			{
+				CloseAllDoors();
+			}
+		}
+
+		public void ResetController()
+		{
+			//TODO: stuff here
+		}
+	}
 }

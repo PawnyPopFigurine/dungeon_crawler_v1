@@ -229,7 +229,7 @@ namespace JZK.Framework
                     activeRoomsCache.Add(controller);
                     controller.DisableAllDoors();
                     //controller.OnGridPlacement();
-                    List<(int, int)> roomFloorPositions = controller.GetFloorNodePositions(intCentreCoord);
+                    /*List<(int, int)> roomFloorPositions = controller.GetFloorNodePositions(intCentreCoord);
                     foreach ((int, int) pos in roomFloorPositions)
                     {
                         layoutData.Nodes[pos.Item1, pos.Item2].IsFloor = true;
@@ -239,7 +239,7 @@ namespace JZK.Framework
                     foreach ((int, int) pos in roomWallPositions)
                     {
                         layoutData.Nodes[pos.Item1, pos.Item2].IsWall = true;
-                    }
+                    }*/
                 }
                 numRooms++;
             }

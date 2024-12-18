@@ -62,6 +62,8 @@ namespace JZK.Framework
 			_testingRooms[2].TrySetDoorEnabledOnSide(EOrthogonalDirection.Down, true, out _);
 			_testingRooms[3].TrySetDoorEnabledOnSide(EOrthogonalDirection.Right, true, out _);
 			_testingRooms[4].TrySetDoorEnabledOnSide(EOrthogonalDirection.Up, true, out _);
+			_testingRooms[4].TrySetDoorEnabledOnSide(EOrthogonalDirection.Up, true, out _);
+			_testingRooms[5].TrySetDoorEnabledOnSide(EOrthogonalDirection.Down, true, out _);
 
 			if (!_testingRooms[0].TryLinkToRoom(_testingRooms[1], EOrthogonalDirection.Right))
 			{
@@ -79,6 +81,11 @@ namespace JZK.Framework
 			}
 
 			if(!_testingRooms[0].TryLinkToRoom(_testingRooms[4], EOrthogonalDirection.Down))
+			{
+				//complain
+			}
+
+			if(!_testingRooms[4].TryLinkToRoom(_testingRooms[5], EOrthogonalDirection.Up))
 			{
 				//complain
 			}
