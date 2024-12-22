@@ -3419,7 +3419,7 @@ GameObject:
   - component: {fileID: 3495273355048241895}
   m_Layer: 0
   m_Name: FillInDoorLeft
-  m_TagString: Untagged
+  m_TagString: DestroyPlayerProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3820,7 +3820,7 @@ GameObject:
   - component: {fileID: 5819952161565582912}
   m_Layer: 0
   m_Name: FillInDoorRight
-  m_TagString: Untagged
+  m_TagString: DestroyPlayerProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
