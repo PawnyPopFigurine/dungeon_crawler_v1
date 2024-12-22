@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: c805c52bc6783b44fbc1e6899904ddbd
   m_currentHash:
     serializedVersion: 2
-    Hash: 5486ee11bc259da1907e8ddf4db4d2bb
+    Hash: d42182cd3cc6e7c8bf34d2eb5c16ed31
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -44,6 +44,7 @@ MonoBehaviour:
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
+  - {fileID: 11400000, guid: 728138dfcab7da84aa80a47cac0fb2ed, type: 2}
   - {fileID: 11400000, guid: fd89d3d0fb0669640b5145abba70ccd6, type: 2}
   - {fileID: 11400000, guid: 3dc5213b1fcc9d5459aa275de99a93fa, type: 2}
   - {fileID: 11400000, guid: e4550716171db1c4da137663724eac05, type: 2}
@@ -93,6 +94,7 @@ MonoBehaviour:
     - ui
     - projectile_prefabs
     - game_room_prefab
+    - room_definition
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: a02584dc34281de40938dab1b5d4ef24, type: 2}

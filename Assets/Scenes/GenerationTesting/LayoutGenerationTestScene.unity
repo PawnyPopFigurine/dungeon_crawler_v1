@@ -425,22 +425,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _useDebugSeed: 0
-  _debugSeed: 0
+  _useDebugSeed: 1
+  _debugSeed: 44
   _printDebug: 0
-  _floorTilemap: {fileID: 0}
-  _floortile: {fileID: 0}
-  _wallTile_Full: {fileID: 0}
-  DebugRoomBoundsTiles: []
   _settings:
     Seed: 0
-    StartPos: {x: 0, y: 0}
-    MinRoomWidth: 0
-    MinRoomHeight: 0
-    DungeonWidth: 0
-    DungeonHeight: 0
-  _showRoomBounds: 0
-  _roomPrefab: {fileID: 0}
+    CriticalPathRoomCount: 5
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0

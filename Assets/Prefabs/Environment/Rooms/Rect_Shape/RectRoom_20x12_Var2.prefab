@@ -8363,7 +8363,7 @@ PrefabInstance:
     - target: {fileID: 4444324172660538978, guid: f959c5c94a537f54aa07750009a5c748, type: 3}
       propertyPath: _corridorGO
       value: 
-      objectReference: {fileID: 4480074671200565090}
+      objectReference: {fileID: 2103175627007332603}
     - target: {fileID: 4444324172660538978, guid: f959c5c94a537f54aa07750009a5c748, type: 3}
       propertyPath: _fillInWallTiles
       value: 
@@ -8382,7 +8382,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4444324172660538978, guid: f959c5c94a537f54aa07750009a5c748, type: 3}
   m_PrefabInstance: {fileID: 3502367498841342112}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4480074671200565090}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c634845e2e26ea40a8e2f7094776118, type: 3}
@@ -8391,11 +8391,6 @@ MonoBehaviour:
 --- !u!4 &1660041488243596017 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2851709159561517649, guid: f959c5c94a537f54aa07750009a5c748, type: 3}
-  m_PrefabInstance: {fileID: 3502367498841342112}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4480074671200565090 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1060180457270654914, guid: f959c5c94a537f54aa07750009a5c748, type: 3}
   m_PrefabInstance: {fileID: 3502367498841342112}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5701247526371123504

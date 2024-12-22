@@ -18,6 +18,8 @@ namespace JZK.Framework
 			new SystemReference<Gameplay.PlayerSystem>(),
 			new SystemReference<Gameplay.ProjectileSystem>(),
 
+			new SystemReference<Level.RoomDefinitionLoadSystem>(),
+
 			new SystemReference<UI.GameplayUISystem>(),
 			new SystemReference<UI.PressStartUISystem>(),
 			new SystemReference<UI.UIStateSystem>(),

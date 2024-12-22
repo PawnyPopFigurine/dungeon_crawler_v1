@@ -17,7 +17,9 @@ namespace JZK.Framework
             new SystemReference<Input.InputSystem>(),
 
             new SystemReference<Level.DungeonLayoutGenerationSystem>(),
+            new SystemReference<Level.RoomDefinitionLoadSystem>(),
             new SystemReference<Level.RoomLoadSystem>(),
+
 
             new SystemReference<UI.UIStateSystem>(),
 
@@ -62,6 +64,31 @@ namespace JZK.Framework
             System.Random random = new(_settings.Seed);
 
             _currentLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_settings, random);
+
+            CreateDungeonFromLayoutData();
+        }
+
+        public void CreateDungeonFromLayoutData()
+        {
+            if (_currentLayout == null)
+            {
+                return;
+            }
+
+            Vector2 roomPrefabPos = Vector2.zero;
+            int roomSpacing = 30;
+
+            foreach(GenerationRoomData roomData in _currentLayout.Room_LUT.Values)
+            {
+                if(!RoomLoadSystem.Instance.RequestRoom(roomData.PrefabId, out RoomController controller))
+                {
+                    //complain
+                }
+
+                controller.gameObject.SetActive(true);
+                controller.transform.position = roomPrefabPos;
+                roomPrefabPos.x += roomSpacing;
+            }
         }
 
         public void ClearRooms()
@@ -71,11 +98,11 @@ namespace JZK.Framework
                 return;
 			}
 
-            List<RoomController> activeCache = new(_currentLayout.ActiveRoomsList);
+            /*List<RoomController> activeCache = new(_currentLayout.ActiveRoomsList);
             foreach (RoomController room in activeCache)
             {
                 RoomLoadSystem.Instance.ClearRoom(room);
-            }
+            }*/
 
             _currentLayout = null;
         }

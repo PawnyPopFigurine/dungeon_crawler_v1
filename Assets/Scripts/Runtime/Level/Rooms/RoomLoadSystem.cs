@@ -111,6 +111,7 @@ namespace JZK.Level
 					prefabGO.name = roomId + "_" + roomIndex.ToString();
 					RoomController controller = prefabGO.GetComponent<RoomController>();
 					controller.InitialiseOnLoad();
+					controller.DisableAllDoors();
 					roomsOfId.Add(controller);
 					prefabGO.SetActive(false);
 					prefabGO.transform.SetParent(transform);

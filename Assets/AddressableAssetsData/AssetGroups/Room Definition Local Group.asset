@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Room Definition Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Room Definition Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 42afaf3e0de71a348ad79946ce353fff
+  m_SerializeEntries:
+  - m_GUID: 317016543b5f4d24e80767658eba1605
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_4x16.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33ecd31b2e51b704595259a1283d5d8a
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_10x8_Var2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41e51ee7d28d1b946925bde311dc4e6e
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_6x6.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 565ccf5225b0a8a4693d0d5f08c9c855
+    m_Address: Assets/Data/Rooms/Cross_Shape/Cross_Shape_Room_10x10.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d82645ac348a3242928ef2869010a66
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_16x4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f6c2a8288b627a4587b4452861c11e4
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 603275e12daff024897ce69e19f16063
+    m_Address: Assets/Data/Rooms/S_Shape/S_Shape_Room_16x16.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ec7d418839de5848ba900d19e03487c
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_10x8_Var1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 887c565172b3fe446ba8b4eef61b01e9
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f413847c29450748a7e1aaf0b796e25
+    m_Address: Assets/Data/Rooms/T_Shape/T_Shape_Room_12x14.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 95988a5cf478ade43ba9a11b9b5c6992
+    m_Address: Assets/Data/Rooms/H_Shape/H_Shape_Room_12x14.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a13e2ddf36470d44e952b713b76db285
+    m_Address: Assets/Data/Rooms/Z_Shape/Z_Shape_Room_16x16.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3917229653e0b04d8207c3cc0134e16
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d767e4ddfc47aa54b8a4f6d2343e5aa7
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb15267faedc9454f80cb159720bce8c
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var5.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc88fc68069e45240ac0dbd402780290
+    m_Address: Assets/Data/Rooms/U_Shape/U_Shape_Room_12x12.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 37ffdec0b092d5c4da8db0587f413deb, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e1935303912cd1d40ad1e58ac56b346c, type: 2}
+    - {fileID: 11400000, guid: feda55748e3297a49ab08f19ca037ac9, type: 2}
