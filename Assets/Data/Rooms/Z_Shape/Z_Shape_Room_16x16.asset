@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: Z_Shape_Room_16x16
-    _prefabController: {fileID: 8647749795519328597, guid: a7bd5f957027f1d47838c2db6a1fe644, type: 3}
+    _prefabController: {fileID: 2667284999973894481, guid: a7bd5f957027f1d47838c2db6a1fe644, type: 3}
     _hideInGame: 0

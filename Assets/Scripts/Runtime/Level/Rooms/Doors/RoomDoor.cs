@@ -1,3 +1,5 @@
+using JZK.Level;
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -34,7 +36,16 @@ namespace JZK.Gameplay
 		bool _isLinked = false;
 		public bool IsLinked => _isLinked;
 
-		public void Initialise()
+        Guid _generationId = Guid.Empty;
+        public Guid GenerationId => _generationId;
+
+		/*public void OnPlacedInGeneration(GenerationDoorData doorData)
+		{
+            _generationId = doorData.Id;
+        }*/
+
+
+        public void Initialise()
 		{
 			float rotation = transform.eulerAngles.z;
 			switch (rotation)

@@ -33,5 +33,39 @@ namespace JZK.Gameplay
                     return EOrthogonalDirection.Up;
 			}
 		}
+
+        public static List<EOrthogonalDirection> GetPerpendicularDirections(EOrthogonalDirection direction)
+        {
+            switch(direction)
+            {
+                case EOrthogonalDirection.Up:
+                    return new()
+                    {
+                        EOrthogonalDirection.Left,
+                        EOrthogonalDirection.Right,
+                    };
+                case EOrthogonalDirection.Down:
+                    return new()
+                    {
+                        EOrthogonalDirection.Left,
+                        EOrthogonalDirection.Right,
+                    };
+                case EOrthogonalDirection.Left:
+                    return new()
+                    {
+                        EOrthogonalDirection.Up,
+                        EOrthogonalDirection.Down,
+                    };
+                case EOrthogonalDirection.Right:
+                    return new()
+                    {
+                        EOrthogonalDirection.Up,
+                        EOrthogonalDirection.Down,
+                    };
+                default:
+                    Debug.LogWarning("[GAMEPLAYHELPER] shouldn't be here");
+                    return null;
+            }
+        }
     }
 }

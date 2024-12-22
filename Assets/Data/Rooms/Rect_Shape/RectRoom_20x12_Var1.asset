@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: RectRoom_20x12_Var1
-    _prefabController: {fileID: 8647749795519328597, guid: 7386683e9d350a846a37a8d086fc6e61, type: 3}
+    _prefabController: {fileID: 2667284999973894481, guid: 7386683e9d350a846a37a8d086fc6e61, type: 3}
     _hideInGame: 0

@@ -22,8 +22,8 @@ namespace JZK.Level
         public string Id => _id;
 
         [SerializeField]
-        RoomController _prefabController;
-        public RoomController PrefabController => _prefabController;
+        GameObject _prefabController;
+        public GameObject PrefabController => _prefabController;
 
         [SerializeField]
         bool _hideInGame;

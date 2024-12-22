@@ -75,6 +75,9 @@ namespace JZK.Level
                 RoomDefinition def = defSO.Definition.CreateCopy();
                 if(!def.HideInGame)
                 {
+                    RoomController roomController = def.PrefabController.GetComponent<RoomController>();
+                    roomController.InitialiseOnLoad(true);
+
                     _allDefinitionIds.Add(def.Id);
                     _roomDefinition_LUT.Add(def.Id, def);
                     Debug.Log("[LOAD] added definition with ID " + def.Id + " to LUT");

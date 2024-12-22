@@ -1,3 +1,5 @@
+using JZK.Level;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -38,17 +40,48 @@ namespace JZK.Gameplay
 		List<RoomDoor> _topSideDoors = new();
 		List<RoomDoor> _btmSideDoors = new();
 
-		public void InitialiseOnLoad()
+		Guid _generationId = Guid.Empty;
+		public Guid GenerationId => _generationId;
+
+		public int GetIndexOfDoor(RoomDoor roomDoor)
 		{
-			Initialise();
+			if(!_doors.Contains(roomDoor))
+			{
+				return -1;
+			}
+
+			return _doors.IndexOf(roomDoor);
 		}
 
-		public void Initialise()
+
+		/*public void OnPlacedInGeneration(GenerationRoomData generationData)
 		{
-			if (_hasInitialised)
+			_generationId = generationData.Id;
+
+			for(int doorIndex = 0; doorIndex < _doors.Count; doorIndex++)
 			{
-				return;
-			}
+				RoomDoor roomDoor = _doors[doorIndex];
+				Guid doorDataId = generationData.AllDoorIds[doorIndex];
+				GenerationDoorData doorData = generationData.Door_LUT[doorDataId];
+				roomDoor.OnPlacedInGeneration(doorData);
+            }
+		}*/
+
+
+		public void InitialiseOnLoad(bool forceInitialise = false)
+		{
+			Initialise(forceInitialise);
+		}
+
+		public void Initialise(bool forceInitialise = false)
+		{
+			if(!forceInitialise)
+			{
+                if (_hasInitialised)
+                {
+                    return;
+                }
+            }
 
 			_hasInitialised = true;
 
