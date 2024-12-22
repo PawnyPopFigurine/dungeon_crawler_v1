@@ -128,22 +128,6 @@ namespace JZK.Framework
                     }
                 }
             }
-            /*foreach(Guid doorId in roomDoor_LUT.Keys)
-            {
-                RoomDoor door = roomDoor_LUT[doorId];
-                GenerationDoorData doorGenData = _currentLayout.Door_LUT[doorId];
-                door.SetDoorEnabled(doorGenData.Enabled);
-                Guid linkDoorId = doorGenData.LinkDoorId;
-                if(linkDoorId != Guid.Empty)
-                {
-                    GenerationDoorData linkDoorData = _currentLayout.Door_LUT[linkDoorId];
-                    RoomDoor linkDoor = roomDoor_LUT[linkDoorData.Id];
-                    door.LinkToDoor(linkDoor);
-                    Debug.Log("[GENERATION] RUNTIME PLACEMENT: linked door " + doorGenData.Id.ToString() + " to door " + linkDoorData.Id.ToString());
-                }
-                
-                //door.LinkToDoor()
-            }*/
         }
 
         public void ClearRooms()
@@ -152,12 +136,6 @@ namespace JZK.Framework
 			{
                 return;
 			}
-
-            /*List<RoomController> activeCache = new(_currentLayout.ActiveRoomsList);
-            foreach (RoomController room in activeCache)
-            {
-                RoomLoadSystem.Instance.ClearRoom(room);
-            }*/
 
             _currentLayout = null;
         }

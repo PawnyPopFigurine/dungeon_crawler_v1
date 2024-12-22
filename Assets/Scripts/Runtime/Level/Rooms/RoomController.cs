@@ -320,5 +320,11 @@ namespace JZK.Gameplay
 		{
 			//TODO: stuff here
 		}
+
+		public bool HasEnoughDoorsOnSide(EOrthogonalDirection side, int doorCount)
+		{
+			List<RoomDoor> doorSideList = GetDoorListForSide(side);
+			return doorSideList.Count >= doorCount;
+		}
 	}
 }

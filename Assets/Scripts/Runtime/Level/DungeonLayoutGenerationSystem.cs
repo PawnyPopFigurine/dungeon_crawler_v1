@@ -36,26 +36,94 @@ namespace JZK.Level
 		//public Dictionary<Guid, GenerationDoorData> Door_LUT = new();
 		public List<Guid> AllDoorIds = new();
 		public LayoutData ParentLayout;
+		public GenerationRoomConnectionData ConnectionData;
 		
-		public void Initialise(RoomDefinition def, LayoutData parent)
+		public class GenerationRoomConnectionData
 		{
-			ParentLayout = parent;
-			PrefabId = def.Id;
-			//Door_LUT.Clear();
-			AllDoorIds.Clear();
+			public int RequiredUpConnections = 0;
+			public int RequiredDownConnections = 0;
+			public int RequiredLeftConnections = 0;
+			public int RequiredRightConnections = 0;
 
-			RoomController controller = def.PrefabController.GetComponent<RoomController>();
-
-			foreach(RoomDoor door in controller.Doors)
+			public void SetConnectionCount(EOrthogonalDirection direction, int count)
 			{
-				GenerationDoorData doorData = new();
-				doorData.IndexInRoom = controller.GetIndexOfDoor(door);
-				doorData.ParentRoomId = Id;
-				doorData.SideOfRoom = door.SideOfRoom;
-				parent.Door_LUT.Add(doorData.Id, doorData);
-				AllDoorIds.Add(doorData.Id);
+				switch(direction)
+				{
+					case EOrthogonalDirection.Up:
+						RequiredUpConnections = count;
+						break;
+					case EOrthogonalDirection.Right:
+						RequiredRightConnections = count;
+						break;
+					case EOrthogonalDirection.Down:
+						RequiredDownConnections = count;
+						break;
+					case EOrthogonalDirection.Left:
+						RequiredLeftConnections = count;
+						break;
+				}
+			}
+
+			public int GetRequirementsInDirection(EOrthogonalDirection direction)
+			{
+				switch(direction)
+				{
+					case EOrthogonalDirection.Up:
+						return RequiredUpConnections;
+					case EOrthogonalDirection.Right:
+						return RequiredRightConnections;
+					case EOrthogonalDirection.Down:
+						return RequiredDownConnections;
+					case EOrthogonalDirection.Left:
+						return RequiredLeftConnections;
+					default:
+						return -1;
+				}
 			}
 		}
+
+		public List<EOrthogonalDirection> GetAvailableSidesForConnection()
+		{
+			List<EOrthogonalDirection> returnList = new();
+
+			foreach(Guid doorId in AllDoorIds)
+			{
+				GenerationDoorData doorData = ParentLayout.Door_LUT[doorId];
+				if(doorData.IsLinked)
+				{
+					continue;
+				}
+
+				returnList.Add(doorData.SideOfRoom);
+			}
+
+			return returnList;
+		}
+		
+		public void Initialise(LayoutData parent)
+		{
+			ParentLayout = parent;
+			ConnectionData = new();
+		}
+
+		public void SetDefinition(RoomDefinition def)
+		{
+            PrefabId = def.Id;
+            //Door_LUT.Clear();
+            AllDoorIds.Clear();
+
+            RoomController controller = def.PrefabController.GetComponent<RoomController>();
+
+            foreach (RoomDoor door in controller.Doors)
+            {
+                GenerationDoorData doorData = new();
+                doorData.IndexInRoom = controller.GetIndexOfDoor(door);
+                doorData.ParentRoomId = Id;
+                doorData.SideOfRoom = door.SideOfRoom;
+                ParentLayout.Door_LUT.Add(doorData.Id, doorData);
+                AllDoorIds.Add(doorData.Id);
+            }
+        }
 
         public bool TryLinkToRoom(GenerationRoomData linkToRoom, EOrthogonalDirection requiredSide, out GenerationDoorData foundDoor, out GenerationDoorData otherRoomDoor)
         {
@@ -170,15 +238,61 @@ namespace JZK.Level
 
 			for(int critPathIndex = 0; critPathIndex < settings.CriticalPathRoomCount; ++critPathIndex)
 			{
-				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random);
+				//RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random);
 				GenerationRoomData roomData = new();
-				roomData.Initialise(roomDef, layoutData);
-				//foreach(GenerationDoorData doorData in roomData.doo)
+				roomData.Initialise(layoutData);
 				layoutData.Room_LUT.Add(roomData.Id, roomData);
 				layoutData.CriticalPathIds.Add(roomData.Id);
 			}
 
+			EOrthogonalDirection lastOutwardConnection = EOrthogonalDirection.Invalid;
+			List<EOrthogonalDirection> critPathOutwardConnections = new();
+
 			for(int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)
+			{
+                Guid critRoomId = layoutData.CriticalPathIds[roomIndex];
+                GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
+				bool isFirstRoom = roomIndex == 0;
+                bool isFinalRoom = roomIndex == layoutData.CriticalPathIds.Count - 1;
+
+
+				if(isFirstRoom)
+				{
+					EOrthogonalDirection direction = GameplayHelper.GetRandomDirection(random);
+					int requirementsInDirection = critRoom.ConnectionData.GetRequirementsInDirection(direction);
+					critRoom.ConnectionData.SetConnectionCount(direction, requirementsInDirection + 1);
+					lastOutwardConnection = direction;
+					critPathOutwardConnections.Add(lastOutwardConnection);
+				}
+				else
+				{
+                    EOrthogonalDirection inwardConnection = GameplayHelper.GetOppositeDirection(lastOutwardConnection);
+                    int requirementsInDirection = critRoom.ConnectionData.GetRequirementsInDirection(inwardConnection);
+                    critRoom.ConnectionData.SetConnectionCount(inwardConnection, requirementsInDirection + 1);
+
+                    if (!isFinalRoom)
+					{
+                        EOrthogonalDirection direction = GameplayHelper.GetRandomDirection(random);
+                        int requirementsInDirection1 = critRoom.ConnectionData.GetRequirementsInDirection(direction);
+                        critRoom.ConnectionData.SetConnectionCount(direction, requirementsInDirection1 + 1);
+                        lastOutwardConnection = direction;
+						critPathOutwardConnections.Add(lastOutwardConnection);
+                    }
+				}
+            }
+
+			for (int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)
+			{
+				Guid critRoomId = layoutData.CriticalPathIds[roomIndex];
+				GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
+				bool isFirstRoom = roomIndex == 0;
+				bool isFinalRoom = roomIndex == layoutData.CriticalPathIds.Count - 1;
+
+				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData);
+				critRoom.SetDefinition(roomDef);
+			}
+
+            for (int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)
 			{
 				Guid critRoomId = layoutData.CriticalPathIds[roomIndex];
 				GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
@@ -186,8 +300,9 @@ namespace JZK.Level
 				if(!isFinalRoom)
 				{
 					Guid nextRoomId = layoutData.CriticalPathIds[roomIndex + 1];
-					GenerationRoomData nextRoom = layoutData.Room_LUT[nextRoomId];
-					if(!critRoom.TryLinkToRoom(nextRoom, EOrthogonalDirection.Right, out GenerationDoorData door, out GenerationDoorData nextDoor))
+                    GenerationRoomData nextRoom = layoutData.Room_LUT[nextRoomId];
+
+					if(!critRoom.TryLinkToRoom(nextRoom, critPathOutwardConnections[roomIndex], out GenerationDoorData door, out GenerationDoorData nextDoor))
 					{
 						Debug.LogWarning("[GENERATION] failed linking from room " + critRoom.PrefabId.ToString() + " to " + nextRoom.PrefabId.ToString());
 						//complain here

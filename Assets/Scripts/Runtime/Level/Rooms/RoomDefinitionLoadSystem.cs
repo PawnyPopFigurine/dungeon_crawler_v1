@@ -45,6 +45,66 @@ namespace JZK.Level
             return _roomDefinition_LUT[roomId];
         }
 
+        public RoomDefinition GetRandomDefinition(System.Random random, GenerationRoomData.GenerationRoomConnectionData connectionData)
+        {
+            int maxAttempts = 100;
+
+            List<RoomDefinition> allRoomDefs = new(_roomDefinition_LUT.Values);
+
+            for (int attempt = 0; attempt < maxAttempts; ++attempt)
+            {
+                int index = random.Next(allRoomDefs.Count);
+                RoomDefinition considerRoom = allRoomDefs[index];
+                RoomController controller = considerRoom.PrefabController.GetComponent<RoomController>();
+                if (!controller.HasEnoughDoorsOnSide(EOrthogonalDirection.Up, connectionData.RequiredUpConnections))
+                {
+                    continue;
+                }
+                if (!controller.HasEnoughDoorsOnSide(EOrthogonalDirection.Down, connectionData.RequiredDownConnections))
+                {
+                    continue;
+                }
+                if (!controller.HasEnoughDoorsOnSide(EOrthogonalDirection.Left, connectionData.RequiredLeftConnections))
+                {
+                    continue;
+                }
+                if (!controller.HasEnoughDoorsOnSide(EOrthogonalDirection.Right, connectionData.RequiredRightConnections))
+                {
+                    continue;
+                }
+
+                return considerRoom;
+
+            }
+
+            Debug.LogError("[GENERATION] failed to find room matching connection data - quit after " + maxAttempts.ToString() + " attempts");
+            return null;
+        }
+
+        /*public RoomDefinition GetRandomDefinition_RequireDoors(System.Random random, EOrthogonalDirection direction, int doorCount)
+        {
+            int maxAttempts = 100;
+
+            List<RoomDefinition> allRoomDefs = new(_roomDefinition_LUT.Values);
+
+            for(int attempt = 0; attempt < maxAttempts; ++attempt)
+            {
+                int index = random.Next(allRoomDefs.Count);
+                RoomDefinition considerRoom = allRoomDefs[index];
+                RoomController controller = considerRoom.PrefabController.GetComponent<RoomController>();
+                if(!controller.HasEnoughDoorsOnSide(direction, doorCount))
+                {
+                    continue;
+                }
+
+                return considerRoom;
+
+            }
+
+            Debug.LogError("[GENERATION] failed to find room with door on side " + direction.ToString() + " - quit after " + maxAttempts.ToString() + " attempts");
+            return null;
+        }*/
+
         #region Load
 
         void LoadedAsset(RoomDefinitionSO asset)
