@@ -9,7 +9,7 @@ using JZK.Level;
 
 namespace JZK.Framework
 {
-    public class DungeonGenerationTestSceneInit : SceneInit
+    public class RandomWalkTestSceneInit : SceneInit
     {
         ISystemReference<MonoBehaviour>[] _systems = new ISystemReference<MonoBehaviour>[]
         {

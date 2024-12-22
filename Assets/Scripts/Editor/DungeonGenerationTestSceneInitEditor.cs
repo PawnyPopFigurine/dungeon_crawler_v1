@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEditor;
 using JZK.Framework;
 
-[CustomEditor(typeof(DungeonGenerationTestSceneInit))]
+[CustomEditor(typeof(RandomWalkTestSceneInit))]
 public class DungeonGenerationTestSceneInitEditor : Editor
 {
-    DungeonGenerationTestSceneInit _sceneInit;
+    RandomWalkTestSceneInit _sceneInit;
 
     private void Awake()
     {
-        _sceneInit = (DungeonGenerationTestSceneInit)target;
+        _sceneInit = (RandomWalkTestSceneInit)target;
     }
     public override void OnInspectorGUI()
     {

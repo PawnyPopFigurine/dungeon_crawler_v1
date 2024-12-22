@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEditor;
 using JZK.Framework;
 
-[CustomEditor(typeof(BSPTestSceneInit))]
+[CustomEditor(typeof(LayoutGenerationTestSceneInit))]
 public class BSPTestSceneEditor : Editor
 {
-    BSPTestSceneInit _sceneInit;
+    LayoutGenerationTestSceneInit _sceneInit;
 
     private void Awake()
     {
-        _sceneInit = (BSPTestSceneInit)target;
+        _sceneInit = (LayoutGenerationTestSceneInit)target;
     }
     public override void OnInspectorGUI()
     {
@@ -19,13 +19,13 @@ public class BSPTestSceneEditor : Editor
 
         if (GUILayout.Button("Clear Dungeon"))
         {
-            _sceneInit.ClearTiles();
+            //_sceneInit.ClearTiles();
             _sceneInit.ClearRooms();
         }
 
         if (GUILayout.Button("Generate New Dungeon"))
         {
-            _sceneInit.ClearTiles();
+            //_sceneInit.ClearTiles();
             _sceneInit.ClearRooms();
             _sceneInit.GenerateDungeon();
         }

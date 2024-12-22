@@ -22,50 +22,14 @@ namespace JZK.Level
 	}
 
 	[System.Serializable]
-	public class NodeData
-	{
-		private int _xPos;
-		public int XPos => _xPos;
-		private int _yPos;
-		public int YPos => _yPos;
-
-		public NodeData(int x, int y)
-		{
-			_xPos = x;
-			_yPos = y;
-		}
-
-		public bool IsWall;
-		public bool IsFloor;
-	}
-
-	[System.Serializable]
 	public class LayoutData
 	{
-		
-
-		NodeData[,] _nodes;
-		public NodeData[,] Nodes => _nodes;
-		public void SetNodesArray(NodeData[,] newNodes)
-		{
-			_nodes = newNodes;
-		}
-
-		private List<BoundsInt> _roomBoundsList = new();
-		public List<BoundsInt> RoomBoundsList => _roomBoundsList;
-		public void SetRoomBounds(List<BoundsInt> roomBounds)
-		{
-			_roomBoundsList = roomBounds;
-		}
-
 		private List<RoomController> _activeRoomsList = new();
 		public List<RoomController> ActiveRoomsList => _activeRoomsList;
 		public void SetActiveRooms(List<RoomController> activeRooms)
 		{
 			_activeRoomsList = activeRooms;
 		}
-
-		
 	}
 
 	public class DungeonLayoutGenerationSystem : PersistentSystem<DungeonLayoutGenerationSystem>
@@ -89,29 +53,12 @@ namespace JZK.Level
 			base.StartLoading(state);
 		}
 
-		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random, Tilemap tileMap)
+		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random)
 		{
 			LayoutData layoutData = new();
-			NodeData[,] nodeData = new NodeData[settings.DungeonWidth, settings.DungeonHeight];
-			for (int x = 0; x < settings.DungeonWidth; ++x)
-			{
-				for (int y = 0; y < settings.DungeonHeight; ++y)
-				{
-					nodeData[x, y] = new NodeData(x, y);
-				}
-			}
-			layoutData.SetNodesArray(nodeData);
-			CreateRoomBounds(settings, layoutData);
+
+
 			return layoutData;
-		}
-		
-
-		public void CreateRoomBounds(LayoutGenerationSettings settings, LayoutData layoutData)
-		{
-			System.Random random = new(settings.Seed);
-			var roomsList = ProceduralGeneration.BinarySpacePartitioning(new BoundsInt((Vector3Int)settings.StartPos, new Vector3Int(settings.DungeonWidth, settings.DungeonHeight, 0)), settings.MinRoomWidth, settings.MinRoomHeight, random);
-
-			layoutData.SetRoomBounds(roomsList);
 		}
 	}
 }

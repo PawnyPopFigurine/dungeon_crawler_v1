@@ -388,7 +388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1576247005}
-  - component: {fileID: 1576247004}
+  - component: {fileID: 1576247006}
   m_Layer: 0
   m_Name: Init
   m_TagString: Untagged
@@ -396,46 +396,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1576247004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1576247003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f31a76306f50a4f43a13b89149443872, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentLoadingState: 0
-  _printFirstUnloadedSystem: 0
-  _useDebugSeed: 1
-  _debugSeed: 999
-  _printDebug: 0
-  _floorTilemap: {fileID: 422580434}
-  _floortile: {fileID: 11400000, guid: cc5eb133ca5a88341a4e3429828dbdb2, type: 2}
-  _wallTile_Full: {fileID: 11400000, guid: 32e56e3b28bed7c48b8f00fd92fa3335, type: 2}
-  DebugRoomBoundsTiles:
-  - {fileID: 11400000, guid: bd18914f2c21842429f75f02158eafbd, type: 2}
-  - {fileID: 11400000, guid: 4a1385016d1582d4e88db909c1b5fcc0, type: 2}
-  - {fileID: 11400000, guid: 157ab082c1971804bb69327d43e5ed66, type: 2}
-  - {fileID: 11400000, guid: 783f788cfee78294fb41815364557bf1, type: 2}
-  - {fileID: 11400000, guid: 03908efc1bdf57548b67f892d6e161b7, type: 2}
-  - {fileID: 11400000, guid: 7df6bed65cda3f34395c326bfc9d7d76, type: 2}
-  - {fileID: 11400000, guid: c69cf56a97c450b4496de63ce8f7e6b4, type: 2}
-  - {fileID: 11400000, guid: cdafb918e0b590047ac86c4fdf2630ca, type: 2}
-  - {fileID: 11400000, guid: 6a573a4e1b62bae4b9d624ee36519b31, type: 2}
-  - {fileID: 11400000, guid: 546d624ce295b514db47219e16642c96, type: 2}
-  _settings:
-    Seed: 999
-    StartPos: {x: 0, y: 0}
-    MinRoomWidth: 26
-    MinRoomHeight: 20
-    DungeonWidth: 350
-    DungeonHeight: 250
-  _showRoomBounds: 0
-  _roomPrefab: {fileID: 8647749795519328597, guid: 7386683e9d350a846a37a8d086fc6e61, type: 3}
 --- !u!4 &1576247005
 Transform:
   m_ObjectHideFlags: 0
@@ -451,6 +411,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1576247006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576247003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8596282908995e4e86a73bc1601cd35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentLoadingState: 0
+  _printFirstUnloadedSystem: 0
+  _useDebugSeed: 0
+  _debugSeed: 0
+  _printDebug: 0
+  _floorTilemap: {fileID: 0}
+  _floortile: {fileID: 0}
+  _wallTile_Full: {fileID: 0}
+  DebugRoomBoundsTiles: []
+  _settings:
+    Seed: 0
+    StartPos: {x: 0, y: 0}
+    MinRoomWidth: 0
+    MinRoomHeight: 0
+    DungeonWidth: 0
+    DungeonHeight: 0
+  _showRoomBounds: 0
+  _roomPrefab: {fileID: 0}
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0
