@@ -67,13 +67,12 @@ namespace JZK.Gameplay
             }
 		}*/
 
-
-		public void InitialiseOnLoad(bool forceInitialise = false)
+		public void InitialiseOnLoad(bool forceInitialise = false, bool forDefinition = false)
 		{
-			Initialise(forceInitialise);
+			Initialise(forceInitialise, forDefinition);
 		}
 
-		public void Initialise(bool forceInitialise = false)
+		public void Initialise(bool forceInitialise = false, bool forDefinition = false)
 		{
 			if(!forceInitialise)
 			{
@@ -90,9 +89,12 @@ namespace JZK.Gameplay
 
 			_hasClearedRoom = false;
 
-			_debugRoomCentreSprite.enabled = false;
+			if(!forDefinition)
+			{
+                _debugRoomCentreSprite.enabled = false;
+            }
 
-			_floorTilemap.CompressBounds();
+            _floorTilemap.CompressBounds();
 			_wallTilemap.CompressBounds();
 			foreach (Tilemap fillInWall in _fillInWalls)
 			{
