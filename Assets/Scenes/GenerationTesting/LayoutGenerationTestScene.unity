@@ -426,11 +426,11 @@ MonoBehaviour:
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
   _useDebugSeed: 1
-  _debugSeed: 1001
+  _debugSeed: 2002
   _printDebug: 0
   _settings:
     Seed: 0
-    CriticalPathRoomCount: 5
+    CriticalPathRoomCount: 10
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0
