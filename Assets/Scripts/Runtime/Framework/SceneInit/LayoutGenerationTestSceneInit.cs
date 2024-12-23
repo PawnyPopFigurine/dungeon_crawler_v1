@@ -103,12 +103,6 @@ namespace JZK.Framework
 				roomPrefabPos.x += roomSpacing;
 				_activeRoomControllers.Add(controller);
 				roomController_LUT.Add(roomData.Id, controller);
-				for (int doorIndex = 0; doorIndex < controller.Doors.Count; doorIndex++)
-				{
-					RoomDoor roomDoor = controller.Doors[doorIndex];
-					Guid doorDataId = roomData.AllDoorIds[doorIndex];
-					GenerationDoorData doorData = _currentLayout.Door_LUT[doorDataId];
-				}
 			}
 
 			foreach (GenerationDoorData doorData in _currentLayout.Door_LUT.Values)
