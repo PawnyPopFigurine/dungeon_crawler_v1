@@ -53,46 +53,55 @@ namespace JZK.Gameplay
 			return _doors.IndexOf(roomDoor);
 		}
 
-
-		/*public void OnPlacedInGeneration(GenerationRoomData generationData)
+		public void InitialiseOnLoad()
 		{
-			_generationId = generationData.Id;
-
-			for(int doorIndex = 0; doorIndex < _doors.Count; doorIndex++)
-			{
-				RoomDoor roomDoor = _doors[doorIndex];
-				Guid doorDataId = generationData.AllDoorIds[doorIndex];
-				GenerationDoorData doorData = generationData.Door_LUT[doorDataId];
-				roomDoor.OnPlacedInGeneration(doorData);
-            }
-		}*/
-
-		public void InitialiseOnLoad(bool forceInitialise = false, bool forDefinition = false)
-		{
-			Initialise(forceInitialise, forDefinition);
+			Initialise();
 		}
 
-		public void Initialise(bool forceInitialise = false, bool forDefinition = false)
+		public void InitialiseDoors()
 		{
-			if(!forceInitialise)
-			{
-                if (_hasInitialised)
+			_topSideDoors.Clear();
+			_rightSideDoors.Clear();
+			_btmSideDoors.Clear();
+			_leftSideDoors.Clear();
+
+            foreach (RoomDoor door in _doors)
+            {
+                door.Initialise();
+
+                switch (door.SideOfRoom)
                 {
-                    return;
+                    case EOrthogonalDirection.Up:
+                        _topSideDoors.Add(door);
+                        break;
+                    case EOrthogonalDirection.Right:
+                        _rightSideDoors.Add(door);
+                        break;
+                    case EOrthogonalDirection.Down:
+                        _btmSideDoors.Add(door);
+                        break;
+                    case EOrthogonalDirection.Left:
+                        _leftSideDoors.Add(door);
+                        break;
                 }
             }
+        }
 
-			_hasInitialised = true;
+		public void Initialise()
+		{
+            if (_hasInitialised)
+            {
+                return;
+            }
+
+            _hasInitialised = true;
 
 			_currentFloorTile = _initialFloorTile;
 			_currentWallTile = _initialWallTile;
 
 			_hasClearedRoom = false;
 
-			if(!forDefinition)
-			{
-                _debugRoomCentreSprite.enabled = false;
-            }
+            _debugRoomCentreSprite.enabled = false;
 
             _floorTilemap.CompressBounds();
 			_wallTilemap.CompressBounds();
@@ -101,26 +110,7 @@ namespace JZK.Gameplay
 				fillInWall.CompressBounds();
 			}
 
-			foreach (RoomDoor door in _doors)
-			{
-				door.Initialise();
-
-				switch (door.SideOfRoom)
-				{
-					case EOrthogonalDirection.Up:
-						_topSideDoors.Add(door);
-						break;
-					case EOrthogonalDirection.Right:
-						_rightSideDoors.Add(door);
-						break;
-					case EOrthogonalDirection.Down:
-						_btmSideDoors.Add(door);
-						break;
-					case EOrthogonalDirection.Left:
-						_leftSideDoors.Add(door);
-						break;
-				}
-			}
+			InitialiseDoors();
 		}
 
 		public List<RoomDoor> GetDoorListForSide(EOrthogonalDirection roomSide)

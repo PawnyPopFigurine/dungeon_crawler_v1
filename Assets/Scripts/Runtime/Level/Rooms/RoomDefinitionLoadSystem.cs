@@ -136,7 +136,7 @@ namespace JZK.Level
                 if(!def.HideInGame)
                 {
                     RoomController roomController = def.PrefabController.GetComponent<RoomController>();
-                    roomController.InitialiseOnLoad(true);
+                    roomController.InitialiseDoors();
 
                     _allDefinitionIds.Add(def.Id);
                     _roomDefinition_LUT.Add(def.Id, def);

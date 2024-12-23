@@ -301,7 +301,7 @@ namespace JZK.Level
 
 					if (!critRoom.TryLinkToRoom(nextRoom, critPathOutwardConnections[roomIndex], out GenerationDoorData door, out GenerationDoorData nextDoor))
 					{
-						Debug.LogWarning("[GENERATION] failed linking from room " + critRoom.PrefabId.ToString() + " to " + nextRoom.PrefabId.ToString());
+						Debug.LogWarning("[GENERATION] failed linking from room " + critRoom.PrefabId.ToString() + " - " + critPathOutwardConnections[roomIndex].ToString() + " to " + nextRoom.PrefabId.ToString());
 						//complain here
 					}
 					else
