@@ -32,6 +32,8 @@ namespace JZK.Framework
 
 		LayoutData _currentLayout;
 
+		List<RoomController> _activeRoomControllers = new();
+
 
 
 		public void Start()
@@ -84,7 +86,7 @@ namespace JZK.Framework
             Vector2 roomPrefabPos = Vector2.zero;
 			int roomSpacing = 30;
 
-			List<RoomController> activeControllers = new();
+			//List<RoomController> activeControllers = new();
 
 			Dictionary<Guid, RoomController> roomController_LUT = new();
 
@@ -99,7 +101,7 @@ namespace JZK.Framework
 				controller.gameObject.SetActive(true);
 				controller.transform.position = roomPrefabPos;
 				roomPrefabPos.x += roomSpacing;
-				activeControllers.Add(controller);
+				_activeRoomControllers.Add(controller);
 				roomController_LUT.Add(roomData.Id, controller);
 				for (int doorIndex = 0; doorIndex < controller.Doors.Count; doorIndex++)
 				{
@@ -134,6 +136,13 @@ namespace JZK.Framework
 			{
 				return;
 			}
+
+			foreach(RoomController activeRoom in _activeRoomControllers)
+			{
+				RoomLoadSystem.Instance.ClearRoom(activeRoom);
+			}
+
+			_activeRoomControllers.Clear();
 
 			_currentLayout = null;
 		}

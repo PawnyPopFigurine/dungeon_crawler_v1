@@ -47,6 +47,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - game_room_prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ea61fa4acf028c47bbd44ffa23e9b82
+    m_Address: Assets/Prefabs/Environment/Rooms/Backwards_E_Shape/Backwards_E_Shape_Room_11x16.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5aa9178add6bebb449bc04f0c9551d7c
     m_Address: Assets/Prefabs/Environment/Rooms/H_Shape/H_Shape_Room_12x14.prefab
     m_ReadOnly: 0
@@ -73,6 +79,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8cce547c43944f74297ca23d66f6c02b
     m_Address: Assets/Prefabs/Environment/Rooms/Rect_Shape/RectRoom_16x4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d3a1b9381d5e144b8170c4d2bf68caa
+    m_Address: Assets/Prefabs/Environment/Rooms/E_Shape/E_Shape_Room_11x16.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - game_room_prefab

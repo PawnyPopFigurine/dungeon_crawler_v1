@@ -17,6 +17,18 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 42afaf3e0de71a348ad79946ce353fff
   m_SerializeEntries:
+  - m_GUID: 09664d8291409db47bd88db5e22bca3f
+    m_Address: Assets/Data/Rooms/Backwards_E_Shape/Backwards_E_Shape_Room_11x16.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f0cf735a4f25db4a9a4db29a926c162
+    m_Address: Assets/Data/Rooms/E_Shape/E_Shape_Room_11x16.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 317016543b5f4d24e80767658eba1605
     m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_4x16.asset
     m_ReadOnly: 0

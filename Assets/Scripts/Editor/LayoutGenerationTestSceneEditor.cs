@@ -5,7 +5,7 @@ using UnityEditor;
 using JZK.Framework;
 
 [CustomEditor(typeof(LayoutGenerationTestSceneInit))]
-public class BSPTestSceneEditor : Editor
+public class LayoutGenerationTestSceneEditor : Editor
 {
     LayoutGenerationTestSceneInit _sceneInit;
 

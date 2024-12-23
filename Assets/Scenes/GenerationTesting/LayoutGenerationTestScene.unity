@@ -429,7 +429,7 @@ MonoBehaviour:
   _debugSeed: 69420
   _printDebug: 0
   _settings:
-    Seed: 0
+    Seed: 69420
     CriticalPathRoomCount: 10
 --- !u!1 &2096566227
 GameObject:
