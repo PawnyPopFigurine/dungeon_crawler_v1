@@ -10,16 +10,24 @@ namespace JZK.Framework
 	{
 		ISystemReference<MonoBehaviour>[] _systems = new ISystemReference<MonoBehaviour>[]
 		{
-			new SystemReference<Input.InputSystem>(),
+            new SystemReference<Camera.CameraSystem>(),
+
+            new SystemReference<Gameplay.GameplaySystem>(),
+            new SystemReference<Gameplay.PlayerSystem>(),
+            new SystemReference<Gameplay.ProjectileSystem>(),
+
+            new SystemReference<Input.InputSystem>(),
 
 			new SystemReference<Level.DungeonLayoutGenerationSystem>(),
 			new SystemReference<Level.RoomDefinitionLoadSystem>(),
 			new SystemReference<Level.RoomLoadSystem>(),
 
-
-			new SystemReference<UI.UIStateSystem>(),
+            new SystemReference<UI.GameplayUISystem>(),
+            new SystemReference<UI.UIStateSystem>(),
 
 		};
+
+		[SerializeField] Transform _playerSpawnPoint;
 
 		[SerializeField] private bool _useDebugSeed = false;
 		[SerializeField] private int _debugSeed;
@@ -147,7 +155,16 @@ namespace JZK.Framework
 			{
 				case ELoadingState.Game:
 					GenerateDungeon();
-					break;
+                    Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_playerSpawnPoint);
+                    break;
+			}
+		}
+
+		public void OpenAllDoors()
+		{
+			foreach(RoomController room in _activeRoomControllers)
+			{
+				room.OpenAllDoors();
 			}
 		}
 	}

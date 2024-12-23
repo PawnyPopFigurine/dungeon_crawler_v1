@@ -212,6 +212,11 @@ namespace JZK.UI
 						GameplayUISystem.Instance.RefreshHealthBarForCurrentHealth();
 						EnterScreen(EUIState.Gameplay);
 					}
+					if(SceneInit.CurrentSceneInit is LayoutGenerationTestSceneInit layoutGenerationTestSceneInit)
+					{
+                        GameplayUISystem.Instance.RefreshHealthBarForCurrentHealth();
+                        EnterScreen(EUIState.Gameplay);
+                    }
 					break;
 			}
 		}

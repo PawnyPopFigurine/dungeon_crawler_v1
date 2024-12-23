@@ -46,6 +46,11 @@ namespace JZK.Gameplay
 				{
                     playerSceneInit.OpenAllRoomDoors();
 				}
+
+                if(SceneInit.CurrentSceneInit is LayoutGenerationTestSceneInit layoutGenerationSceneInit)
+                {
+                    layoutGenerationSceneInit.OpenAllDoors();
+                }
             }
         }
     }
