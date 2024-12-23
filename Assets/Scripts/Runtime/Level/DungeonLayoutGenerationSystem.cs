@@ -2,6 +2,7 @@ using JZK.Framework;
 using JZK.Gameplay;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace JZK.Level
@@ -11,7 +12,10 @@ namespace JZK.Level
 	{
 		public int Seed;
 		public int CriticalPathRoomCount;
-		[Range(0, 1)] public float SecondaryRoomChance;
+		[Range(0, 1)]
+		public float SecondaryRoomChance;
+		[Tooltip("Set to 0 or lower to remove limit")]
+		public int MaxTotalRooms;
 	}
 
 	[System.Serializable]
@@ -20,6 +24,7 @@ namespace JZK.Level
 		public Dictionary<Guid, GenerationRoomData> Room_LUT = new();
 		public Dictionary<Guid, GenerationDoorData> Door_LUT = new();
 		public List<Guid> CriticalPathIds = new();
+		public List<Guid> SecondaryRoomIds = new();
 		//TODO: theme enum
 	}
 
@@ -29,6 +34,7 @@ namespace JZK.Level
 		//TODO: override theme enum
 		public Guid Id = Guid.NewGuid();
 		public string PrefabId;
+		public ERoomType RoomType;
 		public List<Guid> AllDoorIds = new();
 		public LayoutData ParentLayout;
 		public GenerationRoomConnectionData ConnectionData;
@@ -108,6 +114,7 @@ namespace JZK.Level
 		public void SetDefinition(RoomDefinition def)
 		{
 			PrefabId = def.Id;
+			RoomType = def.RoomType;
 			AllDoorIds.Clear();
 
 			RoomController controller = def.PrefabController.GetComponent<RoomController>();
@@ -291,20 +298,20 @@ namespace JZK.Level
 				bool isFinalRoom = roomIndex == layoutData.CriticalPathIds.Count - 1;
 
 				ERoomType roomType = ERoomType.StandardCombat;
-				if(isFirstRoom)
+				if (isFirstRoom)
 				{
 					roomType = ERoomType.Start;
 				}
-				if(isFinalRoom)
+				if (isFinalRoom)
 				{
 					roomType = ERoomType.End;
 				}
 
 				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success, roomType);
-				if(success)
+				if (success)
 				{
-                    critRoom.SetDefinition(roomDef);
-                }
+					critRoom.SetDefinition(roomDef);
+				}
 				else
 				{
 					Debug.LogError("[GENERATION] failed finding prefab for critical path room " + roomIndex.ToString() + " - "
@@ -315,14 +322,7 @@ namespace JZK.Level
 					return null;
 					//complain
 				}
-            }
-
-			//using door data from definitions, go through all unused doors and decide whether to add a secondary room
-			/*for(int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)
-			{
-                Guid critRoomId = layoutData.CriticalPathIds[roomIndex];
-                GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
-            }*/
+			}
 
 			//link doors
 			for (int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)
@@ -344,6 +344,70 @@ namespace JZK.Level
 					{
 						door.Enabled = true;
 						nextDoor.Enabled = true;
+					}
+				}
+			}
+
+			//using door data from definitions, go through all unused doors and decide whether to add a secondary room
+			List<Guid> critRoomShuffledGuids = layoutData.CriticalPathIds.OrderBy(x => random.NextDouble()).ToList();
+			foreach (Guid critRoomId in critRoomShuffledGuids)
+			{
+				//prevent secondary room addition if room limit is reached
+				if (settings.MaxTotalRooms > 0)
+				{
+					int totalRoomCount = layoutData.Room_LUT.Count;
+					if (totalRoomCount >= settings.MaxTotalRooms)
+					{
+						continue;
+					}
+				}
+
+				GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
+				bool isFirstRoom = critRoom.CriticalPathIndex == 0;
+				bool isLastRoom = critRoom.CriticalPathIndex == critRoomShuffledGuids.Count - 1;
+				foreach (Guid doorId in critRoom.AllDoorIds)
+				{
+					GenerationDoorData doorData = layoutData.Door_LUT[doorId];
+					if (doorData.IsLinked)
+					{
+						continue;
+					}
+
+					if (random.NextDouble() < settings.SecondaryRoomChance)
+					{
+						Debug.Log("[GENERATION] create a secondary room from crit room " + critRoom.CriticalPathIndex);
+						GenerationRoomData secondaryRoom = new();
+						secondaryRoom.Initialise(layoutData, critRoom.CriticalPathIndex, false);
+						layoutData.Room_LUT.Add(secondaryRoom.Id, secondaryRoom);
+						layoutData.SecondaryRoomIds.Add(secondaryRoom.Id);
+						EOrthogonalDirection secondaryRoomInDirection = GameplayHelper.GetOppositeDirection(doorData.SideOfRoom);
+						int currentConnectionCount = secondaryRoom.ConnectionData.GetRequirementsInDirection(secondaryRoomInDirection);
+						secondaryRoom.ConnectionData.SetConnectionCount(secondaryRoomInDirection, currentConnectionCount + 1);
+						ERoomType secondaryRoomType = ERoomType.StandardCombat;
+						RoomDefinition secondaryRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, secondaryRoom.ConnectionData, out bool success, secondaryRoomType);
+						if (!success)
+						{
+							Debug.LogError("[GENERATION] failed finding prefab for secondary path room " + secondaryRoom.CriticalPathIndex.ToString() + " - "
+							+ " CONNETION DATA: Up - " + critRoom.ConnectionData.RequiredUpConnections + " - "
+							+ " Down - " + critRoom.ConnectionData.RequiredDownConnections + " - "
+							+ " Left - " + critRoom.ConnectionData.RequiredLeftConnections + " - "
+							+ " Right - " + critRoom.ConnectionData.RequiredRightConnections);
+							return null;
+						}
+						else
+						{
+							secondaryRoom.SetDefinition(secondaryRoomDef);
+							if (!critRoom.TryLinkToRoom(secondaryRoom, doorData.SideOfRoom, out _, out GenerationDoorData secondaryRoomDoor))
+							{
+								//complain here
+								return null;
+							}
+							else
+							{
+								doorData.Enabled = true;
+								secondaryRoomDoor.Enabled = true;
+							}
+						}
 					}
 				}
 			}
