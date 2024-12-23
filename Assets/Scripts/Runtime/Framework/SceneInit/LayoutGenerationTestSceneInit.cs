@@ -94,7 +94,7 @@ namespace JZK.Framework
             float generationStartTime = Time.realtimeSinceStartup;
 
             Vector2 roomPrefabPos = Vector2.zero;
-			int roomSpacing = 30;
+			int roomSpacing = 50;
 
 			//List<RoomController> activeControllers = new();
 

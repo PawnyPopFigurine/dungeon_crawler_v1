@@ -295,10 +295,10 @@ namespace JZK.Level
 				{
 					roomType = ERoomType.Start;
 				}
-				/*if(isFinalRoom)
+				if(isFinalRoom)
 				{
 					roomType = ERoomType.End;
-				}*/
+				}
 
 				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success, roomType);
 				if(success)
