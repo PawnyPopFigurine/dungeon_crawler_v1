@@ -59,10 +59,18 @@ namespace JZK.Framework
 
 			System.Random random = new(_settings.Seed);
 
-			_currentLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_settings, random);
+			LayoutData generatedLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_settings, random, out bool success);
 
-			CreateDungeonFromLayoutData();
-		}
+			if(success)
+			{
+				_currentLayout = generatedLayout;
+				CreateDungeonFromLayoutData();
+			}
+			else
+			{
+				Debug.LogError("[GENERATION] Layout generation failed with seed " + _settings.Seed.ToString());
+			}
+        }
 
 		public void CreateDungeonFromLayoutData()
 		{
@@ -71,7 +79,9 @@ namespace JZK.Framework
 				return;
 			}
 
-			Vector2 roomPrefabPos = Vector2.zero;
+            float generationStartTime = Time.realtimeSinceStartup;
+
+            Vector2 roomPrefabPos = Vector2.zero;
 			int roomSpacing = 30;
 
 			List<RoomController> activeControllers = new();
@@ -112,7 +122,11 @@ namespace JZK.Framework
 					Debug.Log("[GENERATION] RUNTIME PLACEMENT: linked door " + doorData.Id.ToString() + " to door " + linkDoorData.Id.ToString());
 				}
 			}
-		}
+
+            float generationEndTime = Time.realtimeSinceStartup;
+            float generationTime = generationEndTime - generationStartTime;
+            Debug.Log("[GENERATION] RUNTIME PLACEMENT placement took " + generationTime + " seconds to complete");
+        }
 
 		public void ClearRooms()
 		{

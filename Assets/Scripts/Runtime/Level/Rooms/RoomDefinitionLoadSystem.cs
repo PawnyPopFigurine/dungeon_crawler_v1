@@ -45,7 +45,7 @@ namespace JZK.Level
             return _roomDefinition_LUT[roomId];
         }
 
-        public RoomDefinition GetRandomDefinition(System.Random random, GenerationRoomData.GenerationRoomConnectionData connectionData)
+        public RoomDefinition GetRandomDefinition(System.Random random, GenerationRoomData.GenerationRoomConnectionData connectionData, out bool success)
         {
             int maxAttempts = 100;
 
@@ -73,11 +73,13 @@ namespace JZK.Level
                     continue;
                 }
 
+                success = true;
                 return considerRoom;
 
             }
 
             Debug.LogError("[GENERATION] failed to find room matching connection data - quit after " + maxAttempts.ToString() + " attempts");
+            success = false;
             return null;
         }
 

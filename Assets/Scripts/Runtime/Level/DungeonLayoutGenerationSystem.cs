@@ -225,10 +225,11 @@ namespace JZK.Level
 			base.StartLoading(state);
 		}
 
-		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random)
+		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random, out bool generationSuccess)
 		{
-			//float generationStartTime = System.DateTime.Now.;
+			float generationStartTime = Time.realtimeSinceStartup;
 			LayoutData layoutData = new();
+			generationSuccess = false;
 
 			//create number of room datas needed for critical path
 			for (int critPathIndex = 0; critPathIndex < settings.CriticalPathRoomCount; ++critPathIndex)
@@ -284,9 +285,22 @@ namespace JZK.Level
 				bool isFirstRoom = roomIndex == 0;
 				bool isFinalRoom = roomIndex == layoutData.CriticalPathIds.Count - 1;
 
-				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData);
-				critRoom.SetDefinition(roomDef);
-			}
+				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success);
+				if(success)
+				{
+                    critRoom.SetDefinition(roomDef);
+                }
+				else
+				{
+					Debug.LogError("[GENERATION] failed finding prefab for critical path room " + roomIndex.ToString() + " - "
+						+ " CONNETION DATA: Up - " + critRoom.ConnectionData.RequiredUpConnections + " - "
+						+ " Down - " + critRoom.ConnectionData.RequiredDownConnections + " - "
+						+ " Left - " + critRoom.ConnectionData.RequiredLeftConnections + " - "
+						+ " Right - " + critRoom.ConnectionData.RequiredRightConnections);
+					return null;
+					//complain
+				}
+            }
 
 			//link doors
 			for (int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)
@@ -302,7 +316,7 @@ namespace JZK.Level
 					if (!critRoom.TryLinkToRoom(nextRoom, critPathOutwardConnections[roomIndex], out GenerationDoorData door, out GenerationDoorData nextDoor))
 					{
 						Debug.LogWarning("[GENERATION] failed linking from room " + critRoom.PrefabId.ToString() + " - " + critPathOutwardConnections[roomIndex].ToString() + " to " + nextRoom.PrefabId.ToString());
-						//complain here
+						return null;
 					}
 					else
 					{
@@ -312,6 +326,10 @@ namespace JZK.Level
 				}
 			}
 
+			float generationEndTime = Time.realtimeSinceStartup;
+			float generationTime = generationEndTime - generationStartTime;
+			Debug.Log("[GENERATION] layout data took " + generationTime + " seconds to generate");
+			generationSuccess = true;
 			return layoutData;
 		}
 	}
