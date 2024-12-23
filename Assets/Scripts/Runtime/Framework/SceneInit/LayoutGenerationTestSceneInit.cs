@@ -155,7 +155,7 @@ namespace JZK.Framework
 			{
 				case ELoadingState.Game:
 					GenerateDungeon();
-                    Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_playerSpawnPoint);
+					RespawnPlayer();
                     break;
 			}
 		}
@@ -167,5 +167,10 @@ namespace JZK.Framework
 				room.OpenAllDoors();
 			}
 		}
+
+		public void RespawnPlayer()
+		{
+            Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_playerSpawnPoint);
+        }
 	}
 }

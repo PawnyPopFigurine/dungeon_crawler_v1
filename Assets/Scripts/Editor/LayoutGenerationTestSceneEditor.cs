@@ -28,6 +28,7 @@ public class LayoutGenerationTestSceneEditor : Editor
             //_sceneInit.ClearTiles();
             _sceneInit.ClearRooms();
             _sceneInit.GenerateDungeon();
+            _sceneInit.RespawnPlayer();
         }
     }
 }
