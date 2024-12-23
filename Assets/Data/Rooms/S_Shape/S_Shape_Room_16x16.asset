@@ -16,3 +16,4 @@ MonoBehaviour:
     _id: S_Shape_Room_16x16
     _prefabController: {fileID: 2667284999973894481, guid: 1ae446926fe50e449be31284d57c85dd, type: 3}
     _hideInGame: 0
+    _roomType: 1

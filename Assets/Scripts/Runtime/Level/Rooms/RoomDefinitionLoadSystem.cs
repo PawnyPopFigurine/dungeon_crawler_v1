@@ -32,8 +32,12 @@ namespace JZK.Level
         private Dictionary<string, RoomDefinition> _roomDefinition_LUT = new();
 
         private List<string> _allDefinitionIds = new();
+        private List<string> _standardCombatIds = new();
+        private List<string> _nonCombatIds = new();
+        private List<string> _startIds = new();
+        private List<string> _endIds = new();
 
-        public string GetRandomRoomId(System.Random random)
+        /*public string GetRandomRoomId(System.Random random)
         {
             int roomIdIndex = random.Next(0, _allDefinitionIds.Count);
             return _allDefinitionIds[roomIdIndex];
@@ -43,18 +47,39 @@ namespace JZK.Level
         {
             string roomId = GetRandomRoomId(random);
             return _roomDefinition_LUT[roomId];
+        }*/
+        List<string> GetListForRoomType(ERoomType roomType)
+        {
+            switch(roomType)
+            {
+                case ERoomType.StandardCombat:
+                    return _standardCombatIds;
+                case ERoomType.NonCombat:
+                    return _nonCombatIds;
+                case ERoomType.Start:
+                    return _startIds;
+                case ERoomType.End:
+                    return _endIds;
+                default:
+                    return _allDefinitionIds;
+            }
         }
 
-        public RoomDefinition GetRandomDefinition(System.Random random, GenerationRoomData.GenerationRoomConnectionData connectionData, out bool success)
+        public RoomDefinition GetRandomDefinition(System.Random random, GenerationRoomData.GenerationRoomConnectionData connectionData, out bool success, ERoomType requiredType = ERoomType.None)
         {
             int maxAttempts = 100;
 
-            List<RoomDefinition> allRoomDefs = new(_roomDefinition_LUT.Values);
+            List<string> roomIdList = GetListForRoomType(requiredType);
+
+            //List<RoomDefinition> allRoomDefs = new(_roomDefinition_LUT.Values);
 
             for (int attempt = 0; attempt < maxAttempts; ++attempt)
             {
-                int index = random.Next(allRoomDefs.Count);
-                RoomDefinition considerRoom = allRoomDefs[index];
+                int index = random.Next(roomIdList.Count);
+                string considerId = roomIdList[index];
+                RoomDefinition considerRoom = _roomDefinition_LUT[considerId];
+                /*int index = random.Next(allRoomDefs.Count);
+                RoomDefinition considerRoom = allRoomDefs[index];*/
                 RoomController controller = considerRoom.PrefabController.GetComponent<RoomController>();
                 if (!controller.HasEnoughDoorsOnSide(EOrthogonalDirection.Up, connectionData.RequiredUpConnections))
                 {
@@ -78,34 +103,10 @@ namespace JZK.Level
 
             }
 
-            Debug.LogError("[GENERATION] failed to find room matching connection data - quit after " + maxAttempts.ToString() + " attempts");
+            Debug.LogError("[GENERATION] failed to find room matching connection data for type - " + requiredType.ToString() + " - quit after " + maxAttempts.ToString() + " attempts");
             success = false;
             return null;
         }
-
-        /*public RoomDefinition GetRandomDefinition_RequireDoors(System.Random random, EOrthogonalDirection direction, int doorCount)
-        {
-            int maxAttempts = 100;
-
-            List<RoomDefinition> allRoomDefs = new(_roomDefinition_LUT.Values);
-
-            for(int attempt = 0; attempt < maxAttempts; ++attempt)
-            {
-                int index = random.Next(allRoomDefs.Count);
-                RoomDefinition considerRoom = allRoomDefs[index];
-                RoomController controller = considerRoom.PrefabController.GetComponent<RoomController>();
-                if(!controller.HasEnoughDoorsOnSide(direction, doorCount))
-                {
-                    continue;
-                }
-
-                return considerRoom;
-
-            }
-
-            Debug.LogError("[GENERATION] failed to find room with door on side " + direction.ToString() + " - quit after " + maxAttempts.ToString() + " attempts");
-            return null;
-        }*/
 
         #region Load
 
@@ -132,6 +133,11 @@ namespace JZK.Level
             _allDefinitionIds.Clear();
             _roomDefinition_LUT.Clear();
 
+            _endIds.Clear();
+            _startIds.Clear();
+            _standardCombatIds.Clear();
+            _nonCombatIds.Clear();
+
             foreach(RoomDefinitionSO defSO in definitionSOs)
             {
                 RoomDefinition def = defSO.Definition.CreateCopy();
@@ -142,6 +148,24 @@ namespace JZK.Level
 
                     _allDefinitionIds.Add(def.Id);
                     _roomDefinition_LUT.Add(def.Id, def);
+                    switch(def.RoomType)
+                    {
+                        case ERoomType.StandardCombat:
+                            _standardCombatIds.Add(def.Id);
+                            break;
+                        case ERoomType.NonCombat:
+                            _nonCombatIds.Add(def.Id);
+                            break;
+                        case ERoomType.Start:
+                            _startIds.Add(def.Id);
+                            break; ;
+                        case ERoomType.End:
+                            _endIds.Add(def.Id);
+                            break;
+                        case ERoomType.None:
+                            Debug.LogWarning("Please set type enum for room " + def.Id);
+                            break;
+                    }
                     Debug.Log("[LOAD] added definition with ID " + def.Id + " to LUT");
                 }
             }

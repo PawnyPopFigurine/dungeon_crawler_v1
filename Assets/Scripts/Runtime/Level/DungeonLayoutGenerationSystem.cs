@@ -11,6 +11,7 @@ namespace JZK.Level
 	{
 		public int Seed;
 		public int CriticalPathRoomCount;
+		[Range(0, 1)] public float SecondaryRoomChance;
 	}
 
 	[System.Serializable]
@@ -31,6 +32,8 @@ namespace JZK.Level
 		public List<Guid> AllDoorIds = new();
 		public LayoutData ParentLayout;
 		public GenerationRoomConnectionData ConnectionData;
+		public int CriticalPathIndex = -1;  //how far along the crit path this room is - even if it isn't directly on it
+		public bool OnCriticalPath;
 
 		public class GenerationRoomConnectionData
 		{
@@ -94,10 +97,12 @@ namespace JZK.Level
 			return returnList;
 		}
 
-		public void Initialise(LayoutData parent)
+		public void Initialise(LayoutData parent, int critPathIndex, bool onCritPath)
 		{
 			ParentLayout = parent;
 			ConnectionData = new();
+			CriticalPathIndex = critPathIndex;
+			OnCriticalPath = onCritPath;
 		}
 
 		public void SetDefinition(RoomDefinition def)
@@ -235,7 +240,7 @@ namespace JZK.Level
 			for (int critPathIndex = 0; critPathIndex < settings.CriticalPathRoomCount; ++critPathIndex)
 			{
 				GenerationRoomData roomData = new();
-				roomData.Initialise(layoutData);
+				roomData.Initialise(layoutData, critPathIndex, true);
 				layoutData.Room_LUT.Add(roomData.Id, roomData);
 				layoutData.CriticalPathIds.Add(roomData.Id);
 			}
@@ -301,6 +306,13 @@ namespace JZK.Level
 					//complain
 				}
             }
+
+			//using door data from definitions, go through all unused doors and decide whether to add a secondary room
+			/*for(int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)
+			{
+                Guid critRoomId = layoutData.CriticalPathIds[roomIndex];
+                GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
+            }*/
 
 			//link doors
 			for (int roomIndex = 0; roomIndex < layoutData.CriticalPathIds.Count; ++roomIndex)

@@ -14,6 +14,15 @@ namespace JZK.Level
         public RoomDefinition Definition => _definition;
     }
 
+    public enum ERoomType
+    {
+        None = 0,
+        StandardCombat = 1,
+        NonCombat = 2,
+        Start = 3,
+        End = 4,
+    }
+
     [System.Serializable]
     public class RoomDefinition
     {
@@ -28,6 +37,11 @@ namespace JZK.Level
         [SerializeField]
         bool _hideInGame;
         public bool HideInGame => _hideInGame;
+
+        [SerializeField]
+        ERoomType _roomType;
+        public ERoomType RoomType => _roomType;
+        
 
         public RoomDefinition CreateCopy()
         {
