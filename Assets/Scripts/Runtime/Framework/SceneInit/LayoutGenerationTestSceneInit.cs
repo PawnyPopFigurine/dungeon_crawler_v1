@@ -27,7 +27,7 @@ namespace JZK.Framework
 
 		};
 
-		[SerializeField] Transform _playerSpawnPoint;
+		//[SerializeField] Transform _playerSpawnPoint;
 
 		[SerializeField] private bool _useDebugSeed = false;
 		[SerializeField] private int _debugSeed;
@@ -41,6 +41,8 @@ namespace JZK.Framework
 		LayoutData _currentLayout;
 
 		List<RoomController> _activeRoomControllers = new();
+
+		StartPortal _currentStartPoint;
 
 
 
@@ -111,6 +113,16 @@ namespace JZK.Framework
 				roomPrefabPos.x += roomSpacing;
 				_activeRoomControllers.Add(controller);
 				roomController_LUT.Add(roomData.Id, controller);
+
+				if(RoomDefinitionLoadSystem.Instance.GetDefinition(roomData.PrefabId).RoomType == ERoomType.Start)
+				{
+					StartPortal portal = controller.GetComponentInChildren<StartPortal>();
+					_currentStartPoint = portal;
+				}
+				/*if(controller.TryGetComponent(out StartPortal portal))
+				{
+					_currentStartPoint = portal;
+				}*/
 			}
 
 			foreach (GenerationDoorData doorData in _currentLayout.Door_LUT.Values)
@@ -126,6 +138,8 @@ namespace JZK.Framework
 					Debug.Log("[GENERATION] RUNTIME PLACEMENT: linked door " + doorData.Id.ToString() + " to door " + linkDoorData.Id.ToString());
 				}
 			}
+
+			OpenAllDoors();
 
             float generationEndTime = Time.realtimeSinceStartup;
             float generationTime = generationEndTime - generationStartTime;
@@ -170,7 +184,7 @@ namespace JZK.Framework
 
 		public void RespawnPlayer()
 		{
-            Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_playerSpawnPoint);
+            Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_currentStartPoint.transform);
         }
 	}
 }

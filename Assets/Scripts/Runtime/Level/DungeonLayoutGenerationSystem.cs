@@ -290,7 +290,17 @@ namespace JZK.Level
 				bool isFirstRoom = roomIndex == 0;
 				bool isFinalRoom = roomIndex == layoutData.CriticalPathIds.Count - 1;
 
-				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success);
+				ERoomType roomType = ERoomType.StandardCombat;
+				if(isFirstRoom)
+				{
+					roomType = ERoomType.Start;
+				}
+				/*if(isFinalRoom)
+				{
+					roomType = ERoomType.End;
+				}*/
+
+				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success, roomType);
 				if(success)
 				{
                     critRoom.SetDefinition(roomDef);

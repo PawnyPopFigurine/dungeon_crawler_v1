@@ -50,6 +50,7 @@ namespace JZK.Level
                 _id = _id,
                 _hideInGame = _hideInGame,
                 _prefabController = _prefabController,
+                _roomType = _roomType,
             };
         }
     }

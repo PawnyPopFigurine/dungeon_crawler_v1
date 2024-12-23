@@ -302,10 +302,14 @@ namespace JZK.Gameplay
 
 			GameplaySystem.Instance.OnPlayerEnterRoom(this);
 
-			if (!_hasClearedRoom)
+			ERoomType roomType = RoomDefinitionLoadSystem.Instance.GetDefinition(_id).RoomType;
+			if(roomType == ERoomType.StandardCombat)
 			{
-				CloseAllDoors();
-			}
+                if (!_hasClearedRoom)
+                {
+                    CloseAllDoors();
+                }
+            }
 		}
 
 		public void ResetController()

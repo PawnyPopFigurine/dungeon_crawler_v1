@@ -31,23 +31,23 @@ namespace JZK.Level
 
         private Dictionary<string, RoomDefinition> _roomDefinition_LUT = new();
 
+        
+
         private List<string> _allDefinitionIds = new();
         private List<string> _standardCombatIds = new();
         private List<string> _nonCombatIds = new();
         private List<string> _startIds = new();
         private List<string> _endIds = new();
 
-        /*public string GetRandomRoomId(System.Random random)
+        public RoomDefinition GetDefinition(string id)
         {
-            int roomIdIndex = random.Next(0, _allDefinitionIds.Count);
-            return _allDefinitionIds[roomIdIndex];
+            if (_roomDefinition_LUT.TryGetValue(id, out RoomDefinition roomDef))
+            {
+                return roomDef;
+            }
+            return null;
         }
 
-        public RoomDefinition GetRandomDefinition(System.Random random)
-        {
-            string roomId = GetRandomRoomId(random);
-            return _roomDefinition_LUT[roomId];
-        }*/
         List<string> GetListForRoomType(ERoomType roomType)
         {
             switch(roomType)
@@ -158,7 +158,7 @@ namespace JZK.Level
                             break;
                         case ERoomType.Start:
                             _startIds.Add(def.Id);
-                            break; ;
+                            break;
                         case ERoomType.End:
                             _endIds.Add(def.Id);
                             break;

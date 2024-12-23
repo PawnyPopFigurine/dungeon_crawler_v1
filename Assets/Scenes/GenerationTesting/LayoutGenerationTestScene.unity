@@ -456,13 +456,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _playerSpawnPoint: {fileID: 1381159690}
   _useDebugSeed: 1
-  _debugSeed: 69420
+  _debugSeed: 1
   _printDebug: 0
   _settings:
     Seed: 69420
-    CriticalPathRoomCount: 10
+    CriticalPathRoomCount: 15
+    SecondaryRoomChance: 0
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0
