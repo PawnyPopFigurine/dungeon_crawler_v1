@@ -91,6 +91,13 @@ namespace JZK.Framework
 			{
 				//complain
 			}
+
+			foreach(var room in _testingRooms)
+			{
+				room.SetEnemyCallbacks();
+			}
+
+			GameplaySystem.Instance.Debug_SetActiveRoomList(_testingRooms);
         }
 
 		private void Update()
@@ -116,12 +123,12 @@ namespace JZK.Framework
 			Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_playerSpawnPoint);
 		}
 
-		public void OpenAllRoomDoors()
+		/*public void OpenAllRoomDoors()
 		{
 			foreach(RoomController room in _testingRooms)
 			{
 				room.OpenAllDoors();
 			}
-		}
+		}*/
 	}
 }

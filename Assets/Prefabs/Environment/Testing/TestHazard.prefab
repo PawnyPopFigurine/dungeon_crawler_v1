@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8510930321472380179}
   - component: {fileID: 3353527210867112350}
   - component: {fileID: 8503624404052338936}
+  - component: {fileID: 7189454709716482277}
   m_Layer: 7
   m_Name: TestHazard
   m_TagString: DestroyAndDestroyedByPlayerProj
@@ -185,3 +186,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068f952f03c6dea48b154578f1f53ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7189454709716482277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768730045968935509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 312c415ef825bd244bd7a97fe64e4ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destructibleComponent: {fileID: 3353527210867112350}

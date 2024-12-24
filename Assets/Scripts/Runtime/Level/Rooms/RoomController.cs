@@ -43,6 +43,8 @@ namespace JZK.Gameplay
 		Guid _generationId = Guid.Empty;
 		public Guid GenerationId => _generationId;
 
+		[SerializeField] List<Enemy> _enemiesInRoom = new();
+
 		public int GetIndexOfDoor(RoomDoor roomDoor)
 		{
 			if(!_doors.Contains(roomDoor))
@@ -308,6 +310,11 @@ namespace JZK.Gameplay
                 if (!_hasClearedRoom)
                 {
                     CloseAllDoors();
+
+					foreach(Enemy enemy in _enemiesInRoom)
+					{
+						enemy.OnRoomEntered();
+					}
                 }
             }
 		}
@@ -321,6 +328,35 @@ namespace JZK.Gameplay
 		{
 			List<RoomDoor> doorSideList = GetDoorListForSide(side);
 			return doorSideList.Count >= doorCount;
+		}
+
+		public void SetEnemyCallbacks()
+		{
+			foreach(Enemy enemy in _enemiesInRoom)
+			{
+				enemy.OnEnemyKilled -= OnRoomEnemyKilled;
+				enemy.OnEnemyKilled += OnRoomEnemyKilled;
+			}
+		}
+
+		public void OnRoomEnemyKilled()
+		{
+			bool allEnemiesKilled = true;
+
+			foreach(Enemy enemy in _enemiesInRoom)
+			{
+				if(enemy.IsAlive)
+				{
+					allEnemiesKilled = false;
+					break;
+				}
+			}
+
+			if(allEnemiesKilled)
+			{
+				ClearRoom();
+				GameplaySystem.Instance.OpenAllRoomDoors();
+			}
 		}
 	}
 }

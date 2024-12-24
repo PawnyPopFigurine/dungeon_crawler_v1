@@ -19,6 +19,17 @@ namespace JZK.Gameplay
         RoomController _currentPlayerOccupiedRoom;
         public RoomController CurrentPlayerOccupiedRoom => _currentPlayerOccupiedRoom;
 
+        private List<RoomController> _allActiveRooms = new List<RoomController>();
+
+        public void Debug_SetActiveRoomList(List<RoomController> roomList)
+        {
+            _allActiveRooms.Clear();
+            foreach (var room in roomList)
+            {
+                _allActiveRooms.Add(room);
+            }
+        }
+
         public void OnPlayerEnterRoom(RoomController roomController)
         {
             if(roomController == _currentPlayerOccupiedRoom)
@@ -42,15 +53,25 @@ namespace JZK.Gameplay
 
                 _currentPlayerOccupiedRoom.ClearRoom();
 
-                if(SceneInit.CurrentSceneInit is PlayerTestSceneInit playerSceneInit)
+                OpenAllRoomDoors();
+
+                /*if(SceneInit.CurrentSceneInit is PlayerTestSceneInit playerSceneInit)
 				{
                     playerSceneInit.OpenAllRoomDoors();
-				}
+				}*/
 
-                if(SceneInit.CurrentSceneInit is LayoutGenerationTestSceneInit layoutGenerationSceneInit)
+                /*if(SceneInit.CurrentSceneInit is LayoutGenerationTestSceneInit layoutGenerationSceneInit)
                 {
                     layoutGenerationSceneInit.OpenAllDoors();
-                }
+                }*/
+            }
+        }
+
+        public void OpenAllRoomDoors()
+        {
+            foreach(var room in _allActiveRooms)
+            {
+                room.OpenAllDoors();
             }
         }
     }

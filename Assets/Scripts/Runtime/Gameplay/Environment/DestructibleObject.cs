@@ -10,6 +10,9 @@ namespace JZK.Gameplay
 
         int _currentHitsLeft;
 
+		public delegate void DestructibleObjectEvent();
+		public event DestructibleObjectEvent OnObjectDestroyed;
+
 		private void Start()
 		{
 			Initialise();
@@ -19,14 +22,6 @@ namespace JZK.Gameplay
 		{
             _currentHitsLeft = _maxHealth;
 		}
-
-		/*public void OnCollisionEnter2D(Collision2D collision)
-		{
-			if(collision.gameObject.tag == "PlayerProjectile")
-			{
-				OnHitByPlayerProjectile();
-			}
-		}*/
 
 		public void OnHitByPlayerProjectile()
 		{
@@ -41,6 +36,7 @@ namespace JZK.Gameplay
 		void OnHealthReachZero()
 		{
 			gameObject.SetActive(false);
+			OnObjectDestroyed?.Invoke();
 		}
 	}
 }
