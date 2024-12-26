@@ -38,5 +38,10 @@ namespace JZK.Gameplay
 			gameObject.SetActive(false);
 			OnObjectDestroyed?.Invoke();
 		}
-	}
+
+        public void ResetObject()
+        {
+			_currentHitsLeft = _maxHealth;
+        }
+    }
 }

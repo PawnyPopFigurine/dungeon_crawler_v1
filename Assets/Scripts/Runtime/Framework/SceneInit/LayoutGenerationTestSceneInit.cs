@@ -3,6 +3,7 @@ using JZK.Level;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace JZK.Framework
 {
@@ -12,6 +13,8 @@ namespace JZK.Framework
 		{
             new SystemReference<Camera.CameraSystem>(),
 
+			new SystemReference<Gameplay.EnemyLoadSystem>(),
+			new SystemReference<Gameplay.EnemyPoolingSystem>(),
             new SystemReference<Gameplay.GameplaySystem>(),
             new SystemReference<Gameplay.PlayerSystem>(),
             new SystemReference<Gameplay.ProjectileSystem>(),
@@ -27,8 +30,6 @@ namespace JZK.Framework
 
 		};
 
-		//[SerializeField] Transform _playerSpawnPoint;
-
 		[SerializeField] private bool _useDebugSeed = false;
 		[SerializeField] private int _debugSeed;
 
@@ -43,6 +44,16 @@ namespace JZK.Framework
 		List<RoomController> _activeRoomControllers = new();
 
 		StartPortal _currentStartPoint;
+
+		[SerializeField] TileBase _noEnemySpawnTile;
+
+		[SerializeField] bool _paintNoEnemySpawnTiles;
+
+		[SerializeField] EnemySpawnData _debugSpawnData;
+
+		[SerializeField] bool _testSpawnEnemies;
+
+		Dictionary<Guid, RoomController> _generationData_Controller_LUT = new();
 
 
 
@@ -77,11 +88,60 @@ namespace JZK.Framework
 			{
 				_currentLayout = generatedLayout;
 				CreateDungeonFromLayoutData();
-			}
+				GameplaySystem.Instance.Debug_SetActiveRoomList(_activeRoomControllers);
+				if(_paintNoEnemySpawnTiles)
+				{
+                    PaintNoEnemySpawnTiles();
+                }
+				if(_testSpawnEnemies)
+				{
+					SpawnTestEnemyInEachCombatRoom();
+				}
+				else
+				{
+					SpawnEnemiesFromLayoutData();
+				}
+            }
 			else
 			{
 				Debug.LogError("[GENERATION] Layout generation failed with seed " + _settings.Seed.ToString());
 			}
+        }
+
+		public void SpawnEnemiesFromLayoutData()
+		{
+			if(_currentLayout == null)
+			{
+				return;
+			}
+
+			foreach(Guid id in _currentLayout.Room_LUT.Keys)
+			{
+				RoomController controller = _generationData_Controller_LUT[id];
+				GenerationRoomData roomData = _currentLayout.Room_LUT[id];
+
+                List<EnemyController> enemyList = new();
+
+                foreach (EnemySpawnData spawnData in roomData.EnemySpawnData)
+				{
+					if(!EnemyPoolingSystem.Instance.RequestEnemy(spawnData.EnemyId, out EnemyController enemy))
+					{
+						//complain
+					}
+
+                    if (!controller.FloorTilemap.HasTile(spawnData.FloorTilePos))
+                    {
+                        continue;
+                    }
+
+                    enemy.transform.position = controller.FloorTilemap.CellToWorld(spawnData.FloorTilePos);
+                    enemy.gameObject.SetActive(true);
+
+					enemyList.Add(enemy);
+                }
+
+                controller.SetEnemies(enemyList);
+            }
         }
 
 		public void CreateDungeonFromLayoutData()
@@ -96,11 +156,9 @@ namespace JZK.Framework
             Vector2 roomPrefabPos = Vector2.zero;
 			int roomSpacing = 50;
 
-			//List<RoomController> activeControllers = new();
+			_generationData_Controller_LUT.Clear();
 
-			Dictionary<Guid, RoomController> roomController_LUT = new();
-
-			foreach (GenerationRoomData roomData in _currentLayout.Room_LUT.Values)
+            foreach (GenerationRoomData roomData in _currentLayout.Room_LUT.Values)
 			{
 				if (!RoomLoadSystem.Instance.RequestRoom(roomData.PrefabId, out RoomController controller))
 				{
@@ -112,38 +170,113 @@ namespace JZK.Framework
 				controller.transform.position = roomPrefabPos;
 				roomPrefabPos.x += roomSpacing;
 				_activeRoomControllers.Add(controller);
-				roomController_LUT.Add(roomData.Id, controller);
+                _generationData_Controller_LUT.Add(roomData.Id, controller);
 
 				if(RoomDefinitionLoadSystem.Instance.GetDefinition(roomData.PrefabId).RoomType == ERoomType.Start)
 				{
 					StartPortal portal = controller.GetComponentInChildren<StartPortal>();
 					_currentStartPoint = portal;
 				}
-				/*if(controller.TryGetComponent(out StartPortal portal))
-				{
-					_currentStartPoint = portal;
-				}*/
 			}
 
 			foreach (GenerationDoorData doorData in _currentLayout.Door_LUT.Values)
 			{
-				RoomDoor door = roomController_LUT[doorData.ParentRoomId].Doors[doorData.IndexInRoom];
+				RoomDoor door = _generationData_Controller_LUT[doorData.ParentRoomId].Doors[doorData.IndexInRoom];
 				door.SetDoorEnabled(doorData.Enabled);
 				Guid linkDoorId = doorData.LinkDoorId;
 				if (linkDoorId != Guid.Empty)
 				{
 					GenerationDoorData linkDoorData = _currentLayout.Door_LUT[linkDoorId];
-					RoomDoor linkDoor = roomController_LUT[linkDoorData.ParentRoomId].Doors[linkDoorData.IndexInRoom];
+					RoomDoor linkDoor = _generationData_Controller_LUT[linkDoorData.ParentRoomId].Doors[linkDoorData.IndexInRoom];
 					door.LinkToDoor(linkDoor);
 					Debug.Log("[GENERATION] RUNTIME PLACEMENT: linked door " + doorData.Id.ToString() + " to door " + linkDoorData.Id.ToString());
 				}
 			}
 
-			OpenAllDoors();
+			GameplaySystem.Instance.OpenAllRoomDoors();
 
             float generationEndTime = Time.realtimeSinceStartup;
             float generationTime = generationEndTime - generationStartTime;
             Debug.Log("[GENERATION] RUNTIME PLACEMENT placement took " + generationTime + " seconds to complete");
+        }
+
+		void PaintNoEnemySpawnTiles()
+		{
+            foreach (RoomController roomController in _activeRoomControllers)
+            {
+                foreach (RoomDoor activeRoomDoor in roomController.Doors)
+                {
+                    Tilemap floorTiles = roomController.FloorTilemap;
+
+                    if (activeRoomDoor.DoorEnabled)
+                    {
+                        List<Vector3Int> tilesToPaint = new();
+
+                        Vector3Int facingOffset = Vector3Int.zero;
+
+                        if (activeRoomDoor.SideOfRoom == EOrthogonalDirection.Right)
+                        {
+                            facingOffset.x = -1;
+                        }
+
+                        if (activeRoomDoor.SideOfRoom == EOrthogonalDirection.Up)
+                        {
+                            facingOffset.y = -1;
+                        }
+
+                        Vector3Int roomPosInt = new(
+                            (int)activeRoomDoor.transform.localPosition.x,
+                            (int)activeRoomDoor.transform.localPosition.y);
+
+                        roomPosInt += facingOffset;
+
+                        tilesToPaint.Add(roomPosInt);
+
+                        //floorTiles.SetTiles()
+                        BoundsInt doormatBounds = new();
+
+                        doormatBounds.x = roomPosInt.x;
+                        doormatBounds.y = roomPosInt.y;
+
+                        switch (activeRoomDoor.SideOfRoom)
+                        {
+                            case EOrthogonalDirection.Down:
+                                doormatBounds.min = new(roomPosInt.x - 2, roomPosInt.y);
+                                doormatBounds.max = new(roomPosInt.x + 1, roomPosInt.y + 2);
+                                break;
+                            case EOrthogonalDirection.Up:
+                                doormatBounds.min = new(roomPosInt.x - 2, roomPosInt.y - 2);
+                                doormatBounds.max = new(roomPosInt.x + 1, roomPosInt.y);
+                                break;
+                            case EOrthogonalDirection.Right:
+                                doormatBounds.min = new(roomPosInt.x - 2, roomPosInt.y - 2);
+                                doormatBounds.max = new(roomPosInt.x, roomPosInt.y + 1);
+                                break;
+                            case EOrthogonalDirection.Left:
+                                doormatBounds.min = new(roomPosInt.x, roomPosInt.y - 2);
+                                doormatBounds.max = new(roomPosInt.x + 2, roomPosInt.y + 1);
+                                break;
+                        }
+
+
+
+                        for (int doormatX = doormatBounds.min.x; doormatX <= doormatBounds.max.x; ++doormatX)
+                        {
+                            for (int doormatY = doormatBounds.min.y; doormatY <= doormatBounds.max.y; ++doormatY)
+                            {
+                                Vector3Int doormatPos = new(doormatX, doormatY);
+                                tilesToPaint.Add(doormatPos);
+                            }
+                        }
+
+
+                        foreach (Vector3Int pos in tilesToPaint)
+                        {
+                            floorTiles.SetTile(pos, _noEnemySpawnTile);
+                        }
+                    }
+                }
+            }
         }
 
 		public void ClearRooms()
@@ -174,17 +307,43 @@ namespace JZK.Framework
 			}
 		}
 
-		public void OpenAllDoors()
-		{
-			foreach(RoomController room in _activeRoomControllers)
-			{
-				room.OpenAllDoors();
-			}
-		}
-
 		public void RespawnPlayer()
 		{
             Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_currentStartPoint.transform);
         }
+
+		public void SpawnTestEnemyInEachCombatRoom()
+		{
+			foreach(RoomController activeRoom in _activeRoomControllers)
+			{
+				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetDefinition(activeRoom.Id);
+				if(roomDef.RoomType != ERoomType.StandardCombat)
+				{
+					continue;
+				}
+
+				EnemyDefinition testEnemyDef = EnemyLoadSystem.Instance.GetDefinition(_debugSpawnData.EnemyId);
+
+				if(!EnemyPoolingSystem.Instance.RequestEnemy(_debugSpawnData.EnemyId, out EnemyController controller))
+				{
+					continue;
+				}
+
+				if(!activeRoom.FloorTilemap.HasTile(_debugSpawnData.FloorTilePos))
+				{
+					continue;
+				}
+
+                controller.transform.position = activeRoom.FloorTilemap.CellToWorld(_debugSpawnData.FloorTilePos);
+				controller.gameObject.SetActive(true);
+
+				List<EnemyController> enemyList = new()
+				{
+					controller
+				};
+
+				activeRoom.SetEnemies(enemyList);
+            }
+		}
 	}
 }

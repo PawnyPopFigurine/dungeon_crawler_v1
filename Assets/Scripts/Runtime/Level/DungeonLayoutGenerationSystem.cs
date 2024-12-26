@@ -16,6 +16,7 @@ namespace JZK.Level
 		public float SecondaryRoomChance;
 		[Tooltip("Set to 0 or lower to remove limit")]
 		public int MaxTotalRooms;
+		public int EnemyPoints;
 	}
 
 	[System.Serializable]
@@ -25,7 +26,26 @@ namespace JZK.Level
 		public Dictionary<Guid, GenerationDoorData> Door_LUT = new();
 		public List<Guid> CriticalPathIds = new();
 		public List<Guid> SecondaryRoomIds = new();
-		//TODO: theme enum
+
+        //TODO: theme enum
+
+
+        public List<Guid> GetAllCombatRooms()
+		{
+			List<Guid> returnList = new();
+
+			foreach(var room in Room_LUT.Values)
+			{
+				if(room.RoomType != ERoomType.StandardCombat)
+				{
+					continue;
+				}
+
+				returnList.Add(room.Id);
+			}
+
+			return returnList;
+		}
 	}
 
 	[System.Serializable]
@@ -40,6 +60,7 @@ namespace JZK.Level
 		public GenerationRoomConnectionData ConnectionData;
 		public int CriticalPathIndex = -1;  //how far along the crit path this room is - even if it isn't directly on it
 		public bool OnCriticalPath;
+		public List<EnemySpawnData> EnemySpawnData = new();
 
 		public class GenerationRoomConnectionData
 		{
@@ -214,6 +235,13 @@ namespace JZK.Level
 			}
 		}
 
+	}
+
+	[System.Serializable]
+	public class EnemySpawnData
+	{
+		public string EnemyId;
+		public Vector3Int FloorTilePos;
 	}
 
 	public class DungeonLayoutGenerationSystem : PersistentSystem<DungeonLayoutGenerationSystem>
@@ -412,7 +440,60 @@ namespace JZK.Level
 				}
 			}
 
-			float generationEndTime = Time.realtimeSinceStartup;
+			//populate combat rooms with enemies until enemy points value has been reached
+			List<Guid> combatRooms = layoutData.GetAllCombatRooms();
+
+			int pointsToSpend = settings.EnemyPoints;
+
+			for(int setEnemyAttempt = 0; setEnemyAttempt < 100; ++setEnemyAttempt)
+			{
+				if(pointsToSpend <= 0)
+				{
+					break;
+				}
+
+				int combatIndex = random.Next(combatRooms.Count);
+				Guid combatRoomId = combatRooms[combatIndex];
+				GenerationRoomData room = layoutData.Room_LUT[combatRoomId];
+
+                List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(pointsToSpend);
+                int defIndex = random.Next(allPossibleDefs.Count);
+                EnemyDefinition def = allPossibleDefs[defIndex];
+
+                EnemySpawnData spawnData = new();
+                spawnData.EnemyId = def.Id;
+                spawnData.FloorTilePos = Vector3Int.zero;   //TODO: Set to random unoccupied point in room
+
+				room.EnemySpawnData.Add(spawnData);
+
+                pointsToSpend -= def.DifficultyPoints;
+            }
+
+			//List<Guid> allCombat
+			/*List<Guid> allRoomsShuffled = allRoomIds.OrderBy(x => random.NextDouble()).ToList();
+
+			int pointsToSpend = settings.EnemyPoints;
+
+			foreach(Guid roomId in allRoomIds)
+			{
+				GenerationRoomData room = layoutData.Room_LUT[roomId];
+				if(room.RoomType != ERoomType.StandardCombat)
+				{
+					continue;
+				}
+
+				List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(pointsToSpend);
+				int defIndex = random.Next(allPossibleDefs.Count);
+				EnemyDefinition def = allPossibleDefs[defIndex];
+
+				EnemySpawnData spawnData = new();
+				spawnData.EnemyId = def.Id;
+				spawnData.FloorTilePos = Vector3Int.zero;   //TODO: Set to random unoccupied point in room
+
+				pointsToSpend -= def.DifficultyPoints;
+			}*/
+
+            float generationEndTime = Time.realtimeSinceStartup;
 			float generationTime = generationEndTime - generationStartTime;
 			Debug.Log("[GENERATION] layout data took " + generationTime + " seconds to generate");
 			generationSuccess = true;

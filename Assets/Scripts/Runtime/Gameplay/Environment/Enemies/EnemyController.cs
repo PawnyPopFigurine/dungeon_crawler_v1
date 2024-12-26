@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace JZK.Gameplay
 {
-    public class Enemy : MonoBehaviour
+    public class EnemyController : MonoBehaviour
     {
+        [SerializeField] string _definitionId;
+        public string DefinitionId => _definitionId;
+
         [SerializeField] DestructibleObject _destructibleComponent; //when this is destroyed, the enemy is considered dead
 
         bool _isAlive;
@@ -31,6 +34,11 @@ namespace JZK.Gameplay
         public void OnRoomEntered()
         {
             //do stuff here
+        }
+
+        public void ResetController()
+        {
+            _destructibleComponent.ResetObject();
         }
     }
 }

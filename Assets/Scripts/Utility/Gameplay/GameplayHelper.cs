@@ -13,6 +13,13 @@ namespace JZK.Gameplay
         Invalid = 4,
 	}
 
+    public enum ELevelTheme
+    {
+        None = 0,
+        Undead = 1,
+
+    }
+
     public static class GameplayHelper
     {
 		public static Vector2 INVALID_PLAYER_POS = new(-1, -1);

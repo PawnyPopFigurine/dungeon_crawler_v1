@@ -15,6 +15,8 @@ namespace JZK.Gameplay
 		[SerializeField] Grid _grid;
 
 		[SerializeField] Tilemap _floorTilemap;
+		public Tilemap FloorTilemap => _floorTilemap;
+
 		[SerializeField] Tilemap _wallTilemap;
 
 		[SerializeField] TileBase _initialFloorTile;
@@ -43,7 +45,7 @@ namespace JZK.Gameplay
 		Guid _generationId = Guid.Empty;
 		public Guid GenerationId => _generationId;
 
-		[SerializeField] List<Enemy> _enemiesInRoom = new();
+		[SerializeField] List<EnemyController> _enemiesInRoom = new();
 
 		public int GetIndexOfDoor(RoomDoor roomDoor)
 		{
@@ -311,7 +313,7 @@ namespace JZK.Gameplay
                 {
                     CloseAllDoors();
 
-					foreach(Enemy enemy in _enemiesInRoom)
+					foreach(EnemyController enemy in _enemiesInRoom)
 					{
 						enemy.OnRoomEntered();
 					}
@@ -332,18 +334,25 @@ namespace JZK.Gameplay
 
 		public void SetEnemyCallbacks()
 		{
-			foreach(Enemy enemy in _enemiesInRoom)
+			foreach(EnemyController enemy in _enemiesInRoom)
 			{
 				enemy.OnEnemyKilled -= OnRoomEnemyKilled;
 				enemy.OnEnemyKilled += OnRoomEnemyKilled;
 			}
 		}
 
+		public void SetEnemies(List<EnemyController> enemies)
+		{
+			_enemiesInRoom.Clear();
+			_enemiesInRoom = new(enemies);
+			SetEnemyCallbacks();
+		}
+
 		public void OnRoomEnemyKilled()
 		{
 			bool allEnemiesKilled = true;
 
-			foreach(Enemy enemy in _enemiesInRoom)
+			foreach(EnemyController enemy in _enemiesInRoom)
 			{
 				if(enemy.IsAlive)
 				{

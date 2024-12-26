@@ -460,10 +460,17 @@ MonoBehaviour:
   _debugSeed: 1112
   _printDebug: 0
   _settings:
-    Seed: 420
+    Seed: 0
     CriticalPathRoomCount: 6
-    SecondaryRoomChance: 0.4
-    MaxTotalRooms: 13
+    SecondaryRoomChance: 0.209
+    MaxTotalRooms: 14
+    EnemyPoints: 20
+  _noEnemySpawnTile: {fileID: 11400000, guid: c69cf56a97c450b4496de63ce8f7e6b4, type: 2}
+  _paintNoEnemySpawnTiles: 0
+  _debugSpawnData:
+    EnemyId: testEnemyEasy
+    FloorTilePos: {x: 0, y: 0, z: 0}
+  _testSpawnEnemies: 0
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0
