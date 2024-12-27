@@ -319,6 +319,11 @@ namespace JZK.Framework
 			_currentLayout = null;
 		}
 
+		public void ClearEnemies()
+		{
+			EnemyPoolingSystem.Instance.ClearAllEnemies();
+		}
+
 		public override void LoadingStateComplete(ELoadingState state)
 		{
 			switch (state)

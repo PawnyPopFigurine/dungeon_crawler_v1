@@ -98,5 +98,15 @@ namespace JZK.Gameplay
 
             ReturnEnemyToPool(controller);
         }
+
+        public void ClearAllEnemies()
+        {
+            List<EnemyController> activeCache = new(_activeEnemies);
+
+            foreach(EnemyController controller in activeCache)
+            {
+                ClearEnemy(controller);
+            }
+        }
     }
 }
