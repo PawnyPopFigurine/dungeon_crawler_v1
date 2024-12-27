@@ -118,5 +118,11 @@ namespace JZK.Gameplay
 
 			PlayerSystem.Instance.SetPlayerPos(_travelToDoor.SetPlayerPos.position);
 		}
+
+		public void SetDoorSprites(Sprite openSprite, Sprite shutSprite)
+		{
+			_openSprite = openSprite;
+			_shutSprite = shutSprite;
+		}
 	}
 }

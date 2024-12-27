@@ -190,6 +190,7 @@ namespace JZK.Framework
 				controller.DisableAllDoors();
 				controller.RepaintFloorTiles(_themeSO.Definition.FloorTile);
 				controller.RepaintWallTiles(_themeSO.Definition.WallTile);
+				controller.RepaintDoors(_themeSO.Definition.OpenDoor, _themeSO.Definition.ShutDoor);
 				controller.gameObject.SetActive(true);
 				controller.transform.position = roomPrefabPos;
 				roomPrefabPos.x += roomSpacing;

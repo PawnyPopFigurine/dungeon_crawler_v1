@@ -27,6 +27,12 @@ namespace JZK.Level
         [SerializeField] TileBase _wallTile;
         public TileBase WallTile => _wallTile;
 
+        [SerializeField] Sprite _shutDoor;
+        public Sprite ShutDoor => _shutDoor;
+
+        [SerializeField] Sprite _openDoor;
+        public Sprite OpenDoor => _openDoor;
+
         public ThemeDefinition CreateCopy()
         {
             return new()

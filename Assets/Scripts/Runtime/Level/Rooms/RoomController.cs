@@ -384,6 +384,14 @@ namespace JZK.Gameplay
 			_currentWallTile = repaintToTile;
 		}
 
+		public void RepaintDoors(Sprite openSprite, Sprite shutSprite)
+		{
+			foreach(RoomDoor door in _doors)
+			{
+				door.SetDoorSprites(openSprite, shutSprite);
+			}
+		}
+
 		public bool ShouldDoorsCloseOnFirstEntry()
 		{
 			if(RoomDefinitionLoadSystem.Instance.GetDefinition(_id).RoomType == ERoomType.StandardCombat)
