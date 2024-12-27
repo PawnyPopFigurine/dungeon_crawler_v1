@@ -204,6 +204,13 @@ namespace JZK.Framework
 			foreach (GenerationDoorData doorData in _currentLayout.Door_LUT.Values)
 			{
 				RoomDoor door = _generationData_Controller_LUT[doorData.ParentRoomId].Doors[doorData.IndexInRoom];
+				if(_generationData_Controller_LUT[doorData.ParentRoomId].Id == "RectRoom_20x12_Var2")
+				{
+					if(door.SideOfRoom == EOrthogonalDirection.Down)
+					{
+						Debug.Log("bruh");
+					}
+				}
 				door.SetDoorEnabled(doorData.Enabled);
 				Guid linkDoorId = doorData.LinkDoorId;
 				if (linkDoorId != Guid.Empty)

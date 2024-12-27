@@ -45,7 +45,7 @@ namespace JZK.Gameplay
             return null;
         }
 
-        public List<EnemyDefinition> GetAllDefinitionsForDifficultyPoints(int points, Dictionary<string, int> enemyCountLUT)
+        public List<EnemyDefinition> GetAllDefinitionsForDifficultyPoints(int points, Dictionary<string, int> enemyCountLUT, ELevelTheme theme)
         {
             List<EnemyDefinition> returnList = new();
 
@@ -54,6 +54,14 @@ namespace JZK.Gameplay
                 if(definition.DifficultyPoints > points)
                 {
                     continue;
+                }
+
+                if(definition.Theme != ELevelTheme.None)
+                {
+                    if (definition.Theme != theme)
+                    {
+                        continue;
+                    }
                 }
 
                 if(enemyCountLUT.TryGetValue(definition.Id, out int count))

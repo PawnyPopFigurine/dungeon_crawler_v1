@@ -461,6 +461,7 @@ MonoBehaviour:
   _printDebug: 0
   _settings:
     Seed: 0
+    Theme: 1
     CriticalPathRoomCount: 8
     SecondaryRoomChance: 0.479
     MaxTotalRooms: 14
