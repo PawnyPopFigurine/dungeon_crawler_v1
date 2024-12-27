@@ -48,6 +48,87 @@ namespace JZK.Gameplay
 
 		[SerializeField] List<EnemyController> _enemiesInRoom = new();
 
+		List<Vector3Int> _floorTilePositions = new();
+		public List<Vector3Int> FloorTilePositions => _floorTilePositions;
+
+		Dictionary<int, List<Vector3Int>> _doormat_LUT = new(); //referencing doors by index within room#
+		public Dictionary<int, List<Vector3Int>> Doormat_LUT => _doormat_LUT;
+
+		List<Vector3Int> _floorEdgePositions = new();
+		public List<Vector3Int> FloorEdgePositions => _floorEdgePositions;
+		
+		void InitialiseDoormats()
+		{
+			_doormat_LUT.Clear();
+
+			for(int doorIndex = 0; doorIndex < _doors.Count; ++doorIndex)
+			{
+				RoomDoor activeRoomDoor = _doors[doorIndex];
+
+                Tilemap floorTiles = _floorTilemap;
+
+                List<Vector3Int> doormatTiles = new();
+
+                Vector3Int facingOffset = Vector3Int.zero;
+
+                if (activeRoomDoor.SideOfRoom == EOrthogonalDirection.Right)
+                {
+                    facingOffset.x = -1;
+                }
+
+                if (activeRoomDoor.SideOfRoom == EOrthogonalDirection.Up)
+                {
+                    facingOffset.y = -1;
+                }
+
+                Vector3Int roomPosInt = new(
+                    (int)activeRoomDoor.transform.localPosition.x,
+                    (int)activeRoomDoor.transform.localPosition.y);
+
+                roomPosInt += facingOffset;
+
+                doormatTiles.Add(roomPosInt);
+
+                BoundsInt doormatBounds = new();
+
+                doormatBounds.x = roomPosInt.x;
+                doormatBounds.y = roomPosInt.y;
+
+                switch (activeRoomDoor.SideOfRoom)
+                {
+                    case EOrthogonalDirection.Down:
+                        doormatBounds.min = new(roomPosInt.x - 2, roomPosInt.y);
+                        doormatBounds.max = new(roomPosInt.x + 1, roomPosInt.y + 2);
+                        break;
+                    case EOrthogonalDirection.Up:
+                        doormatBounds.min = new(roomPosInt.x - 2, roomPosInt.y - 2);
+                        doormatBounds.max = new(roomPosInt.x + 1, roomPosInt.y);
+                        break;
+                    case EOrthogonalDirection.Right:
+                        doormatBounds.min = new(roomPosInt.x - 2, roomPosInt.y - 2);
+                        doormatBounds.max = new(roomPosInt.x, roomPosInt.y + 1);
+                        break;
+                    case EOrthogonalDirection.Left:
+                        doormatBounds.min = new(roomPosInt.x, roomPosInt.y - 2);
+                        doormatBounds.max = new(roomPosInt.x + 2, roomPosInt.y + 1);
+                        break;
+                }
+
+
+
+                for (int doormatX = doormatBounds.min.x; doormatX <= doormatBounds.max.x; ++doormatX)
+                {
+                    for (int doormatY = doormatBounds.min.y; doormatY <= doormatBounds.max.y; ++doormatY)
+                    {
+                        Vector3Int doormatPos = new(doormatX, doormatY);
+                        doormatTiles.Add(doormatPos);
+                    }
+                }
+
+				_doormat_LUT.Add(doorIndex, doormatTiles);
+            }
+        }
+
 		public int GetIndexOfDoor(RoomDoor roomDoor)
 		{
 			if(!_doors.Contains(roomDoor))
@@ -62,6 +143,45 @@ namespace JZK.Gameplay
 		{
 			Initialise();
 		}
+
+		public void InitialisePotentialSpawns()
+		{
+			_floorTilePositions.Clear();
+			_floorEdgePositions.Clear();
+
+            for (int floorTileX = _floorTilemap.cellBounds.xMin; floorTileX < _floorTilemap.cellBounds.xMax; ++floorTileX)
+            {
+                for (int floorTileY = _floorTilemap.cellBounds.yMin; floorTileY < _floorTilemap.cellBounds.yMax; ++floorTileY)
+                {
+                    Vector3Int floorTilePos = new(floorTileX, floorTileY);
+
+                    if (_floorTilemap.HasTile(floorTilePos))
+                    {
+                        _floorTilePositions.Add(floorTilePos);
+
+                        if (!_floorTilemap.HasTile(new(floorTileX - 1, floorTileY)))
+                        {
+                            _floorEdgePositions.Add(floorTilePos);
+                        }
+
+                        else if (!_floorTilemap.HasTile(new(floorTileX + 1, floorTileY)))
+                        {
+                            _floorEdgePositions.Add(floorTilePos);
+                        }
+
+                        else if (!_floorTilemap.HasTile(new(floorTileX, floorTileY - 1)))
+                        {
+                            _floorEdgePositions.Add(floorTilePos);
+                        }
+
+                        else if (!_floorTilemap.HasTile(new(floorTileX, floorTileY + 1)))
+                        {
+                            _floorEdgePositions.Add(floorTilePos);
+                        }
+                    }
+                }
+            }
+        }
 
 		public void InitialiseDoors()
 		{
@@ -90,6 +210,8 @@ namespace JZK.Gameplay
                         break;
                 }
             }
+
+			InitialiseDoormats();
         }
 
 		public void Initialise()
@@ -116,6 +238,7 @@ namespace JZK.Gameplay
 			}
 
 			InitialiseDoors();
+			InitialisePotentialSpawns();
 		}
 
 		public List<RoomDoor> GetDoorListForSide(EOrthogonalDirection roomSide)

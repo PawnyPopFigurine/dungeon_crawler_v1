@@ -141,6 +141,7 @@ namespace JZK.Level
                 {
                     RoomController roomController = def.PrefabController.GetComponent<RoomController>();
                     roomController.InitialiseDoors();
+                    roomController.InitialisePotentialSpawns();
 
                     _allDefinitionIds.Add(def.Id);
                     _roomDefinition_LUT.Add(def.Id, def);

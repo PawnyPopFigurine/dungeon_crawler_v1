@@ -55,6 +55,8 @@ namespace JZK.Framework
 
 		Dictionary<Guid, RoomController> _generationData_Controller_LUT = new();
 
+		[SerializeField] bool _paintFloorEdges;
+
 
 
 		public void Start()
@@ -102,12 +104,28 @@ namespace JZK.Framework
 				{
 					SpawnEnemiesFromLayoutData();
 				}
+
+				if(_paintFloorEdges)
+				{
+					PaintFloorEdges();
+				}
             }
 			else
 			{
 				Debug.LogError("[GENERATION] Layout generation failed with seed " + _settings.Seed.ToString());
 			}
         }
+
+		void PaintFloorEdges()
+		{
+			foreach(RoomController controller in _activeRoomControllers)
+			{
+				foreach(Vector3Int edgePos in controller.FloorEdgePositions)
+				{
+					controller.FloorTilemap.SetTile(edgePos, _noEnemySpawnTile);
+				}
+			}
+		}
 
 		public void SpawnEnemiesFromLayoutData()
 		{
@@ -236,7 +254,6 @@ namespace JZK.Framework
 
                         tilesToPaint.Add(roomPosInt);
 
-                        //floorTiles.SetTiles()
                         BoundsInt doormatBounds = new();
 
                         doormatBounds.x = roomPosInt.x;

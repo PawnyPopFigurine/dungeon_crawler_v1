@@ -151,20 +151,7 @@ namespace JZK.Level
 				AllDoorIds.Add(doorData.Id);
 			}
 
-			UnoccupiedFloorPositions.Clear();
-
-			for(int floorTileX = controller.FloorTilemap.cellBounds.xMin; floorTileX < controller.FloorTilemap.cellBounds.xMax; ++floorTileX)
-			{
-				for(int floorTileY = controller.FloorTilemap.cellBounds.yMin; floorTileY < controller.FloorTilemap.cellBounds.yMax; ++floorTileY)
-				{
-					Vector3Int floorTilePos = new(floorTileX, floorTileY);
-
-					if(controller.FloorTilemap.HasTile(floorTilePos))
-					{
-						UnoccupiedFloorPositions.Add(floorTilePos);
-					}
-				}
-			}
+			UnoccupiedFloorPositions = new(controller.FloorTilePositions);
 		}
 
 		public bool TryLinkToRoom(GenerationRoomData linkToRoom, EOrthogonalDirection requiredSide, out GenerationDoorData foundDoor, out GenerationDoorData otherRoomDoor)
@@ -456,10 +443,33 @@ namespace JZK.Level
 				}
 			}
 
-			//populate combat rooms with enemies until enemy points value has been reached
-			List<Guid> combatRooms = layoutData.GetAllCombatRooms();
+            //find active doors in combat rooms and remove potential enemy spawns using doormats
+            List<Guid> combatRooms = layoutData.GetAllCombatRooms();
+			foreach(Guid combatRoom in combatRooms)
+			{
+                GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
 
-			int pointsPerRoom = settings.EnemyPointsPerRoom;
+				foreach(Guid door in roomData.AllDoorIds)
+				{
+					GenerationDoorData doorData = layoutData.Door_LUT[door];
+					if(!doorData.Enabled)
+					{
+						continue;
+					}
+
+					RoomController controller = RoomDefinitionLoadSystem.Instance.GetDefinition(roomData.PrefabId).PrefabController.GetComponent<RoomController>();
+					List<Vector3Int> activeDoormat = controller.Doormat_LUT[doorData.IndexInRoom];
+
+					foreach(Vector3Int doormatPos in activeDoormat)
+					{
+						roomData.UnoccupiedFloorPositions.Remove(doormatPos);
+					}
+				}
+            }
+
+
+            //populate combat rooms with enemies until enemy points value has been reached
+            int pointsPerRoom = settings.EnemyPointsPerRoom;
 
             Debug.Log("[ENEMYGEN] have " +
 				pointsPerRoom.ToString() + " enemy points per room");
@@ -494,7 +504,7 @@ namespace JZK.Level
 
 					int floorPosIndex = random.Next(roomData.UnoccupiedFloorPositions.Count);
 					Vector3Int floorPos = roomData.UnoccupiedFloorPositions[floorPosIndex];
-                    spawnData.FloorTilePos = floorPos;   //TODO: Set to random unoccupied point in room
+                    spawnData.FloorTilePos = floorPos;
 					roomData.UnoccupiedFloorPositions.Remove(floorPos);
 
 					roomData.EnemySpawnData.Add(spawnData);

@@ -5,8 +5,6 @@ using UnityEngine.Tilemaps;
 
 namespace JZK.Gameplay
 {
-
-
 	public class RoomDoor : MonoBehaviour
 	{
 
@@ -35,14 +33,6 @@ namespace JZK.Gameplay
 
 		bool _isLinked = false;
 		public bool IsLinked => _isLinked;
-
-        Guid _generationId = Guid.Empty;
-        public Guid GenerationId => _generationId;
-
-		/*public void OnPlacedInGeneration(GenerationDoorData doorData)
-		{
-            _generationId = doorData.Id;
-        }*/
 
 
         public void Initialise()
