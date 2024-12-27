@@ -457,7 +457,7 @@ MonoBehaviour:
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
   _useDebugSeed: 1
-  _debugSeed: 999
+  _debugSeed: 1000
   _printDebug: 0
   _settings:
     Seed: 0
@@ -473,6 +473,7 @@ MonoBehaviour:
     FloorTilePos: {x: 0, y: 0, z: 0}
   _testSpawnEnemies: 0
   _paintFloorEdges: 0
+  _themeSO: {fileID: 11400000, guid: 8ce24769ea4d064439c0c064ff839289, type: 2}
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0

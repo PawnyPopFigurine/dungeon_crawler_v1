@@ -56,6 +56,9 @@ namespace JZK.Gameplay
 
 		List<Vector3Int> _floorEdgePositions = new();
 		public List<Vector3Int> FloorEdgePositions => _floorEdgePositions;
+
+		[SerializeField] List<Tilemap> _corridorFloors;
+		[SerializeField] List<Tilemap> _corridorWalls;
 		
 		void InitialiseDoormats()
 		{
@@ -349,6 +352,12 @@ namespace JZK.Gameplay
 			}
 
 			_floorTilemap.SwapTile(_currentFloorTile, repaintToTile);
+
+			foreach(Tilemap corrdiorFloor in _corridorFloors)
+			{
+				corrdiorFloor.SwapTile(_currentFloorTile, repaintToTile);
+			}
+
 			_currentFloorTile = repaintToTile;
 		}
 
@@ -365,6 +374,11 @@ namespace JZK.Gameplay
 			foreach (Tilemap fillInWall in _fillInWalls)
 			{
 				fillInWall.SwapTile(_currentWallTile, repaintToTile);
+			}
+
+			foreach(Tilemap corridorWall in _corridorWalls)
+			{
+				corridorWall.SwapTile(_currentWallTile, repaintToTile);
 			}
 
 			_currentWallTile = repaintToTile;

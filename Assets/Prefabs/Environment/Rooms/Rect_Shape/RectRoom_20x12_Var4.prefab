@@ -1941,6 +1941,20 @@ MonoBehaviour:
   - {fileID: 4818968778863180606}
   _debugRoomCentreSprite: {fileID: 3958939051942857683}
   _enemiesInRoom: []
+  _corridorFloors:
+  - {fileID: 715860220632479050}
+  - {fileID: 6283548823577108226}
+  - {fileID: 9002283959045325998}
+  - {fileID: 417626827325062418}
+  - {fileID: 5651043761977925565}
+  - {fileID: 8529399399548386476}
+  _corridorWalls:
+  - {fileID: 3947459415376397942}
+  - {fileID: 4429806453278907038}
+  - {fileID: 328504811876801622}
+  - {fileID: 6554031848505050622}
+  - {fileID: 4451699761366056421}
+  - {fileID: 7842525665895629969}
 --- !u!1 &2860553525030548257
 GameObject:
   m_ObjectHideFlags: 0

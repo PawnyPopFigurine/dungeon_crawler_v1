@@ -323,6 +323,12 @@ MonoBehaviour:
   - {fileID: 9182158092248400709}
   _debugRoomCentreSprite: {fileID: 3958939051942857683}
   _enemiesInRoom: []
+  _corridorFloors:
+  - {fileID: 5754933363475567582}
+  - {fileID: 6523860390710710248}
+  _corridorWalls:
+  - {fileID: 7393834054874418770}
+  - {fileID: 7555208669301711923}
 --- !u!1 &2860553525030548257
 GameObject:
   m_ObjectHideFlags: 0

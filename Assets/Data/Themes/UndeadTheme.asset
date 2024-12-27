@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ad8d92d6ec763478231c0bbb7639aa, type: 3}
+  m_Name: UndeadTheme
+  m_EditorClassIdentifier: 
+  _definition:
+    _theme: 1
+    _floorTile: {fileID: 11400000, guid: 57d935d519bacbd4fb2f3141339532da, type: 2}
+    _wallTile: {fileID: 11400000, guid: 52d75761b7b35704b8df2fb36c181e41, type: 2}

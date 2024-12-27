@@ -57,7 +57,7 @@ namespace JZK.Framework
 
 		[SerializeField] bool _paintFloorEdges;
 
-
+		[SerializeField] ThemeDataSO _themeSO;
 
 		public void Start()
 		{
@@ -188,6 +188,8 @@ namespace JZK.Framework
 				}
 
 				controller.DisableAllDoors();
+				controller.RepaintFloorTiles(_themeSO.Definition.FloorTile);
+				controller.RepaintWallTiles(_themeSO.Definition.WallTile);
 				controller.gameObject.SetActive(true);
 				controller.transform.position = roomPrefabPos;
 				roomPrefabPos.x += roomSpacing;
@@ -204,13 +206,6 @@ namespace JZK.Framework
 			foreach (GenerationDoorData doorData in _currentLayout.Door_LUT.Values)
 			{
 				RoomDoor door = _generationData_Controller_LUT[doorData.ParentRoomId].Doors[doorData.IndexInRoom];
-				if(_generationData_Controller_LUT[doorData.ParentRoomId].Id == "RectRoom_20x12_Var2")
-				{
-					if(door.SideOfRoom == EOrthogonalDirection.Down)
-					{
-						Debug.Log("bruh");
-					}
-				}
 				door.SetDoorEnabled(doorData.Enabled);
 				Guid linkDoorId = doorData.LinkDoorId;
 				if (linkDoorId != Guid.Empty)
