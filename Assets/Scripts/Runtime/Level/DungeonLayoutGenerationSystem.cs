@@ -16,7 +16,7 @@ namespace JZK.Level
 		public float SecondaryRoomChance;
 		[Tooltip("Set to 0 or lower to remove limit")]
 		public int MaxTotalRooms;
-		public int EnemyPoints;
+		public int EnemyPointsPerRoom;
 	}
 
 	[System.Serializable]
@@ -443,55 +443,59 @@ namespace JZK.Level
 			//populate combat rooms with enemies until enemy points value has been reached
 			List<Guid> combatRooms = layoutData.GetAllCombatRooms();
 
-			int pointsToSpend = settings.EnemyPoints;
+			int pointsPerRoom = settings.EnemyPointsPerRoom;
 
-			for(int setEnemyAttempt = 0; setEnemyAttempt < 100; ++setEnemyAttempt)
+            Debug.Log("[ENEMYGEN] have " +
+				pointsPerRoom.ToString() + " enemy points per room");
+
+			Dictionary<string, int> enemySpawnCountLUT = new();
+
+
+            foreach (Guid combatRoom in combatRooms)
 			{
-				if(pointsToSpend <= 0)
+				GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
+				int roomPointsToSpend = pointsPerRoom;
+				for(int setEnemyAttempt = 0; setEnemyAttempt < 100; ++setEnemyAttempt)
 				{
-					break;
-				}
+					if(roomPointsToSpend <= 0)
+					{
+						break;
+					}
 
-				int combatIndex = random.Next(combatRooms.Count);
-				Guid combatRoomId = combatRooms[combatIndex];
-				GenerationRoomData room = layoutData.Room_LUT[combatRoomId];
+                    List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(roomPointsToSpend, enemySpawnCountLUT);
+					if(allPossibleDefs.Count == 0)
+					{
+						Debug.LogWarning("[GENERATION] ENEMY PLACEMENT - no possible enemy definitions remaining for room " + roomData.Id.ToString() + " - it will appear with no enemies!");
+						break;
+					}
 
-                List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(pointsToSpend);
-                int defIndex = random.Next(allPossibleDefs.Count);
-                EnemyDefinition def = allPossibleDefs[defIndex];
+                    int defIndex = random.Next(allPossibleDefs.Count);
+                    EnemyDefinition def = allPossibleDefs[defIndex];
 
-                EnemySpawnData spawnData = new();
-                spawnData.EnemyId = def.Id;
-                spawnData.FloorTilePos = Vector3Int.zero;   //TODO: Set to random unoccupied point in room
+                    EnemySpawnData spawnData = new();
+                    spawnData.EnemyId = def.Id;
+                    spawnData.FloorTilePos = Vector3Int.zero;   //TODO: Set to random unoccupied point in room
 
-				room.EnemySpawnData.Add(spawnData);
+					roomData.EnemySpawnData.Add(spawnData);
 
-                pointsToSpend -= def.DifficultyPoints;
-            }
+                    Debug.Log("[ENEMYGEN] placing enemy of type " + def.Id +
+                    " in room " + roomData.CriticalPathIndex.ToString() +
+                    " - spending " + def.DifficultyPoints.ToString() +
+                    " of remaining " + roomPointsToSpend.ToString() + " points, leaving " +
+                    (roomPointsToSpend - def.DifficultyPoints).ToString() + " remaining points");
 
-			//List<Guid> allCombat
-			/*List<Guid> allRoomsShuffled = allRoomIds.OrderBy(x => random.NextDouble()).ToList();
+                    roomPointsToSpend -= def.DifficultyPoints;
 
-			int pointsToSpend = settings.EnemyPoints;
-
-			foreach(Guid roomId in allRoomIds)
-			{
-				GenerationRoomData room = layoutData.Room_LUT[roomId];
-				if(room.RoomType != ERoomType.StandardCombat)
-				{
-					continue;
-				}
-
-				List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(pointsToSpend);
-				int defIndex = random.Next(allPossibleDefs.Count);
-				EnemyDefinition def = allPossibleDefs[defIndex];
-
-				EnemySpawnData spawnData = new();
-				spawnData.EnemyId = def.Id;
-				spawnData.FloorTilePos = Vector3Int.zero;   //TODO: Set to random unoccupied point in room
-
-				pointsToSpend -= def.DifficultyPoints;
-			}*/
+					if(enemySpawnCountLUT.ContainsKey(def.Id))
+					{
+						enemySpawnCountLUT[def.Id]++;
+					}
+					else
+					{
+                        enemySpawnCountLUT.Add(spawnData.EnemyId, 1);
+                    }
+                }
+			}
 
             float generationEndTime = Time.realtimeSinceStartup;
 			float generationTime = generationEndTime - generationStartTime;

@@ -45,7 +45,7 @@ namespace JZK.Gameplay
             return null;
         }
 
-        public List<EnemyDefinition> GetAllDefinitionsForDifficultyPoints(int points)
+        public List<EnemyDefinition> GetAllDefinitionsForDifficultyPoints(int points, Dictionary<string, int> enemyCountLUT)
         {
             List<EnemyDefinition> returnList = new();
 
@@ -54,6 +54,14 @@ namespace JZK.Gameplay
                 if(definition.DifficultyPoints > points)
                 {
                     continue;
+                }
+
+                if(enemyCountLUT.TryGetValue(definition.Id, out int count))
+                {
+                    if(count >= EnemyPoolingSystem.MAX_ENEMIES_PER_TYPE)
+                    {
+                        continue;
+                    }
                 }
 
                 returnList.Add(definition);

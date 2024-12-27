@@ -390,6 +390,7 @@ MonoBehaviour:
   - {fileID: 2409920566582911945}
   - {fileID: 3818950873471190556}
   _debugRoomCentreSprite: {fileID: 3958939051942857683}
+  _enemiesInRoom: []
 --- !u!1 &2860553525030548257
 GameObject:
   m_ObjectHideFlags: 0

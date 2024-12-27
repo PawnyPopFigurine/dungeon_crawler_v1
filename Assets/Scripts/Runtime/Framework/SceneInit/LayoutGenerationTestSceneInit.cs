@@ -127,10 +127,13 @@ namespace JZK.Framework
 					if(!EnemyPoolingSystem.Instance.RequestEnemy(spawnData.EnemyId, out EnemyController enemy))
 					{
 						//complain
+						Debug.LogError("[GENERATION] have exceeded pool depth for enemy " + spawnData.EnemyId);
+						continue;
 					}
 
                     if (!controller.FloorTilemap.HasTile(spawnData.FloorTilePos))
                     {
+						Debug.LogWarning("[GENERATION] tried placing enemy in unreachable location " + spawnData.FloorTilePos.ToString());
                         continue;
                     }
 

@@ -16,7 +16,7 @@ namespace JZK.Gameplay
         public override SystemLoadData LoadData => _loadData;
 
 
-        public static int MAX_ENEMIES_PER_TYPE = 15;
+        public static int MAX_ENEMIES_PER_TYPE = 25;
         public Vector2 ENEMY_RESET_POS => transform.position;
 
         private Dictionary<string, List<EnemyController>> _enemiesPool = new();
