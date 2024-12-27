@@ -61,6 +61,7 @@ namespace JZK.Level
 		public int CriticalPathIndex = -1;  //how far along the crit path this room is - even if it isn't directly on it
 		public bool OnCriticalPath;
 		public List<EnemySpawnData> EnemySpawnData = new();
+		public List<Vector3Int> UnoccupiedFloorPositions = new();
 
 		public class GenerationRoomConnectionData
 		{
@@ -148,6 +149,21 @@ namespace JZK.Level
 				doorData.SideOfRoom = door.SideOfRoom;
 				ParentLayout.Door_LUT.Add(doorData.Id, doorData);
 				AllDoorIds.Add(doorData.Id);
+			}
+
+			UnoccupiedFloorPositions.Clear();
+
+			for(int floorTileX = controller.FloorTilemap.cellBounds.xMin; floorTileX < controller.FloorTilemap.cellBounds.xMax; ++floorTileX)
+			{
+				for(int floorTileY = controller.FloorTilemap.cellBounds.yMin; floorTileY < controller.FloorTilemap.cellBounds.yMax; ++floorTileY)
+				{
+					Vector3Int floorTilePos = new(floorTileX, floorTileY);
+
+					if(controller.FloorTilemap.HasTile(floorTilePos))
+					{
+						UnoccupiedFloorPositions.Add(floorTilePos);
+					}
+				}
 			}
 		}
 
@@ -459,6 +475,7 @@ namespace JZK.Level
 				{
 					if(roomPointsToSpend <= 0)
 					{
+						Debug.Log("[GENERATION] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
 						break;
 					}
 
@@ -474,7 +491,11 @@ namespace JZK.Level
 
                     EnemySpawnData spawnData = new();
                     spawnData.EnemyId = def.Id;
-                    spawnData.FloorTilePos = Vector3Int.zero;   //TODO: Set to random unoccupied point in room
+
+					int floorPosIndex = random.Next(roomData.UnoccupiedFloorPositions.Count);
+					Vector3Int floorPos = roomData.UnoccupiedFloorPositions[floorPosIndex];
+                    spawnData.FloorTilePos = floorPos;   //TODO: Set to random unoccupied point in room
+					roomData.UnoccupiedFloorPositions.Remove(floorPos);
 
 					roomData.EnemySpawnData.Add(spawnData);
 

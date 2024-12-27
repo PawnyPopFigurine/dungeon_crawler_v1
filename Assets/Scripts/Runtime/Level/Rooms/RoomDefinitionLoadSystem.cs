@@ -71,15 +71,11 @@ namespace JZK.Level
 
             List<string> roomIdList = GetListForRoomType(requiredType);
 
-            //List<RoomDefinition> allRoomDefs = new(_roomDefinition_LUT.Values);
-
             for (int attempt = 0; attempt < maxAttempts; ++attempt)
             {
                 int index = random.Next(roomIdList.Count);
                 string considerId = roomIdList[index];
                 RoomDefinition considerRoom = _roomDefinition_LUT[considerId];
-                /*int index = random.Next(allRoomDefs.Count);
-                RoomDefinition considerRoom = allRoomDefs[index];*/
                 RoomController controller = considerRoom.PrefabController.GetComponent<RoomController>();
                 if (!controller.HasEnoughDoorsOnSide(EOrthogonalDirection.Up, connectionData.RequiredUpConnections))
                 {

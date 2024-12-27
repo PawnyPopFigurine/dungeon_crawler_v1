@@ -18,6 +18,7 @@ namespace JZK.Gameplay
 		public Tilemap FloorTilemap => _floorTilemap;
 
 		[SerializeField] Tilemap _wallTilemap;
+		public Tilemap WallTilemap => _wallTilemap;
 
 		[SerializeField] TileBase _initialFloorTile;
 		[SerializeField] TileBase _initialWallTile;
