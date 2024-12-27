@@ -89,7 +89,8 @@ namespace JZK.Framework
 				_currentLayout = generatedLayout;
 				CreateDungeonFromLayoutData();
 				GameplaySystem.Instance.Debug_SetActiveRoomList(_activeRoomControllers);
-				if(_paintNoEnemySpawnTiles)
+                GameplaySystem.Instance.OpenAllRoomDoors();
+                if (_paintNoEnemySpawnTiles)
 				{
                     PaintNoEnemySpawnTiles();
                 }
@@ -196,7 +197,7 @@ namespace JZK.Framework
 				}
 			}
 
-			GameplaySystem.Instance.OpenAllRoomDoors();
+			
 
             float generationEndTime = Time.realtimeSinceStartup;
             float generationTime = generationEndTime - generationStartTime;

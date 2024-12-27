@@ -246,6 +246,18 @@ namespace JZK.Gameplay
 			_currentWallTile = repaintToTile;
 		}
 
+		public bool ShouldDoorsCloseOnFirstEntry()
+		{
+			if(RoomDefinitionLoadSystem.Instance.GetDefinition(_id).RoomType == ERoomType.StandardCombat)
+			{
+				if(_enemiesInRoom.Count > 0)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public void CloseAllDoors()
 		{
 			foreach (RoomDoor door in _doors)
@@ -311,12 +323,15 @@ namespace JZK.Gameplay
 			{
                 if (!_hasClearedRoom)
                 {
-                    CloseAllDoors();
-
-					foreach(EnemyController enemy in _enemiesInRoom)
+					if(ShouldDoorsCloseOnFirstEntry())
 					{
-						enemy.OnRoomEntered();
-					}
+                        CloseAllDoors();
+
+                        foreach (EnemyController enemy in _enemiesInRoom)
+                        {
+                            enemy.OnRoomEntered();
+                        }
+                    }
                 }
             }
 		}
