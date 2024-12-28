@@ -462,10 +462,10 @@ MonoBehaviour:
   _settings:
     Seed: 0
     Theme: 1
-    CriticalPathRoomCount: 8
-    SecondaryRoomChance: 0.479
+    CriticalPathRoomCount: 5
+    SecondaryRoomChance: 0
     MaxTotalRooms: 14
-    EnemyPointsPerRoom: 5
+    EnemyPointsPerRoom: 17
   _noEnemySpawnTile: {fileID: 11400000, guid: c69cf56a97c450b4496de63ce8f7e6b4, type: 2}
   _paintNoEnemySpawnTiles: 0
   _debugSpawnData:

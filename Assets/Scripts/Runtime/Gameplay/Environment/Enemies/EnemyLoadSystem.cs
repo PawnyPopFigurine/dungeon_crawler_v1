@@ -107,6 +107,7 @@ namespace JZK.Gameplay
             foreach (EnemyDefinitionSO defSO in definitionSOs)
             {
                 EnemyDefinition def = defSO.Definition.CreateCopy();
+                def.Initialise();
 
                 if(!def.HideInGame)
                 {

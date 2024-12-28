@@ -126,6 +126,19 @@ namespace JZK.Level
 			return returnList;
 		}
 
+		public bool CanPlaceEnemyAtPoint(EnemyDefinition def, Vector3Int startPoint)
+		{
+			foreach(Vector3Int occupyPos in def.OccupyPoints)
+			{
+				Vector3Int relativeOccupyPos = startPoint + occupyPos;
+				if(!UnoccupiedFloorPositions.Contains(relativeOccupyPos))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
 		public void Initialise(LayoutData parent, int critPathIndex, bool onCritPath)
 		{
 			ParentLayout = parent;
@@ -499,14 +512,14 @@ namespace JZK.Level
 				{
 					if (roomPointsToSpend <= 0)
 					{
-						Debug.Log("[GENERATION] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
+						Debug.Log("[ENEMYGEN] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
 						break;
 					}
 
 					List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(roomPointsToSpend, enemySpawnCountLUT, settings.Theme);
 					if (allPossibleDefs.Count == 0)
 					{
-						Debug.LogWarning("[GENERATION] ENEMY PLACEMENT - no possible enemy definitions remaining for room " + roomData.Id.ToString() + " - it will appear with no enemies!");
+						Debug.LogWarning("[ENEMYGEN] - no possible enemy definitions remaining for room " + roomData.Id.ToString() + " - it will appear with no enemies!");
 						break;
 					}
 
@@ -518,8 +531,19 @@ namespace JZK.Level
 
 					int floorPosIndex = random.Next(roomData.UnoccupiedFloorPositions.Count);
 					Vector3Int floorPos = roomData.UnoccupiedFloorPositions[floorPosIndex];
+
+					if(!roomData.CanPlaceEnemyAtPoint(def, floorPos))
+					{
+						continue;
+					}
+
 					spawnData.FloorTilePos = floorPos;
-					roomData.UnoccupiedFloorPositions.Remove(floorPos);
+
+					foreach(Vector3Int occupyPos in def.OccupyPoints)
+					{
+						Vector3Int relativeOccupyPos = occupyPos + floorPos;
+						roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
+					}
 
 					roomData.EnemySpawnData.Add(spawnData);
 

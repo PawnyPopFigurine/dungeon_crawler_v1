@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace JZK.Gameplay
 {
@@ -10,6 +11,9 @@ namespace JZK.Gameplay
         public string DefinitionId => _definitionId;
 
         [SerializeField] DestructibleObject _destructibleComponent; //when this is destroyed, the enemy is considered dead
+
+        [SerializeField] Tilemap _occupyTiles;
+        public Tilemap OccupyTiles => _occupyTiles;
 
         bool _isAlive;
         public bool IsAlive => _isAlive;
@@ -23,6 +27,8 @@ namespace JZK.Gameplay
             _destructibleComponent.OnObjectDestroyed += OnDestroyed;
 
             _isAlive = true;
+
+            _occupyTiles.gameObject.GetComponent<TilemapRenderer>().enabled = false;
         }
 
         public void OnDestroyed()

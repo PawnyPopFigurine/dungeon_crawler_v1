@@ -226,6 +226,9 @@ namespace JZK.Gameplay
 
             _hasInitialised = true;
 
+			/*_initialFloorTile = _floorTilemap.GetTile(Vector3Int.zero);
+			_initialWallTile = _floorTilemap.GetTile(Vector3Int.zero);*/
+
 			_currentFloorTile = _initialFloorTile;
 			_currentWallTile = _initialWallTile;
 

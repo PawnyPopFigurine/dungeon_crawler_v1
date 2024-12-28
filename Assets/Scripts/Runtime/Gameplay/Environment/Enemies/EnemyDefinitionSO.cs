@@ -31,6 +31,29 @@ namespace JZK.Gameplay
         [SerializeField] ELevelTheme _theme;
         public ELevelTheme Theme => _theme;
 
+        private List<Vector3Int> _occupyPoints;
+        public List<Vector3Int> OccupyPoints => _occupyPoints;
+
+        public void Initialise()
+        {
+            _occupyPoints.Clear();
+
+            EnemyController controller = _enemyPrefab.GetComponent<EnemyController>();
+            for(int x = controller.OccupyTiles.cellBounds.xMin; x < controller.OccupyTiles.cellBounds.xMax; ++x)
+            {
+                for(int y = controller.OccupyTiles.cellBounds.yMin; y < controller.OccupyTiles.cellBounds.yMax; ++y)
+                {
+                    Vector3Int occupyPos = new(x, y);
+                    if(controller.OccupyTiles.HasTile(occupyPos))
+                    {
+                        _occupyPoints.Add(occupyPos);
+                        Debug.Log("[ENEMY] enemy " + _id + " occupies local point " + occupyPos.ToString());
+                    }
+                }
+            }
+            //for(int x = _enemyPrefab.Get)
+        }
+
         public EnemyDefinition CreateCopy()
         {
             return new()
@@ -40,6 +63,7 @@ namespace JZK.Gameplay
                 _enemyPrefab = _enemyPrefab,
                 _difficultyPoints = _difficultyPoints,
                 _theme = _theme,
+                _occupyPoints = _occupyPoints,
             };
         }
     }
