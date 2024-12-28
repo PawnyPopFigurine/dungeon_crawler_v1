@@ -157,6 +157,7 @@ namespace JZK.Framework
                     }
 
                     enemy.transform.position = controller.FloorTilemap.CellToWorld(spawnData.FloorTilePos);
+					enemy.OnLevelPlacement();
                     enemy.gameObject.SetActive(true);
 
 					enemyList.Add(enemy);

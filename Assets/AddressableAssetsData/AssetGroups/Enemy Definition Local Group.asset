@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 028fa099166d94741923682ec39541fe
   m_SerializeEntries:
+  - m_GUID: 470687686d4f2ec4d9662896572119e2
+    m_Address: Assets/Data/Enemies/Testing/testEnemyEasy_Patrol.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6d7570e484ec28b41b6d569ede3c9f59
     m_Address: Assets/Data/Enemies/Testing/testEnemyMedium.asset
     m_ReadOnly: 0

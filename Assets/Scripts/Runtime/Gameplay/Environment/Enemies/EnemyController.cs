@@ -15,6 +15,9 @@ namespace JZK.Gameplay
         [SerializeField] Tilemap _occupyTiles;
         public Tilemap OccupyTiles => _occupyTiles;
 
+        [SerializeField] PatrolBehaviour _patrolBehaviour;
+        bool _hasPatrolBehaviour;
+
         bool _isAlive;
         public bool IsAlive => _isAlive;
 
@@ -29,6 +32,16 @@ namespace JZK.Gameplay
             _isAlive = true;
 
             _occupyTiles.gameObject.GetComponent<TilemapRenderer>().enabled = false;
+
+            _hasPatrolBehaviour = null != _patrolBehaviour;
+        }
+
+        public void OnLevelPlacement()
+        {
+            if(null != _patrolBehaviour)
+            {
+                _patrolBehaviour.OnLevelPlacement();
+            }
         }
 
         public void OnDestroyed()
