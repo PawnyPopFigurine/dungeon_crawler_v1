@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: testEnemyEasy_Big
-    _hideInGame: 0
+    _hideInGame: 1
     _enemyPrefab: {fileID: 7768730045968935509, guid: 6ce8c377685252a4f8abedfb2e7acc5d, type: 3}
     _difficultyPoints: 1
     _theme: 1

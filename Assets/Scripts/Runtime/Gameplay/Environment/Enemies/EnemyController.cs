@@ -24,21 +24,54 @@ namespace JZK.Gameplay
         public delegate void EnemyEvent();
         public event EnemyEvent OnEnemyKilled;
 
-        public void Start()
+        bool _initialised;
+
+        bool _playerInRoom;
+        public bool PlayerInRoom => _playerInRoom;
+
+        [SerializeField] SpriteRenderer _visuals;
+        [SerializeField] SpriteRenderer _spawnPointVisuals;
+
+        public void Initialise()
+        {
+            if(_initialised)
+            {
+                return;
+            }
+
+            _initialised = true;
+
+            _occupyTiles.gameObject.GetComponent<TilemapRenderer>().enabled = false;
+            _hasPatrolBehaviour = null != _patrolBehaviour;
+
+            SetCallbacks();
+        }
+
+        public void SetCallbacks()
         {
             _destructibleComponent.OnObjectDestroyed -= OnDestroyed;
             _destructibleComponent.OnObjectDestroyed += OnDestroyed;
+        }
 
-            _isAlive = true;
-
-            _occupyTiles.gameObject.GetComponent<TilemapRenderer>().enabled = false;
-
-            _hasPatrolBehaviour = null != _patrolBehaviour;
+        public void UpdateController(float deltaTime)
+        {
+            if (null != _patrolBehaviour)
+            {
+                if (_playerInRoom && _isAlive)
+                {
+                    _patrolBehaviour.UpdateBehaviour(deltaTime);
+                }
+            }
         }
 
         public void OnLevelPlacement()
         {
-            if(null != _patrolBehaviour)
+            _isAlive = true;
+
+            _visuals.enabled = false;
+            _spawnPointVisuals.enabled = true;
+
+            if (null != _patrolBehaviour)
             {
                 _patrolBehaviour.OnLevelPlacement();
             }
@@ -52,12 +85,18 @@ namespace JZK.Gameplay
 
         public void OnRoomEntered()
         {
-            //do stuff here
+            _playerInRoom = true;
+
+            _spawnPointVisuals.enabled = false;
+            _visuals.enabled = true;
         }
 
         public void ResetController()
         {
             _destructibleComponent.ResetObject();
+
+            _playerInRoom = false;
+            _isAlive = false;
         }
     }
 }

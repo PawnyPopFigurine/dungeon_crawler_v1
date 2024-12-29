@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: testEnemyEasy_Patrol
-    _hideInGame: 0
+    _hideInGame: 1
     _enemyPrefab: {fileID: 7768730045968935509, guid: 6d0d365d08194374b9055d9e71dfded3, type: 3}
     _difficultyPoints: 1
     _theme: 1

@@ -15,6 +15,16 @@ namespace JZK.Gameplay
 
         public override SystemLoadData LoadData => _loadData;
 
+        public override void UpdateSystem()
+        {
+            base.UpdateSystem();
+
+            foreach(EnemyController controller in _activeEnemies)
+            {
+                controller.UpdateController(Time.deltaTime);
+            }
+        }
+
 
         public static int MAX_ENEMIES_PER_TYPE = 50;
         public Vector2 ENEMY_RESET_POS => transform.position;
@@ -41,6 +51,7 @@ namespace JZK.Gameplay
                 GameObject prefabGO = Instantiate(prefab);
                 prefabGO.name = enemyId + "_" + enemyIndex.ToString();
                 EnemyController controller = prefabGO.GetComponent<EnemyController>();
+                controller.Initialise();
                 enemiesOfId.Add(controller);
                 prefabGO.SetActive(false);
                 prefabGO.transform.SetParent(transform);

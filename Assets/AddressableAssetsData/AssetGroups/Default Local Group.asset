@@ -23,6 +23,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ce24769ea4d064439c0c064ff839289
+    m_Address: Assets/Data/Themes/UndeadTheme.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - theme_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a759432ce67992541a94bf3a52c28c0e
     m_Address: Assets/Prefabs/Player/Player.prefab
     m_ReadOnly: 0

@@ -456,14 +456,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _useDebugSeed: 1
-  _debugSeed: 1000
+  _useDebugSeed: 0
+  _debugSeed: 0
   _printDebug: 0
   _settings:
     Seed: 0
     Theme: 1
-    CriticalPathRoomCount: 5
-    SecondaryRoomChance: 0
+    CriticalPathRoomCount: 8
+    SecondaryRoomChance: 0.171
     MaxTotalRooms: 14
     EnemyPointsPerRoom: 17
   _noEnemySpawnTile: {fileID: 11400000, guid: c69cf56a97c450b4496de63ce8f7e6b4, type: 2}
@@ -473,7 +473,6 @@ MonoBehaviour:
     FloorTilePos: {x: 0, y: 0, z: 0}
   _testSpawnEnemies: 0
   _paintFloorEdges: 0
-  _themeSO: {fileID: 11400000, guid: 8ce24769ea4d064439c0c064ff839289, type: 2}
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0

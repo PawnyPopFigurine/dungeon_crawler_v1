@@ -13,6 +13,8 @@ namespace JZK.Gameplay
 		public delegate void DestructibleObjectEvent();
 		public event DestructibleObjectEvent OnObjectDestroyed;
 
+		[SerializeField] EnemyController _controller;
+
 		private void Start()
 		{
 			Initialise();
@@ -25,6 +27,13 @@ namespace JZK.Gameplay
 
 		public void OnHitByPlayerProjectile()
 		{
+			if(null != _controller)
+			{
+				if(!_controller.PlayerInRoom)
+				{
+					return;
+				}
+			}
 			_currentHitsLeft -= 1;
 
 			if(_currentHitsLeft <= 0)

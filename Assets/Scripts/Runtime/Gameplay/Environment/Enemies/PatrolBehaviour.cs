@@ -13,6 +13,56 @@ namespace JZK.Gameplay
 
         [SerializeField] float _speed;
 
+        [SerializeField] EnemyController _controller;
+
+        EOrthogonalDirection _currentFacing;
+
+        public void UpdateBehaviour(float deltaTime)
+        {
+            var step = _speed * deltaTime; // calculate distance to move
+            transform.position = Vector3.MoveTowards(transform.position, _currentPatrolTarget, step);
+
+            if (Vector3.Distance(transform.position, _currentPatrolTarget) < 0.001f)
+            {
+                int nextPatrolIndex = _patrolPoints.IndexOf(_currentPatrolTarget) + 1;
+                if (nextPatrolIndex >= _patrolPoints.Count)
+                {
+                    nextPatrolIndex = 0;
+                }
+
+                _currentPatrolTarget = _patrolPoints[nextPatrolIndex];
+
+                UpdateFacing(_currentPatrolTarget);
+            }
+        }
+
+        void UpdateFacing(Vector3 referencePos)
+        {
+            if(transform.position.x - referencePos.x < 0.001f)
+            {
+                if(transform.position.y > referencePos.y)
+                {
+                    _currentFacing = EOrthogonalDirection.Down;
+                }
+                if(transform.position.y < referencePos.y)
+                {
+                    _currentFacing = EOrthogonalDirection.Up;
+                }
+            }
+
+            if(transform.position.y - referencePos.y < 0.001f)
+            {
+                if(transform.position.x > referencePos.x)
+                {
+                    _currentFacing = EOrthogonalDirection.Left;
+                }
+                if(transform.position.x < referencePos.x)
+                {
+                    _currentFacing = EOrthogonalDirection.Right;
+                }
+            }
+        }
+
         public void OnLevelPlacement()
         {
             _patrolPoints.Clear();
@@ -23,25 +73,10 @@ namespace JZK.Gameplay
                 _patrolPoints.Add(patrolPos);
             }
 
-            _currentPatrolTarget = _patrolPoints[0];
-        }
+            transform.position = _patrolPoints[0];
+            _currentPatrolTarget = _patrolPoints[1];
 
-        public void Update()
-        {
-            // Move our position a step closer to the target.
-            var step = _speed * Time.deltaTime; // calculate distance to move
-            transform.position = Vector3.MoveTowards(transform.position, _currentPatrolTarget, step);
-
-            if (Vector3.Distance(transform.position, _currentPatrolTarget) < 0.001f)
-            {
-                int nextPatrolIndex = _patrolPoints.IndexOf(_currentPatrolTarget) + 1;
-                if(nextPatrolIndex >= _patrolPoints.Count)
-                {
-                    nextPatrolIndex = 0;
-                }
-
-                _currentPatrolTarget = _patrolPoints[nextPatrolIndex];
-            }
+            UpdateFacing(_currentPatrolTarget);
         }
     }
 }

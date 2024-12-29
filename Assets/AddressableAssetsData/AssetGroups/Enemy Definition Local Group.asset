@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 028fa099166d94741923682ec39541fe
   m_SerializeEntries:
+  - m_GUID: 45df8f61b82fc28419b8dda21c67d260
+    m_Address: Assets/Data/Enemies/Undead/skeleton_PatrolSquare.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 470687686d4f2ec4d9662896572119e2
     m_Address: Assets/Data/Enemies/Testing/testEnemyEasy_Patrol.asset
     m_ReadOnly: 0
@@ -35,6 +41,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87d28e474bdc29e45852ea2ba3faffa3
+    m_Address: Assets/Data/Enemies/Undead/skeleton_PatrolUpDown.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9b2ceb23865e865449553538fb85457a
     m_Address: Assets/Data/Enemies/Testing/testEnemyHard.asset
     m_ReadOnly: 0
@@ -43,6 +55,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cf4c2ffba3494d042895473fc0db6f95
     m_Address: Assets/Data/Enemies/Testing/testEnemyEasy.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fc708a039f85ce741bbcb0e47b3b3385
+    m_Address: Assets/Data/Enemies/Undead/skeleton_Patrol.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - enemy_definition

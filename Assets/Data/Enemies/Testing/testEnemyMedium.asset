@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: testEnemyMedium
-    _hideInGame: 0
+    _hideInGame: 1
     _enemyPrefab: {fileID: 7768730045968935509, guid: b85627dc9f85d04409dc3cdb981513b6, type: 3}
     _difficultyPoints: 3
     _theme: 1
