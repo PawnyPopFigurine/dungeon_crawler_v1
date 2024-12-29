@@ -18,6 +18,7 @@ namespace JZK.Framework
             new SystemReference<Gameplay.GameplaySystem>(),
             new SystemReference<Gameplay.PlayerSystem>(),
             new SystemReference<Gameplay.ProjectileSystem>(),
+			new SystemReference<Gameplay.ThemeDataLoadSystem>(),
 
             new SystemReference<Input.InputSystem>(),
 
@@ -56,8 +57,6 @@ namespace JZK.Framework
 		Dictionary<Guid, RoomController> _generationData_Controller_LUT = new();
 
 		[SerializeField] bool _paintFloorEdges;
-
-		[SerializeField] ThemeDataSO _themeSO;
 
 		public void Start()
 		{
@@ -188,10 +187,12 @@ namespace JZK.Framework
 					//complain
 				}
 
+				ThemeDefinition themeDef = ThemeDataLoadSystem.Instance.ThemeData_LUT[_currentLayout.Theme];
+
 				controller.DisableAllDoors();
-				controller.RepaintFloorTiles(_themeSO.Definition.FloorTile);
-				controller.RepaintWallTiles(_themeSO.Definition.WallTile);
-				controller.RepaintDoors(_themeSO.Definition.OpenDoor, _themeSO.Definition.ShutDoor);
+				controller.RepaintFloorTiles(themeDef.FloorTile);
+				controller.RepaintWallTiles(themeDef.WallTile);
+				controller.RepaintDoors(themeDef.OpenDoor, themeDef.ShutDoor);
 				controller.gameObject.SetActive(true);
 				controller.transform.position = roomPrefabPos;
 				roomPrefabPos.x += roomSpacing;

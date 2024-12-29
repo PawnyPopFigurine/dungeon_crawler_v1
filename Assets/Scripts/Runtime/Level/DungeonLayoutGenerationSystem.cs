@@ -28,7 +28,7 @@ namespace JZK.Level
 		public List<Guid> CriticalPathIds = new();
 		public List<Guid> SecondaryRoomIds = new();
 
-		//TODO: theme enum
+		public ELevelTheme Theme;
 
 
 		public List<Guid> GetAllCombatRooms()
@@ -300,6 +300,8 @@ namespace JZK.Level
 			float generationStartTime = Time.realtimeSinceStartup;
 			LayoutData layoutData = new();
 			generationSuccess = false;
+
+			layoutData.Theme = settings.Theme;
 
 			//create number of room datas needed for critical path
 			for (int critPathIndex = 0; critPathIndex < settings.CriticalPathRoomCount; ++critPathIndex)

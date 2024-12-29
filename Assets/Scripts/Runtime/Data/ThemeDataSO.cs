@@ -37,8 +37,11 @@ namespace JZK.Level
         {
             return new()
             {
+                _theme = _theme,
                 _floorTile = _floorTile,
                 _wallTile = _wallTile,
+                _shutDoor = _shutDoor,
+                _openDoor = _openDoor,
             };
         }
     }
