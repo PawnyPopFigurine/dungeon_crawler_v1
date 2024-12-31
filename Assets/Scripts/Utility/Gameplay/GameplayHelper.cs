@@ -81,5 +81,29 @@ namespace JZK.Gameplay
                     return null;
             }
         }
+
+        public static WeightedListItem GetWeightedListItem(List<WeightedListItem> items, System.Random random)
+		{
+            int totalWeighting = 0;
+            foreach(WeightedListItem item in items)
+			{
+                totalWeighting += item.Weighting;
+			}
+
+            int randomNumber = random.Next(totalWeighting);
+
+            foreach(WeightedListItem item in items)
+			{
+                if(randomNumber < item.Weighting)
+				{
+                    return item;
+				}
+
+                randomNumber -= item.Weighting;
+			}
+
+            Debug.LogError("[GAMEPLAYHELPER] failed to find list item - returning null");
+            return null;
+		}
     }
 }

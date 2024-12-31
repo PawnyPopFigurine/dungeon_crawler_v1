@@ -14,7 +14,7 @@ namespace JZK.Gameplay
     }
 
     [System.Serializable]
-    public class EnemyDefinition
+    public class EnemyDefinition : WeightedListItem
     {
         [SerializeField] string _id;
         public string Id => _id;
@@ -47,16 +47,14 @@ namespace JZK.Gameplay
                     if(controller.OccupyTiles.HasTile(occupyPos))
                     {
                         _occupyPoints.Add(occupyPos);
-                        Debug.Log("[ENEMY] enemy " + _id + " occupies local point " + occupyPos.ToString());
                     }
                 }
             }
-            //for(int x = _enemyPrefab.Get)
         }
 
         public EnemyDefinition CreateCopy()
         {
-            return new()
+            EnemyDefinition copy = new()
             {
                 _id = _id,
                 _hideInGame = _hideInGame,
@@ -65,6 +63,10 @@ namespace JZK.Gameplay
                 _theme = _theme,
                 _occupyPoints = _occupyPoints,
             };
+
+            copy.SetWeighting(Weighting);
+
+            return copy;
         }
     }
 }

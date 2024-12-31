@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7ec090889ce7d048949bc544494c843
+    m_Address: Assets/Data/Enemies/Testing/skeleton_PatrolLeftRight_TestRare.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cf4c2ffba3494d042895473fc0db6f95
     m_Address: Assets/Data/Enemies/Testing/testEnemyEasy.asset
     m_ReadOnly: 0

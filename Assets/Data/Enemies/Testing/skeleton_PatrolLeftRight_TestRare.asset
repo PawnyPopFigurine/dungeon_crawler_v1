@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 366be871682d8744894e1ee153c8ebdb, type: 3}
-  m_Name: skeleton_PatrolLeftRight
+  m_Name: skeleton_PatrolLeftRight_TestRare
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 10
-    _id: skeleton_PatrolLeftRight
+    _weighting: 1
+    _id: skeleton_PatrolLeftRight_TestRare
     _hideInGame: 0
-    _enemyPrefab: {fileID: 7768730045968935509, guid: a50ef157401ac2047b884692dd2b5565, type: 3}
+    _enemyPrefab: {fileID: 7768730045968935509, guid: b415bc2e98f6015448aaba74b01f4661, type: 3}
     _difficultyPoints: 1
     _theme: 1

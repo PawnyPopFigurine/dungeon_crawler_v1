@@ -295,6 +295,8 @@ namespace JZK.Level
 			base.StartLoading(state);
 		}
 
+		const int SET_ENEMY_ATTEMPTS = 200;
+
 		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random, out bool generationSuccess)
 		{
 			float generationStartTime = Time.realtimeSinceStartup;
@@ -510,7 +512,7 @@ namespace JZK.Level
 			{
 				GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
 				int roomPointsToSpend = pointsPerRoom;
-				for (int setEnemyAttempt = 0; setEnemyAttempt < 100; ++setEnemyAttempt)
+				for (int setEnemyAttempt = 0; setEnemyAttempt < SET_ENEMY_ATTEMPTS; ++setEnemyAttempt)
 				{
 					if (roomPointsToSpend <= 0)
 					{
@@ -525,8 +527,13 @@ namespace JZK.Level
 						break;
 					}
 
-					int defIndex = random.Next(allPossibleDefs.Count);
-					EnemyDefinition def = allPossibleDefs[defIndex];
+					List<WeightedListItem> weightedItems = new();
+					foreach(EnemyDefinition possibleDef in allPossibleDefs)
+					{
+						weightedItems.Add(possibleDef);
+					}
+
+					EnemyDefinition def = (EnemyDefinition)GameplayHelper.GetWeightedListItem(weightedItems, random);
 
 					EnemySpawnData spawnData = new();
 					spawnData.EnemyId = def.Id;

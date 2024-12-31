@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: skeleton_PatrolSquare
   m_EditorClassIdentifier: 
   _definition:
+    _weighting: 10
     _id: skeleton_PatrolSquare
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: 09573e8736ae4e240b986645fb979ed8, type: 3}
