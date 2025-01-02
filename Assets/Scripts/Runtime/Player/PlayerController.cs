@@ -203,5 +203,11 @@ namespace JZK.Gameplay
 				}
 			}
         }
+
+        public void ResetPlayerHealth()
+        {
+            _currentHealth = _maxHealth;
+            _playerAlive = true;
+        }
     }
 }

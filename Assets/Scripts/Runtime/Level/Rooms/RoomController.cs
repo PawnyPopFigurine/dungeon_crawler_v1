@@ -487,6 +487,13 @@ namespace JZK.Gameplay
 
 		public void ResetController()
 		{
+			foreach(EnemyController enemy in _enemiesInRoom)
+			{
+				enemy.OnEnemyKilled -= OnRoomEnemyKilled;
+			}
+
+			_enemiesInRoom.Clear();
+			_hasClearedRoom = false;
 			//TODO: stuff here
 		}
 

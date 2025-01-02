@@ -8,6 +8,9 @@ namespace JZK.UI
 	public class GameplayUIController : UI.UIController
 	{
 		[SerializeField] HealthMeter _healthMeter;
+		[SerializeField] GameObject _deathOverlayRootGO;
+
+		[SerializeField] Button _restartButton;
 
 		#region UIController
 
@@ -28,6 +31,13 @@ namespace JZK.UI
 			UpdateInput();
 		}
 
+		public override void Initialise()
+		{
+			base.Initialise();
+
+			_deathOverlayRootGO.SetActive(false);
+		}
+
 		#endregion //UIController
 
 
@@ -37,9 +47,21 @@ namespace JZK.UI
 
 		}
 
+		public void OnPlayerDead()
+		{
+			_deathOverlayRootGO.SetActive(true);
+		}
+
 		public void RefreshHealthBarForValue(int healthValue)
 		{
 			_healthMeter.UpdateIconsForHealthValue(healthValue);
+		}
+
+		public void RestartButtonPressed()
+		{
+			Debug.Log("RESTART");
+			_deathOverlayRootGO.SetActive(false);
+			Gameplay.GameplaySystem.Instance.Restart();
 		}
 
 	}

@@ -63,6 +63,9 @@ namespace JZK.UI
 
 			PlayerSystem.Instance.OnPlayerHit -= OnPlayerHit;
 			PlayerSystem.Instance.OnPlayerHit += OnPlayerHit;
+
+			PlayerSystem.Instance.OnPlayerDead -= OnPlayerDead;
+			PlayerSystem.Instance.OnPlayerDead += OnPlayerDead;
 		}
 
 		#endregion //PresistentSystem
@@ -129,6 +132,11 @@ namespace JZK.UI
 		public void OnPlayerHit()
 		{
 			RefreshHealthBarForCurrentHealth();
+		}
+
+		public void OnPlayerDead()
+		{
+			_controller.OnPlayerDead();
 		}
 	}
 }

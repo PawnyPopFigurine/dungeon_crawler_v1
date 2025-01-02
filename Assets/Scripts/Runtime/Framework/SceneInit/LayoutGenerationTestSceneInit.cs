@@ -88,7 +88,8 @@ namespace JZK.Framework
 			if(success)
 			{
 				_currentLayout = generatedLayout;
-				CreateDungeonFromLayoutData();
+				CreateDungeonFromData(_currentLayout);
+				/*CreateLayoutFromData(_currentLayout);
 				GameplaySystem.Instance.Debug_SetActiveRoomList(_activeRoomControllers);
                 GameplaySystem.Instance.OpenAllRoomDoors();
                 if (_paintNoEnemySpawnTiles)
@@ -101,19 +102,43 @@ namespace JZK.Framework
 				}
 				else
 				{
-					SpawnEnemiesFromLayoutData();
+					SpawnEnemiesFromData(_currentLayout);
 				}
 
 				if(_paintFloorEdges)
 				{
 					PaintFloorEdges();
-				}
+				}*/
             }
 			else
 			{
 				Debug.LogError("[GENERATION] Layout generation failed with seed " + _settings.Seed.ToString());
 			}
         }
+
+		void CreateDungeonFromData(LayoutData data)
+		{
+			CreateLayoutFromData(data);
+			GameplaySystem.Instance.Debug_SetActiveRoomList(_activeRoomControllers);
+			GameplaySystem.Instance.OpenAllRoomDoors();
+			if (_paintNoEnemySpawnTiles)
+			{
+				PaintNoEnemySpawnTiles();
+			}
+			if (_testSpawnEnemies)
+			{
+				SpawnTestEnemyInEachCombatRoom();
+			}
+			else
+			{
+				SpawnEnemiesFromData(data);
+			}
+
+			if (_paintFloorEdges)
+			{
+				PaintFloorEdges();
+			}
+		}
 
 		void PaintFloorEdges()
 		{
@@ -126,17 +151,17 @@ namespace JZK.Framework
 			}
 		}
 
-		public void SpawnEnemiesFromLayoutData()
+		public void SpawnEnemiesFromData(LayoutData data)
 		{
-			if(_currentLayout == null)
+			if(data == null)
 			{
 				return;
 			}
 
-			foreach(Guid id in _currentLayout.Room_LUT.Keys)
+			foreach(Guid id in data.Room_LUT.Keys)
 			{
 				RoomController controller = _generationData_Controller_LUT[id];
-				GenerationRoomData roomData = _currentLayout.Room_LUT[id];
+				GenerationRoomData roomData = data.Room_LUT[id];
 
                 List<EnemyController> enemyList = new();
 
@@ -166,10 +191,11 @@ namespace JZK.Framework
             }
         }
 
-		public void CreateDungeonFromLayoutData()
+		public void CreateLayoutFromData(LayoutData data)
 		{
-			if (_currentLayout == null)
+			if (data == null)
 			{
+				Debug.LogError("[GENERATION] tried to make layout from null data");
 				return;
 			}
 
@@ -180,14 +206,14 @@ namespace JZK.Framework
 
 			_generationData_Controller_LUT.Clear();
 
-            foreach (GenerationRoomData roomData in _currentLayout.Room_LUT.Values)
+            foreach (GenerationRoomData roomData in data.Room_LUT.Values)
 			{
 				if (!RoomLoadSystem.Instance.RequestRoom(roomData.PrefabId, out RoomController controller))
 				{
 					//complain
 				}
 
-				ThemeDefinition themeDef = ThemeDataLoadSystem.Instance.ThemeData_LUT[_currentLayout.Theme];
+				ThemeDefinition themeDef = ThemeDataLoadSystem.Instance.ThemeData_LUT[data.Theme];
 
 				controller.DisableAllDoors();
 				controller.RepaintFloorTiles(themeDef.FloorTile);
@@ -206,14 +232,14 @@ namespace JZK.Framework
 				}
 			}
 
-			foreach (GenerationDoorData doorData in _currentLayout.Door_LUT.Values)
+			foreach (GenerationDoorData doorData in data.Door_LUT.Values)
 			{
 				RoomDoor door = _generationData_Controller_LUT[doorData.ParentRoomId].Doors[doorData.IndexInRoom];
 				door.SetDoorEnabled(doorData.Enabled);
 				Guid linkDoorId = doorData.LinkDoorId;
 				if (linkDoorId != Guid.Empty)
 				{
-					GenerationDoorData linkDoorData = _currentLayout.Door_LUT[linkDoorId];
+					GenerationDoorData linkDoorData = data.Door_LUT[linkDoorId];
 					RoomDoor linkDoor = _generationData_Controller_LUT[linkDoorData.ParentRoomId].Doors[linkDoorData.IndexInRoom];
 					door.LinkToDoor(linkDoor);
 					Debug.Log("[GENERATION] RUNTIME PLACEMENT: linked door " + doorData.Id.ToString() + " to door " + linkDoorData.Id.ToString());
@@ -305,21 +331,19 @@ namespace JZK.Framework
             }
         }
 
+		public void ClearLayoutData()
+		{
+			_currentLayout = null;
+		}
+
 		public void ClearRooms()
 		{
-			if (null == _currentLayout)
-			{
-				return;
-			}
-
 			foreach(RoomController activeRoom in _activeRoomControllers)
 			{
 				RoomLoadSystem.Instance.ClearRoom(activeRoom);
 			}
 
 			_activeRoomControllers.Clear();
-
-			_currentLayout = null;
 		}
 
 		public void ClearEnemies()
@@ -336,6 +360,15 @@ namespace JZK.Framework
 					RespawnPlayer();
                     break;
 			}
+		}
+
+		public void RestartLevel()
+		{
+			ClearEnemies();
+			ClearRooms();
+			CreateDungeonFromData(_currentLayout);
+
+			RespawnPlayer();
 		}
 
 		public void RespawnPlayer()

@@ -528,7 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312c415ef825bd244bd7a97fe64e4ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _definitionId: skeleton_PatrolLeftRight
+  _definitionId: skeleton_PatrolSquare
   _destructibleComponent: {fileID: 1297299398133086163}
   _occupyTiles: {fileID: 1067730782048642000}
   _patrolBehaviour: {fileID: 2031760978451494522}

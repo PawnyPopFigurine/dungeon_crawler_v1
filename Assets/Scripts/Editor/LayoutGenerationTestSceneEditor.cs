@@ -21,6 +21,7 @@ public class LayoutGenerationTestSceneEditor : Editor
         {
             //_sceneInit.ClearTiles();
             _sceneInit.ClearRooms();
+            _sceneInit.ClearLayoutData();
         }
 
         if (GUILayout.Button("Generate New Dungeon"))
@@ -28,6 +29,7 @@ public class LayoutGenerationTestSceneEditor : Editor
             //_sceneInit.ClearTiles();
             _sceneInit.ClearRooms();
             _sceneInit.ClearEnemies();
+            _sceneInit.ClearLayoutData();
             _sceneInit.GenerateDungeon();
             _sceneInit.RespawnPlayer();
         }

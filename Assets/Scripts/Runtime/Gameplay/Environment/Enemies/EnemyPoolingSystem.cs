@@ -118,6 +118,8 @@ namespace JZK.Gameplay
             {
                 ClearEnemy(controller);
             }
+
+            _activeEnemies.Clear();
         }
     }
 }

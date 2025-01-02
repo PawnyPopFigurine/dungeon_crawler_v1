@@ -31,7 +31,7 @@ namespace JZK.Gameplay
         [SerializeField] ELevelTheme _theme;
         public ELevelTheme Theme => _theme;
 
-        private List<Vector3Int> _occupyPoints;
+        private List<Vector3Int> _occupyPoints = new();
         public List<Vector3Int> OccupyPoints => _occupyPoints;
 
         public void Initialise()

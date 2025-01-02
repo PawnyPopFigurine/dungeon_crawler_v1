@@ -31,6 +31,7 @@ namespace JZK.Gameplay
 
 		public delegate void PlayerEvent();
 		public event PlayerEvent OnPlayerHit;
+		public event PlayerEvent OnPlayerDead;
 
 
 		public override void UpdateSystem()
@@ -38,11 +39,6 @@ namespace JZK.Gameplay
 			base.UpdateSystem();
 
 			_controller.UpdateController();
-
-			if(!_controller.PlayerAlive)
-			{
-				Debug.Log("[HELLO] PLAYER DEAD");
-			}
 		}
 
 		#region Load
@@ -72,7 +68,6 @@ namespace JZK.Gameplay
 
 			_controller.Initialise();
 			_controller.SetActive(false);
-
 			FinishLoading(ELoadingState.Game);
 
 			float endTime = Time.realtimeSinceStartup - startTime;
@@ -85,6 +80,7 @@ namespace JZK.Gameplay
 
 		public void StartForPlayerTestScene(Transform spawnPoint)
 		{
+			UI.GameplayUISystem.Instance.RefreshHealthBarForCurrentHealth();
 			_controller.SetActive(true);
 			_controller.transform.position = spawnPoint.position;
 		}
@@ -117,12 +113,20 @@ namespace JZK.Gameplay
 
 		public void KillPlayer()
 		{
+			Debug.Log("[HELLO] PLAYER DEAD");
+
 			//probs want a kill player event here
+			OnPlayerDead?.Invoke();
 		}
 
 		public int GetPlayerHealth()
 		{
 			return _controller.CurrentHealth;
+		}
+
+		public void ResetPlayerHealth()
+		{
+			_controller.ResetPlayerHealth();
 		}
 	}
 }

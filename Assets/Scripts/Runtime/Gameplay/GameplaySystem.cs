@@ -74,5 +74,15 @@ namespace JZK.Gameplay
                 room.OpenAllDoors();
             }
         }
+
+        public void Restart()
+		{
+            PlayerSystem.Instance.ResetPlayerHealth();
+
+            if (SceneInit.CurrentSceneInit is LayoutGenerationTestSceneInit layoutInit)
+			{
+                layoutInit.RestartLevel();
+			}
+		}
     }
 }
