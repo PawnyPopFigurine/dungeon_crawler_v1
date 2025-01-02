@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 028fa099166d94741923682ec39541fe
   m_SerializeEntries:
+  - m_GUID: 15ea7fc378b488c4ba9420c23248901a
+    m_Address: Assets/Data/Enemies/NoTheme/snake_PatrolSquare_Shoot.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 45df8f61b82fc28419b8dda21c67d260
     m_Address: Assets/Data/Enemies/Undead/skeleton_PatrolSquare.asset
     m_ReadOnly: 0
@@ -25,6 +31,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 470687686d4f2ec4d9662896572119e2
     m_Address: Assets/Data/Enemies/Testing/testEnemyEasy_Patrol.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5252d6749d6d91e4fb969c5c7cf2f398
+    m_Address: Assets/Data/Enemies/NoTheme/bigSpider_Patrol.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - enemy_definition

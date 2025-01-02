@@ -17,6 +17,7 @@ namespace JZK.Gameplay
         SingleStraight = 1,
         TwinStraight = 2,
         TwinSpread = 3,
+        AimAtPlayer = 4,
 	}
 
     public class EnemyProjectileBehaviour : MonoBehaviour
@@ -165,6 +166,19 @@ namespace JZK.Gameplay
                             };
                         }
 					}
+                    break;
+                case EEnemyFiringPattern.AimAtPlayer:
+					{
+                        Vector2 playerPos = PlayerSystem.Instance.GetPlayerPos();
+
+                        Vector2 shootDirection = playerPos - (Vector2)transform.position;
+                        shootDirection.Normalize();
+                        if (!ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, shootDirection, _projectileSpeed, transform.position, _projectileLifetime, 1, out _))
+                        {
+
+                            //complain here
+                        };
+                    }
                     break;
 			}
             

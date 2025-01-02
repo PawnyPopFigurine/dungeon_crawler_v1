@@ -23,6 +23,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ac4b13e96268dc45aa3283a41a44581
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/SnakeProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6dd51e06536e70f4d8af503ed2d1b5e2
     m_Address: Assets/Prefabs/Gameplay/Projectiles/GnomePellet.prefab
     m_ReadOnly: 0
