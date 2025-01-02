@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 366be871682d8744894e1ee153c8ebdb, type: 3}
-  m_Name: skeleton_PatrolSquare_TestProj
+  m_Name: snake_PatrolSquare
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 100
-    _id: skeleton_PatrolSquare_TestProj
-    _hideInGame: 1
-    _enemyPrefab: {fileID: 7768730045968935509, guid: 9f51baa8d9c467d4cb10d16ee829d0d1, type: 3}
+    _weighting: 10
+    _id: snake_PatrolSquare
+    _hideInGame: 0
+    _enemyPrefab: {fileID: 7768730045968935509, guid: 2e6c2543eb7a6454dba7f184dbdbf398, type: 3}
     _difficultyPoints: 1
-    _theme: 1
+    _theme: 0

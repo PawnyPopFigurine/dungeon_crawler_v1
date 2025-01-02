@@ -47,6 +47,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 957d07a74685c724eb441b39d6d0ae8a
+    m_Address: Assets/Data/Enemies/NoTheme/snake_PatrolSquare.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 994c18eba19417a4b8bd3239de2d8b48
     m_Address: Assets/Data/Enemies/Testing/skeleton_PatrolSquare_TestProj.asset
     m_ReadOnly: 0
