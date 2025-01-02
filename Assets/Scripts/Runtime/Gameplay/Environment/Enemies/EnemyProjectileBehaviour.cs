@@ -53,6 +53,16 @@ namespace JZK.Gameplay
 			}
 		}
 
+        public void OnPatrolTurning()
+		{
+            if(_behaviourType != EEnemyBehaviour.OnPatrolTurning)
+			{
+                return;
+			}
+
+            FireProjectile();
+		}
+
         void FireProjectile()
 		{
             Vector2 projectileVel = new(0, 0);

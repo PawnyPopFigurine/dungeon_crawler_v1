@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: skeleton_PatrolLeftRight_TestProj
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 20
+    _weighting: 100
     _id: skeleton_PatrolLeftRight_TestProj
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: 52cad9406092d6b439529e5c19be8c54, type: 3}

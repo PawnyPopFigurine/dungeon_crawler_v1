@@ -15,6 +15,8 @@ namespace JZK.Gameplay
 
         [SerializeField] EnemyController _controller;
 
+        [SerializeField] EnemyProjectileBehaviour _projectileBehaviour;
+
 
         public void UpdateBehaviour(float deltaTime)
         {
@@ -29,8 +31,12 @@ namespace JZK.Gameplay
                     nextPatrolIndex = 0;
                 }
 
-                _currentPatrolTarget = _patrolPoints[nextPatrolIndex];
+                if (_projectileBehaviour != null)
+                {
+                    _projectileBehaviour.OnPatrolTurning();
+                }
 
+                _currentPatrolTarget = _patrolPoints[nextPatrolIndex];
                 UpdateFacing(_currentPatrolTarget);
             }
         }
