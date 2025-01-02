@@ -34,6 +34,9 @@ namespace JZK.Gameplay
         private List<Vector3Int> _occupyPoints = new();
         public List<Vector3Int> OccupyPoints => _occupyPoints;
 
+        private List<Vector3Int> _requiredFloorPoints = new();
+        public List<Vector3Int> RequiredFloorPoints => _requiredFloorPoints;
+
         public void Initialise()
         {
             _occupyPoints.Clear();
@@ -47,6 +50,22 @@ namespace JZK.Gameplay
                     if(controller.OccupyTiles.HasTile(occupyPos))
                     {
                         _occupyPoints.Add(occupyPos);
+                    }
+                }
+            }
+
+            _requiredFloorPoints.Clear();
+            if(null != controller.RequiredFloorTiles)
+			{
+                for (int x = controller.RequiredFloorTiles.cellBounds.xMin; x < controller.RequiredFloorTiles.cellBounds.xMax; ++x)
+                {
+                    for (int y = controller.RequiredFloorTiles.cellBounds.yMin; y < controller.RequiredFloorTiles.cellBounds.yMax; ++y)
+                    {
+                        Vector3Int occupyPos = new(x, y);
+                        if (controller.RequiredFloorTiles.HasTile(occupyPos))
+                        {
+                            _requiredFloorPoints.Add(occupyPos);
+                        }
                     }
                 }
             }

@@ -15,6 +15,9 @@ namespace JZK.Gameplay
         [SerializeField] Tilemap _occupyTiles;
         public Tilemap OccupyTiles => _occupyTiles;
 
+        [SerializeField] Tilemap _requiredFloorTiles;
+        public Tilemap RequiredFloorTiles => _requiredFloorTiles;
+
         [SerializeField] PatrolBehaviour _patrolBehaviour;
         bool _hasPatrolBehaviour;
 
@@ -47,6 +50,7 @@ namespace JZK.Gameplay
             _initialised = true;
 
             _occupyTiles.gameObject.GetComponent<TilemapRenderer>().enabled = false;
+            _requiredFloorTiles.gameObject.GetComponent<TilemapRenderer>().enabled = false;
             _hasPatrolBehaviour = null != _patrolBehaviour;
 
             SetCallbacks();

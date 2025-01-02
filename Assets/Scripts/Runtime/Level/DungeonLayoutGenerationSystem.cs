@@ -62,7 +62,8 @@ namespace JZK.Level
 		public int CriticalPathIndex = -1;  //how far along the crit path this room is - even if it isn't directly on it
 		public bool OnCriticalPath;
 		public List<EnemySpawnData> EnemySpawnData = new();
-		public List<Vector3Int> UnoccupiedFloorPositions = new();
+		public List<Vector3Int> UnoccupiedFloorPositions = new();	//takes placed enemies/objects into account
+		public List<Vector3Int> AllFloorPositions = new();
 
 		public class GenerationRoomConnectionData
 		{
@@ -136,6 +137,15 @@ namespace JZK.Level
 					return false;
 				}
 			}
+
+			foreach(Vector3Int floorPos in def.RequiredFloorPoints)
+			{
+				Vector3Int relativeFloorPos = startPoint + floorPos;
+				if(!AllFloorPositions.Contains(relativeFloorPos))
+				{
+					return false;
+				}
+			}
 			return true;
 		}
 
@@ -166,6 +176,7 @@ namespace JZK.Level
 			}
 
 			UnoccupiedFloorPositions = new(controller.FloorTilePositions);
+			AllFloorPositions = new(controller.FloorTilePositions);
 		}
 
 		public bool TryLinkToRoom(GenerationRoomData linkToRoom, GenerationDoorData outwardDoor, out GenerationDoorData otherRoomDoor)
