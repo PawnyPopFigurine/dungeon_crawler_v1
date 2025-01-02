@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 028fa099166d94741923682ec39541fe
   m_SerializeEntries:
+  - m_GUID: 082df82b923977b4f9940d4171c2fe51
+    m_Address: Assets/Data/Enemies/NoTheme/bat_Follow.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 15ea7fc378b488c4ba9420c23248901a
     m_Address: Assets/Data/Enemies/NoTheme/snake_PatrolSquare_Shoot.asset
     m_ReadOnly: 0

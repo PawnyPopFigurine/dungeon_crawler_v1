@@ -874,3 +874,5 @@ MonoBehaviour:
   _speed: 2
   _controller: {fileID: 6711677943753088457}
   _projectileBehaviour: {fileID: 0}
+  _chasePlayer: 0
+  _rigidbody: {fileID: 8141649510243351173}

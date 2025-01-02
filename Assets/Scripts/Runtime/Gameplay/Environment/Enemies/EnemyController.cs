@@ -40,6 +40,9 @@ namespace JZK.Gameplay
         EOrthogonalDirection _currentFacing;
         public EOrthogonalDirection CurrentFacing => _currentFacing;
 
+        bool _playerInRadius;
+        public bool PlayerInRadius => _playerInRadius;
+
         public void Initialise()
         {
             if(_initialised)
@@ -94,6 +97,10 @@ namespace JZK.Gameplay
         public void OnDestroyed()
         {
             _isAlive = false;
+            if(_patrolBehaviour != null)
+			{
+                _patrolBehaviour.ResetBehaviour();
+			}
             OnEnemyKilled?.Invoke();
         }
 
@@ -108,14 +115,30 @@ namespace JZK.Gameplay
         public void ResetController()
         {
             _destructibleComponent.ResetObject();
+            if(_patrolBehaviour != null)
+			{
+                _patrolBehaviour.ResetBehaviour();
+			}
 
             _playerInRoom = false;
             _isAlive = false;
+
+            _playerInRadius = false;
         }
 
         public void SetCurrentFacing(EOrthogonalDirection facing)
 		{
             _currentFacing = facing;
+		}
+
+        public void OnPlayerDetected()
+		{
+            _playerInRadius = true;
+		}
+
+        public void OnPlayerLeaveRadius()
+		{
+            _playerInRadius = false;
 		}
     }
 }

@@ -17,28 +17,48 @@ namespace JZK.Gameplay
 
         [SerializeField] EnemyProjectileBehaviour _projectileBehaviour;
 
+        [SerializeField] bool _chasePlayer;
+        public bool ChasePlayer => _chasePlayer;
 
-        public void UpdateBehaviour(float deltaTime)
+		public void ResetBehaviour()
+		{
+
+		}
+
+		public void UpdateBehaviour(float deltaTime)
         {
             var step = _speed * deltaTime; // calculate distance to move
-            transform.position = Vector3.MoveTowards(transform.position, _currentPatrolTarget, step);
-
-            if (Vector3.Distance(transform.position, _currentPatrolTarget) < 0.001f)
-            {
-                int nextPatrolIndex = _patrolPoints.IndexOf(_currentPatrolTarget) + 1;
-                if (nextPatrolIndex >= _patrolPoints.Count)
-                {
-                    nextPatrolIndex = 0;
+            if(_chasePlayer)
+			{
+                if(_controller.PlayerInRadius)
+				{
+                    Vector3 playerPos = PlayerSystem.Instance.GetPlayerPos();
+                    transform.position = Vector3.MoveTowards(transform.position, playerPos, step);
+                    UpdateFacing(playerPos);
                 }
-
-                if (_projectileBehaviour != null)
-                {
-                    _projectileBehaviour.OnPatrolTurning();
-                }
-
-                _currentPatrolTarget = _patrolPoints[nextPatrolIndex];
-                UpdateFacing(_currentPatrolTarget);
             }
+            else
+			{
+                transform.position = Vector3.MoveTowards(transform.position, _currentPatrolTarget, step);
+
+                if (Vector3.Distance(transform.position, _currentPatrolTarget) < 0.001f)
+                {
+                    int nextPatrolIndex = _patrolPoints.IndexOf(_currentPatrolTarget) + 1;
+                    if (nextPatrolIndex >= _patrolPoints.Count)
+                    {
+                        nextPatrolIndex = 0;
+                    }
+
+                    if (_projectileBehaviour != null)
+                    {
+                        _projectileBehaviour.OnPatrolTurning();
+                    }
+
+                    _currentPatrolTarget = _patrolPoints[nextPatrolIndex];
+                    UpdateFacing(_currentPatrolTarget);
+                }
+            }
+            
         }
 
         void UpdateFacing(Vector3 referencePos)
@@ -89,8 +109,11 @@ namespace JZK.Gameplay
                 _patrolPoints.Add(patrolPos);
             }
 
-            transform.position = _patrolPoints[0];
-            _currentPatrolTarget = _patrolPoints[1];
+            if(_patrolPoints.Count >= 1)
+			{
+                transform.position = _patrolPoints[0];
+                _currentPatrolTarget = _patrolPoints.Count >= 2 ? _patrolPoints[1] : _patrolPoints[0];
+            }
 
             UpdateFacing(_currentPatrolTarget);
         }
