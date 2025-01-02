@@ -105,5 +105,34 @@ namespace JZK.Gameplay
             Debug.LogError("[GAMEPLAYHELPER] failed to find list item - returning null");
             return null;
 		}
+
+        public static Vector2 GetVectorForDirection(EOrthogonalDirection direction)
+		{
+            switch(direction)
+			{
+                case EOrthogonalDirection.Up:
+                    return new(0, 1);
+                case EOrthogonalDirection.Right:
+                    return new(1, 0);
+                case EOrthogonalDirection.Down:
+                    return new(0, -1);
+                case EOrthogonalDirection.Left:
+                    return new(-1, 0);
+                default:
+                    return new(0, 0);
+			}
+		}
+
+        public static Vector2 GetRotatedVectorForDirection(EOrthogonalDirection direction, float rotateByDegrees)
+		{
+            Vector2 directionVector = GetVectorForDirection(direction);
+            float rotateByRadians = rotateByDegrees * (Mathf.PI / 180);
+
+            float rotatedDirectionX = (directionVector.x * Mathf.Cos(rotateByRadians)) - (directionVector.y * Mathf.Sin(rotateByRadians));
+            float rotatedDirectionY = (directionVector.x * Mathf.Sin(rotateByRadians)) + (directionVector.y * Mathf.Cos(rotateByRadians));
+
+            Vector2 rotatedDirection = new(rotatedDirectionX, rotatedDirectionY);
+            return rotatedDirection;
+        }
     }
 }

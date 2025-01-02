@@ -41,6 +41,7 @@ namespace JZK.Gameplay
         float _timeSinceLastAutoFire;
 
         [SerializeField] float _straightSpreadShotDistance = 0.4f;
+        [SerializeField] float _spreadShotRotation = 35f;
 
         public void Initialise()
 		{
@@ -137,6 +138,33 @@ namespace JZK.Gameplay
                         ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, projectileVel, _projectileSpeed, launchPos1, _projectileLifetime, 1, out _);
                         ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, projectileVel, _projectileSpeed, launchPos2, _projectileLifetime, 1, out _);
                     }
+                    break;
+                case EEnemyFiringPattern.TwinSpread:
+					{
+                        for(int directionIndex = 0; directionIndex <= 1; ++directionIndex)
+						{
+                            float rotateByDegrees = 0;
+                            switch (directionIndex)
+                            {
+                                //left
+                                case 0:
+                                    rotateByDegrees = -_spreadShotRotation;
+                                    break;
+                                //right
+                                case 1:
+                                    rotateByDegrees = _spreadShotRotation;
+                                    break;
+                            }
+
+                            Vector2 shootDirection = GameplayHelper.GetRotatedVectorForDirection(_parentController.CurrentFacing, rotateByDegrees);
+
+                            if (!ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, shootDirection, _projectileSpeed, transform.position, _projectileLifetime, 1, out _))
+                            {
+
+                                //complain here
+                            };
+                        }
+					}
                     break;
 			}
             
