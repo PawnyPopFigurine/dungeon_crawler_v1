@@ -694,6 +694,7 @@ MonoBehaviour:
   _parentController: {fileID: 6711677943753088457}
   _projectileType: 2
   _behaviourType: 2
+  _patternType: 2
   _autoFireInterval: 3
   _projectileSpeed: 5
   _projectileLifetime: 10

@@ -4,11 +4,19 @@ using UnityEngine;
 
 namespace JZK.Gameplay
 {
-    public enum EEnemyBehaviour
+    public enum EEnemyFiringBehaviour
 	{
         None = 0,
         Automatic = 1,
         OnPatrolTurning = 2,
+	}
+
+    public enum EEnemyFiringPattern
+	{
+        None = 0,
+        SingleStraight = 1,
+        TwinStraight = 2,
+        TwinSpread = 3,
 	}
 
     public class EnemyProjectileBehaviour : MonoBehaviour
@@ -18,8 +26,11 @@ namespace JZK.Gameplay
         [SerializeField] EProjectile _projectileType;
         public EProjectile ProjectileType => _projectileType;
 
-        [SerializeField] EEnemyBehaviour _behaviourType;
-        public EEnemyBehaviour BehaviourType => _behaviourType;
+        [SerializeField] EEnemyFiringBehaviour _behaviourType;
+        public EEnemyFiringBehaviour BehaviourType => _behaviourType;
+
+        [SerializeField] EEnemyFiringPattern _patternType;
+        public EEnemyFiringPattern PatternType => _patternType;
 
         [SerializeField] float _autoFireInterval = 2;
         public float AutoFireInterval => _autoFireInterval;
@@ -29,6 +40,8 @@ namespace JZK.Gameplay
 
         float _timeSinceLastAutoFire;
 
+        [SerializeField] float _straightSpreadShotDistance = 0.4f;
+
         public void Initialise()
 		{
 
@@ -36,7 +49,7 @@ namespace JZK.Gameplay
         
         public void UpdateProjectileBehaviour(float deltaTime)
 		{
-            if(_behaviourType == EEnemyBehaviour.Automatic)
+            if(_behaviourType == EEnemyFiringBehaviour.Automatic)
 			{
                 UpdateAutoFire(deltaTime);
 			}
@@ -55,7 +68,7 @@ namespace JZK.Gameplay
 
         public void OnPatrolTurning()
 		{
-            if(_behaviourType != EEnemyBehaviour.OnPatrolTurning)
+            if(_behaviourType != EEnemyFiringBehaviour.OnPatrolTurning)
 			{
                 return;
 			}
@@ -65,24 +78,68 @@ namespace JZK.Gameplay
 
         void FireProjectile()
 		{
-            Vector2 projectileVel = new(0, 0);
-            switch (_parentController.CurrentFacing)
-            {
-                case EOrthogonalDirection.Up:
-                    projectileVel = new(0, 1);
-                    break;
-                case EOrthogonalDirection.Right:
-                    projectileVel = new(1, 0);
-                    break;
-                case EOrthogonalDirection.Down:
-                    projectileVel = new(0, -1);
-                    break;
-                case EOrthogonalDirection.Left:
-                    projectileVel = new(-1, 0);
-                    break;
-            }
+            switch(_patternType)
+			{
+                case EEnemyFiringPattern.SingleStraight:
+					{
+                        Vector2 projectileVel = new(0, 0);
+                        switch (_parentController.CurrentFacing)
+                        {
+                            case EOrthogonalDirection.Up:
+                                projectileVel = new(0, 1);
+                                break;
+                            case EOrthogonalDirection.Right:
+                                projectileVel = new(1, 0);
+                                break;
+                            case EOrthogonalDirection.Down:
+                                projectileVel = new(0, -1);
+                                break;
+                            case EOrthogonalDirection.Left:
+                                projectileVel = new(-1, 0);
+                                break;
+                        }
 
-            ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, projectileVel, _projectileSpeed, transform.position, _projectileLifetime, 1, out _);
+                        ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, projectileVel, _projectileSpeed, transform.position, _projectileLifetime, 1, out _);
+                    }
+                    break;
+                case EEnemyFiringPattern.TwinStraight:
+					{
+                        Vector3 launchPos1 = transform.position;
+                        Vector3 launchPos2 = transform.position;
+
+                        float twinStraightDistance = _straightSpreadShotDistance;
+
+                        Vector2 projectileVel = new(0, 0);
+                        switch (_parentController.CurrentFacing)
+                        {
+                            case EOrthogonalDirection.Up:
+                                projectileVel = new(0, 1);
+                                launchPos1.x -= twinStraightDistance;
+                                launchPos2.x += twinStraightDistance;
+                                break;
+                            case EOrthogonalDirection.Right:
+                                projectileVel = new(1, 0);
+                                launchPos1.y -= twinStraightDistance;
+                                launchPos2.y += twinStraightDistance;
+                                break;
+                            case EOrthogonalDirection.Down:
+                                projectileVel = new(0, -1);
+                                launchPos1.x += twinStraightDistance;
+                                launchPos2.x -= twinStraightDistance;
+                                break;
+                            case EOrthogonalDirection.Left:
+                                projectileVel = new(-1, 0);
+                                launchPos1.y += twinStraightDistance;
+                                launchPos2.y -= twinStraightDistance;
+                                break;
+                        }
+
+                        ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, projectileVel, _projectileSpeed, launchPos1, _projectileLifetime, 1, out _);
+                        ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, projectileVel, _projectileSpeed, launchPos2, _projectileLifetime, 1, out _);
+                    }
+                    break;
+			}
+            
         }
 
         public void OnLevelPlacement()
