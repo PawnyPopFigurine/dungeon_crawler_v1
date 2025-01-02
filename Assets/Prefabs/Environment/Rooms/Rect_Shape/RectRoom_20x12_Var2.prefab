@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3891389428030200133}
   m_Layer: 0
   m_Name: WallTiles (1)
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 6504443351546124806}
   m_Layer: 0
   m_Name: WallTiles (1)
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 6402497985365779024}
   m_Layer: 0
   m_Name: FillInBottomRightDoor
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -868,7 +868,7 @@ GameObject:
   - component: {fileID: 7848965357912842194}
   m_Layer: 0
   m_Name: WallTiles (1)
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3952,7 +3952,7 @@ GameObject:
   - component: {fileID: 75380563711560098}
   m_Layer: 0
   m_Name: FillInRightDoor
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4261,7 +4261,7 @@ GameObject:
   - component: {fileID: 7913631656266687284}
   m_Layer: 0
   m_Name: FillInLeftDoor
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4486,7 +4486,7 @@ GameObject:
   - component: {fileID: 1954720981667411723}
   m_Layer: 0
   m_Name: WallTiles (1)
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5007,7 +5007,7 @@ GameObject:
   - component: {fileID: 4955817841348916302}
   m_Layer: 0
   m_Name: WallTiles (1)
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5941,7 +5941,7 @@ GameObject:
   - component: {fileID: 5940682848496152227}
   m_Layer: 0
   m_Name: WallTiles (1)
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6206,7 +6206,7 @@ GameObject:
   - component: {fileID: 4957616519790094237}
   m_Layer: 0
   m_Name: FillInTopLeftDoor
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6431,7 +6431,7 @@ GameObject:
   - component: {fileID: 9156400014407304020}
   m_Layer: 0
   m_Name: FillInBottomLeftDoor
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6912,7 +6912,7 @@ GameObject:
   - component: {fileID: 8839337621461716227}
   m_Layer: 0
   m_Name: WallTiles
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7950,7 +7950,7 @@ GameObject:
   - component: {fileID: 4027404964825492072}
   m_Layer: 0
   m_Name: FillInTopRightDoor
-  m_TagString: DestroyPlayerProjectiles
+  m_TagString: CollideAllProjectiles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -11,6 +11,7 @@ namespace JZK.Gameplay
 			switch(collider.gameObject.tag)
 			{
 				case "DestroyPlayerProjectiles":
+				case "CollideAllProjectiles":
 					ProjectileSystem.Instance.ClearProjectile(this);
 					break;
 				case "DestroyAndDestroyedByPlayerProj":
