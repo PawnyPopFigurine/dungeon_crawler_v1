@@ -37,8 +37,10 @@ namespace JZK.Gameplay
         [SerializeField] SpriteRenderer _visuals;
         [SerializeField] SpriteRenderer _spawnPointVisuals;
 
+        [SerializeField] EOrthogonalDirection _overrideFacing = EOrthogonalDirection.Invalid;
+
         EOrthogonalDirection _currentFacing;
-        public EOrthogonalDirection CurrentFacing => _currentFacing;
+        public EOrthogonalDirection CurrentFacing => _overrideFacing == EOrthogonalDirection.Invalid ? _currentFacing : _overrideFacing;
 
         bool _playerInRadius;
         public bool PlayerInRadius => _playerInRadius;

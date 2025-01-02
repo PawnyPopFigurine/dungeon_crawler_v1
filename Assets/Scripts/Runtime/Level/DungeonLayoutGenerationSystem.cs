@@ -64,6 +64,7 @@ namespace JZK.Level
 		public List<EnemySpawnData> EnemySpawnData = new();
 		public List<Vector3Int> UnoccupiedFloorPositions = new();	//takes placed enemies/objects into account
 		public List<Vector3Int> AllFloorPositions = new();
+		public List<Vector3Int> AllFloorEdgePositions = new();
 
 		public class GenerationRoomConnectionData
 		{
@@ -129,6 +130,13 @@ namespace JZK.Level
 
 		public bool CanPlaceEnemyAtPoint(EnemyDefinition def, Vector3Int startPoint)
 		{
+			if(def.PlaceAtEdge)
+			{
+				if(!AllFloorEdgePositions.Contains(startPoint))
+				{
+					return false;
+				}
+			}
 			foreach(Vector3Int occupyPos in def.OccupyPoints)
 			{
 				Vector3Int relativeOccupyPos = startPoint + occupyPos;
@@ -177,6 +185,7 @@ namespace JZK.Level
 
 			UnoccupiedFloorPositions = new(controller.FloorTilePositions);
 			AllFloorPositions = new(controller.FloorTilePositions);
+			AllFloorEdgePositions = new(controller.FloorEdgePositions);
 		}
 
 		public bool TryLinkToRoom(GenerationRoomData linkToRoom, GenerationDoorData outwardDoor, out GenerationDoorData otherRoomDoor)
@@ -547,7 +556,7 @@ namespace JZK.Level
 
 					EnemyDefinition def = (EnemyDefinition)GameplayHelper.GetWeightedListItem(weightedItems, random);
 
-					if(!TrySetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
+					if(!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
 					{
 						continue;
 					}
@@ -603,10 +612,10 @@ namespace JZK.Level
 			return layoutData;
 		}
 
-		bool TrySetSpawnPosForEnemy(EnemyDefinition enemyDef, GenerationRoomData roomData, System.Random random, out Vector3Int validPos)
+		bool TryGetSpawnPosForEnemy(EnemyDefinition enemyDef, GenerationRoomData roomData, System.Random random, out Vector3Int validPos)
 		{
 			for(int setSpawnAttempt = 0; setSpawnAttempt < SET_ENEMY_POS_ATTEMPTS; ++setSpawnAttempt)
-			{
+			{				
 				int floorPosIndex = random.Next(roomData.UnoccupiedFloorPositions.Count);
 				Vector3Int floorPos = roomData.UnoccupiedFloorPositions[floorPosIndex];
 

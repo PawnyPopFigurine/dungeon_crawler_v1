@@ -31,6 +31,9 @@ namespace JZK.Gameplay
         [SerializeField] ELevelTheme _theme;
         public ELevelTheme Theme => _theme;
 
+        [SerializeField] bool _placeAtEdge;
+        public bool PlaceAtEdge => _placeAtEdge;
+
         private List<Vector3Int> _occupyPoints = new();
         public List<Vector3Int> OccupyPoints => _occupyPoints;
 
@@ -80,6 +83,7 @@ namespace JZK.Gameplay
                 _enemyPrefab = _enemyPrefab,
                 _difficultyPoints = _difficultyPoints,
                 _theme = _theme,
+                _placeAtEdge = _placeAtEdge,
                 _occupyPoints = _occupyPoints,
             };
 

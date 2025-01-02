@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3227d3213226cb04ab3c6f02391f8a5c
+    m_Address: Assets/Data/Enemies/Undead/bigSkull_Shoot.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 45df8f61b82fc28419b8dda21c67d260
     m_Address: Assets/Data/Enemies/Undead/skeleton_PatrolSquare.asset
     m_ReadOnly: 0
