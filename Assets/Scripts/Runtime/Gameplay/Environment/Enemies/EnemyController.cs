@@ -18,6 +18,8 @@ namespace JZK.Gameplay
         [SerializeField] PatrolBehaviour _patrolBehaviour;
         bool _hasPatrolBehaviour;
 
+        [SerializeField] EnemyProjectileBehaviour _projectileBehaviour;
+
         bool _isAlive;
         public bool IsAlive => _isAlive;
 
@@ -31,6 +33,9 @@ namespace JZK.Gameplay
 
         [SerializeField] SpriteRenderer _visuals;
         [SerializeField] SpriteRenderer _spawnPointVisuals;
+
+        EOrthogonalDirection _currentFacing;
+        public EOrthogonalDirection CurrentFacing => _currentFacing;
 
         public void Initialise()
         {
@@ -55,12 +60,17 @@ namespace JZK.Gameplay
 
         public void UpdateController(float deltaTime)
         {
-            if (null != _patrolBehaviour)
+            if (_playerInRoom && _isAlive)
             {
-                if (_playerInRoom && _isAlive)
-                {
+                if(null != _patrolBehaviour)
+				{
                     _patrolBehaviour.UpdateBehaviour(deltaTime);
                 }
+                
+                if(null != _projectileBehaviour)
+				{
+                    _projectileBehaviour.UpdateProjectileBehaviour(deltaTime);
+				}
             }
         }
 
@@ -98,5 +108,10 @@ namespace JZK.Gameplay
             _playerInRoom = false;
             _isAlive = false;
         }
+
+        public void SetCurrentFacing(EOrthogonalDirection facing)
+		{
+            _currentFacing = facing;
+		}
     }
 }

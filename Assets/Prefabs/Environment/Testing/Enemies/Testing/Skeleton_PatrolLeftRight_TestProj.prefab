@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 5792506865513129887}
   - component: {fileID: 6711677943753088457}
   m_Layer: 7
-  m_Name: Skeleton_PatrolLeftRight
+  m_Name: Skeleton_PatrolLeftRight_TestProj
   m_TagString: DestroyAndDestroyedByPlayerProj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -465,10 +465,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312c415ef825bd244bd7a97fe64e4ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _definitionId: skeleton_PatrolLeftRight
+  _definitionId: skeleton_PatrolLeftRight_TestProj
   _destructibleComponent: {fileID: 1297299398133086163}
   _occupyTiles: {fileID: 1067730782048642000}
   _patrolBehaviour: {fileID: 2031760978451494522}
+  _projectileBehaviour: {fileID: 2856174434233586432}
   _visuals: {fileID: 7621910783319100864}
   _spawnPointVisuals: {fileID: 424096388714228249}
 --- !u!1 &8215729066160779632
@@ -552,7 +553,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 913f8f584bfc3b740a09f9fb8372b8cd, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6984675, g: 0.25, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -689,3 +690,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12fa874d5ee759a4c857e3f761de9d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _parentController: {fileID: 6711677943753088457}
+  _projectileType: 2
+  _behaviourType: 1
+  _autoFireInterval: 2
+  _projectileSpeed: 5
+  _projectileLifetime: 10

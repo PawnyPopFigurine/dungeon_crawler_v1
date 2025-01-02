@@ -13,6 +13,7 @@ namespace JZK.Gameplay
 		None = 0,
 
 		Gnome_Pellet = 1,
+		Test_Enemy_Projectile = 2,
 	}
 
 	public class ProjectileSystem : PersistentSystem<ProjectileSystem>

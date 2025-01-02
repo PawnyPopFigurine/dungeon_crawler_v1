@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: c805c52bc6783b44fbc1e6899904ddbd
   m_SerializeEntries:
+  - m_GUID: 0ca7bb9102152e0408fc652918fe3465
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/TestEnemyProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6dd51e06536e70f4d8af503ed2d1b5e2
     m_Address: Assets/Prefabs/Gameplay/Projectiles/GnomePellet.prefab
     m_ReadOnly: 0

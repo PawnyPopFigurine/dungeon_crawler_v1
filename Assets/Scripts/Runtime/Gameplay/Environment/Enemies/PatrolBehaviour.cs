@@ -15,7 +15,6 @@ namespace JZK.Gameplay
 
         [SerializeField] EnemyController _controller;
 
-        EOrthogonalDirection _currentFacing;
 
         public void UpdateBehaviour(float deltaTime)
         {
@@ -38,15 +37,17 @@ namespace JZK.Gameplay
 
         void UpdateFacing(Vector3 referencePos)
         {
+            EOrthogonalDirection newFacing = EOrthogonalDirection.Invalid;
+
             if(transform.position.x - referencePos.x < 0.001f)
             {
                 if(transform.position.y > referencePos.y)
                 {
-                    _currentFacing = EOrthogonalDirection.Down;
+                    newFacing = EOrthogonalDirection.Down;
                 }
                 if(transform.position.y < referencePos.y)
                 {
-                    _currentFacing = EOrthogonalDirection.Up;
+                    newFacing = EOrthogonalDirection.Up;
                 }
             }
 
@@ -54,13 +55,22 @@ namespace JZK.Gameplay
             {
                 if(transform.position.x > referencePos.x)
                 {
-                    _currentFacing = EOrthogonalDirection.Left;
+                    newFacing = EOrthogonalDirection.Left;
                 }
                 if(transform.position.x < referencePos.x)
                 {
-                    _currentFacing = EOrthogonalDirection.Right;
+                    newFacing = EOrthogonalDirection.Right;
                 }
             }
+
+            if(newFacing == EOrthogonalDirection.Invalid)
+			{
+                Debug.LogWarning("[ENEMY] tried to set facing to invalid - reverting to Up");
+                _controller.SetCurrentFacing(EOrthogonalDirection.Up);
+                return;
+			}
+
+            _controller.SetCurrentFacing(newFacing);
         }
 
         public void OnLevelPlacement()
