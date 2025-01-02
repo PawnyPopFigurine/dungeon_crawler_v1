@@ -33,6 +33,9 @@ namespace JZK.Gameplay
 		public event PlayerEvent OnPlayerHit;
 		public event PlayerEvent OnPlayerDead;
 
+		bool _invincibleCheatActive = false;
+		public bool InvincibleCheatActive => _invincibleCheatActive;
+
 
 		public override void UpdateSystem()
 		{
@@ -85,6 +88,11 @@ namespace JZK.Gameplay
 			_controller.transform.position = spawnPoint.position;
 		}
 
+		public void SetInvincibleCheat(bool cheatActive)
+		{
+			_invincibleCheatActive = cheatActive;
+		}
+
 		public Vector2 GetPlayerPos()
 		{
 			if (null == _controller)
@@ -107,6 +115,10 @@ namespace JZK.Gameplay
 
 		public void OnPlayerHitHazard(GameObject hazard)
 		{
+			if(_invincibleCheatActive)
+			{
+				return;
+			}
 			_controller.OnPlayerHitHazard(hazard);
 			OnPlayerHit?.Invoke();
 		}

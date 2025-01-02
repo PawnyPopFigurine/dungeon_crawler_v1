@@ -473,6 +473,7 @@ MonoBehaviour:
     FloorTilePos: {x: 0, y: 0, z: 0}
   _testSpawnEnemies: 0
   _paintFloorEdges: 0
+  _playerInvincible: 0
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0

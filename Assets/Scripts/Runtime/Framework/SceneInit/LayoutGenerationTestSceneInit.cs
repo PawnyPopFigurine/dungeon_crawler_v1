@@ -57,6 +57,7 @@ namespace JZK.Framework
 		Dictionary<Guid, RoomController> _generationData_Controller_LUT = new();
 
 		[SerializeField] bool _paintFloorEdges;
+		[SerializeField] bool _playerInvincible;
 
 		public void Start()
 		{
@@ -89,26 +90,6 @@ namespace JZK.Framework
 			{
 				_currentLayout = generatedLayout;
 				CreateDungeonFromData(_currentLayout);
-				/*CreateLayoutFromData(_currentLayout);
-				GameplaySystem.Instance.Debug_SetActiveRoomList(_activeRoomControllers);
-                GameplaySystem.Instance.OpenAllRoomDoors();
-                if (_paintNoEnemySpawnTiles)
-				{
-                    PaintNoEnemySpawnTiles();
-                }
-				if(_testSpawnEnemies)
-				{
-					SpawnTestEnemyInEachCombatRoom();
-				}
-				else
-				{
-					SpawnEnemiesFromData(_currentLayout);
-				}
-
-				if(_paintFloorEdges)
-				{
-					PaintFloorEdges();
-				}*/
             }
 			else
 			{
@@ -373,7 +354,8 @@ namespace JZK.Framework
 
 		public void RespawnPlayer()
 		{
-            Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_currentStartPoint.transform);
+			Gameplay.PlayerSystem.Instance.SetInvincibleCheat(_playerInvincible);
+			Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_currentStartPoint.transform);
         }
 
 		public void SpawnTestEnemyInEachCombatRoom()

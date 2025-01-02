@@ -307,6 +307,7 @@ namespace JZK.Level
 		}
 
 		const int SET_ENEMY_ATTEMPTS = 200;
+		const int SET_ENEMY_POS_ATTEMPTS = 200;
 
 		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random, out bool generationSuccess)
 		{
@@ -546,7 +547,16 @@ namespace JZK.Level
 
 					EnemyDefinition def = (EnemyDefinition)GameplayHelper.GetWeightedListItem(weightedItems, random);
 
+					if(!TrySetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
+					{
+						continue;
+					}
+
 					EnemySpawnData spawnData = new();
+					spawnData.EnemyId = def.Id;
+
+
+					/*EnemySpawnData spawnData = new();
 					spawnData.EnemyId = def.Id;
 
 					int floorPosIndex = random.Next(roomData.UnoccupiedFloorPositions.Count);
@@ -555,13 +565,13 @@ namespace JZK.Level
 					if(!roomData.CanPlaceEnemyAtPoint(def, floorPos))
 					{
 						continue;
-					}
+					}*/
 
-					spawnData.FloorTilePos = floorPos;
+					spawnData.FloorTilePos = validPos;
 
 					foreach(Vector3Int occupyPos in def.OccupyPoints)
 					{
-						Vector3Int relativeOccupyPos = occupyPos + floorPos;
+						Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
 						roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
 					}
 
@@ -591,6 +601,27 @@ namespace JZK.Level
 			Debug.Log("[GENERATION] layout data took " + generationTime + " seconds to generate");
 			generationSuccess = true;
 			return layoutData;
+		}
+
+		bool TrySetSpawnPosForEnemy(EnemyDefinition enemyDef, GenerationRoomData roomData, System.Random random, out Vector3Int validPos)
+		{
+			for(int setSpawnAttempt = 0; setSpawnAttempt < SET_ENEMY_POS_ATTEMPTS; ++setSpawnAttempt)
+			{
+				int floorPosIndex = random.Next(roomData.UnoccupiedFloorPositions.Count);
+				Vector3Int floorPos = roomData.UnoccupiedFloorPositions[floorPosIndex];
+
+				if (!roomData.CanPlaceEnemyAtPoint(enemyDef, floorPos))
+				{
+					continue;
+				}
+
+				Debug.Log("[ENEMYGEN] found spawn for enemy " + enemyDef + " after " + setSpawnAttempt.ToString() + " attempts");
+				validPos = floorPos;
+				return true;
+			}
+
+			validPos = new(-1, -1);
+			return false;
 		}
 	}
 }
