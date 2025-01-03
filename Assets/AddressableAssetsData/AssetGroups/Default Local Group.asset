@@ -52,6 +52,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - input
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df3c36d64fd87924695d981f2af72839
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/GhostProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37ffdec0b092d5c4da8db0587f413deb, type: 2}
   m_SchemaSet:

@@ -15,6 +15,7 @@ namespace JZK.Gameplay
 		Gnome_Pellet = 1,
 		Test_Enemy_Projectile = 2,
 		Snake_Projectile = 3,
+		Ghost_Projectile = 4,
 	}
 
 	public class ProjectileSystem : PersistentSystem<ProjectileSystem>

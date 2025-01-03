@@ -8,6 +8,13 @@ using UnityEngine;
 namespace JZK.Level
 {
 	[System.Serializable]
+	public enum EDifficultyPointsMode
+	{
+		Fixed = 0,
+		Scaling = 1,
+	}
+
+	[System.Serializable]
 	public class LayoutGenerationSettings
 	{
 		public int Seed;
@@ -17,7 +24,11 @@ namespace JZK.Level
 		public float SecondaryRoomChance;
 		[Tooltip("Set to 0 or lower to remove limit")]
 		public int MaxTotalRooms;
-		public int EnemyPointsPerRoom;
+		public EDifficultyPointsMode DifficultyPointsMode;
+		public int FixedEnemyPointsPerRoom;
+		public int ScalingEnemyPointsStartAmount;
+		public int ScalingEnemyPointsScalingAmount;
+		public bool LastRoomNoBranches;
 	}
 
 	[System.Serializable]
@@ -448,6 +459,12 @@ namespace JZK.Level
 				GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
 				bool isFirstRoom = critRoom.CriticalPathIndex == 0;
 				bool isLastRoom = critRoom.CriticalPathIndex == critRoomShuffledGuids.Count - 1;
+
+				if(isLastRoom && settings.LastRoomNoBranches)
+				{
+					continue;
+				}
+
 				foreach (Guid doorId in critRoom.AllDoorIds)
 				{
 					GenerationDoorData doorData = layoutData.Door_LUT[doorId];
@@ -521,10 +538,7 @@ namespace JZK.Level
 
 
 			//populate combat rooms with enemies until enemy points value has been reached
-			int pointsPerRoom = settings.EnemyPointsPerRoom;
-
-			Debug.Log("[ENEMYGEN] have " +
-				pointsPerRoom.ToString() + " enemy points per room");
+			//int pointsPerRoom = settings.FixedEnemyPointsPerRoom;
 
 			Dictionary<string, int> enemySpawnCountLUT = new();
 
@@ -532,7 +546,11 @@ namespace JZK.Level
 			foreach (Guid combatRoom in combatRooms)
 			{
 				GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
-				int roomPointsToSpend = pointsPerRoom;
+				int roomPointsToSpend = GetDifficultyPointsForSettings(settings, roomData);
+
+				Debug.Log("[ENEMYGEN] have " +
+				roomPointsToSpend.ToString() + " enemy points for room with index " + roomData.CriticalPathIndex);
+
 				for (int setEnemyAttempt = 0; setEnemyAttempt < SET_ENEMY_ATTEMPTS; ++setEnemyAttempt)
 				{
 					if (roomPointsToSpend <= 0)
@@ -610,6 +628,19 @@ namespace JZK.Level
 			Debug.Log("[GENERATION] layout data took " + generationTime + " seconds to generate");
 			generationSuccess = true;
 			return layoutData;
+		}
+
+		public int GetDifficultyPointsForSettings(LayoutGenerationSettings settings, GenerationRoomData roomData)
+		{
+			switch(settings.DifficultyPointsMode)
+			{
+				case EDifficultyPointsMode.Fixed:
+				default:
+					return settings.FixedEnemyPointsPerRoom;
+				case EDifficultyPointsMode.Scaling:
+					return settings.ScalingEnemyPointsStartAmount + (settings.ScalingEnemyPointsScalingAmount * (roomData.CriticalPathIndex - 1));
+
+			}
 		}
 
 		bool TryGetSpawnPosForEnemy(EnemyDefinition enemyDef, GenerationRoomData roomData, System.Random random, out Vector3Int validPos)

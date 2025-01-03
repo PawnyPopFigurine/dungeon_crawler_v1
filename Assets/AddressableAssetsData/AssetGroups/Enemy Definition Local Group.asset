@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ac26f1cab640cb4295bc3dcd5928978
+    m_Address: Assets/Data/Enemies/Undead/ghost_PatrolDiamond.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6d7570e484ec28b41b6d569ede3c9f59
     m_Address: Assets/Data/Enemies/Testing/testEnemyMedium.asset
     m_ReadOnly: 0
