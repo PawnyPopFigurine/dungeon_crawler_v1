@@ -36,6 +36,8 @@ namespace JZK.Gameplay
 		bool _invincibleCheatActive = false;
 		public bool InvincibleCheatActive => _invincibleCheatActive;
 
+		public bool AtMaxHealth => _controller.CurrentHealth == _controller.MaxHealth;
+
 
 		public override void UpdateSystem()
 		{
@@ -139,6 +141,14 @@ namespace JZK.Gameplay
 		public void ResetPlayerHealth()
 		{
 			_controller.ResetPlayerHealth();
+		}
+
+		public void HealPlayerByAmount(int healAmount)
+		{
+			int potentialHealing = healAmount + _controller.CurrentHealth;
+			int newHealthVal = Mathf.Clamp(potentialHealing, potentialHealing, _controller.MaxHealth);
+			_controller.SetPlayerHealth(newHealthVal);
+			UI.GameplayUISystem.Instance.RefreshHealthBarForCurrentHealth();
 		}
 	}
 }

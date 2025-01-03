@@ -12,6 +12,8 @@ namespace JZK.Gameplay
         [SerializeField] float _projectileLifetime;
 
         [SerializeField] int _maxHealth;
+        public int MaxHealth => _maxHealth;
+
         [SerializeField] float _invincibilityTime;
 
         float _timeSinceLastHit;
@@ -209,5 +211,10 @@ namespace JZK.Gameplay
             _currentHealth = _maxHealth;
             _playerAlive = true;
         }
+
+        public void SetPlayerHealth(int newHealthVal)
+		{
+            _currentHealth = newHealthVal;
+		}
     }
 }
