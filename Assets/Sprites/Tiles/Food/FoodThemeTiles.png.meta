@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c845e896bf21f214ca6ed74903030545
-      internalID: 52059419
+      spriteID: e6f914f557bcd7a4fb677dff06052811
+      internalID: 950793528
       vertices: []
       indices: 
       edges: []
@@ -132,8 +132,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7dfd7a67b46e3e54695b78c1feef6a0e
-      internalID: 1123789649
+      spriteID: b72fb642b94bf484bbe78caa4a604879
+      internalID: -1163345017
       vertices: []
       indices: 
       edges: []
@@ -149,8 +149,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      FoodThemeTiles_0: 52059419
-      FoodThemeTiles_1: 1123789649
+      FoodThemeTiles_0: 950793528
+      FoodThemeTiles_1: -1163345017
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
