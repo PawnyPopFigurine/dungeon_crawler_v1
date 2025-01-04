@@ -21,10 +21,11 @@ namespace JZK.Level
         NonCombat = 2,
         Start = 3,
         End = 4,
+        Item = 5,
     }
 
     [System.Serializable]
-    public class RoomDefinition
+    public class RoomDefinition : WeightedListItem
     {
         [SerializeField]
         string _id;
@@ -45,13 +46,16 @@ namespace JZK.Level
 
         public RoomDefinition CreateCopy()
         {
-            return new()
+            RoomDefinition returnCopy = new()
             {
                 _id = _id,
                 _hideInGame = _hideInGame,
                 _prefabController = _prefabController,
                 _roomType = _roomType,
             };
+
+            returnCopy.SetWeighting(Weighting);
+            return returnCopy;
         }
     }
 }

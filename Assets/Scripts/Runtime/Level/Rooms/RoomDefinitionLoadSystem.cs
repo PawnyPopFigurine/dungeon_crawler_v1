@@ -71,10 +71,10 @@ namespace JZK.Level
 
             List<string> roomIdList = GetListForRoomType(requiredType);
 
-            for (int attempt = 0; attempt < maxAttempts; ++attempt)
-            {
-                int index = random.Next(roomIdList.Count);
-                string considerId = roomIdList[index];
+            List<WeightedListItem> roomsInConsideration = new();
+
+            foreach(string considerId in roomIdList)
+			{
                 RoomDefinition considerRoom = _roomDefinition_LUT[considerId];
                 RoomController controller = considerRoom.PrefabController.GetComponent<RoomController>();
                 if (!controller.HasEnoughDoorsOnSide(EOrthogonalDirection.Up, connectionData.RequiredUpConnections))
@@ -94,14 +94,19 @@ namespace JZK.Level
                     continue;
                 }
 
-                success = true;
-                return considerRoom;
-
+                roomsInConsideration.Add(considerRoom);
             }
 
-            Debug.LogError("[GENERATION] failed to find room matching connection data for type - " + requiredType.ToString() + " - quit after " + maxAttempts.ToString() + " attempts");
-            success = false;
-            return null;
+            if(roomsInConsideration.Count == 0)
+			{
+                Debug.LogError("[GENERATION] failed to find room matching connection data for type - " + requiredType.ToString() + " - quit after " + maxAttempts.ToString() + " attempts");
+                success = false;
+                return null;
+            }
+
+            RoomDefinition foundRoom = (RoomDefinition)GameplayHelper.GetWeightedListItem(roomsInConsideration, random);
+            success = foundRoom != null;
+            return foundRoom;
         }
 
         #region Load

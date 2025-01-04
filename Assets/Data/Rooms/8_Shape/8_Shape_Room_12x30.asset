@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 8_Shape_Room_12x30
   m_EditorClassIdentifier: 
   _definition:
+    _weighting: 10
     _id: 8_Shape_Room_12x30
     _prefabController: {fileID: 2667284999973894481, guid: e4b2e9c26bdd699439f44c3b1c7336a3, type: 3}
     _hideInGame: 0
