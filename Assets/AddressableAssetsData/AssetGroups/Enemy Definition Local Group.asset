@@ -101,6 +101,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bba42caeb05ba944bb02cdbc62c26e1b
+    m_Address: Assets/Data/Enemies/Testing/frankenstein_PatrolLeftRight.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca8b310275bf37f4bb34f61e0cc792ab
     m_Address: Assets/Data/Enemies/Testing/skeleton_PatrolLeftRight_TestProj.asset
     m_ReadOnly: 0

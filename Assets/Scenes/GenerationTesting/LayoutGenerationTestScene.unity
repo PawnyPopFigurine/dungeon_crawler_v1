@@ -463,10 +463,10 @@ MonoBehaviour:
     Seed: 0
     Theme: 1
     CriticalPathRoomCount: 10
-    SecondaryRoomChance: 0
+    SecondaryRoomChance: 0.398
     MaxTotalRooms: 14
-    DifficultyPointsMode: 1
-    FixedEnemyPointsPerRoom: 7
+    DifficultyPointsMode: 0
+    FixedEnemyPointsPerRoom: 8
     ScalingEnemyPointsStartAmount: 6
     ScalingEnemyPointsScalingAmount: 6
     LastRoomNoBranches: 0
