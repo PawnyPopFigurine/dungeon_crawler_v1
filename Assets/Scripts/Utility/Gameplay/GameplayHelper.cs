@@ -17,7 +17,7 @@ namespace JZK.Gameplay
     {
         None = 0,
         Undead = 1,
-
+        Food = 2,
     }
 
     public static class GameplayHelper

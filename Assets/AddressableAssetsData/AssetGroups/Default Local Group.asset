@@ -52,6 +52,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - input
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c692d3e5076c243409ff60867fc1c633
+    m_Address: Assets/Data/Themes/FoodTheme.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - theme_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df3c36d64fd87924695d981f2af72839
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/GhostProjectile.prefab
     m_ReadOnly: 0
