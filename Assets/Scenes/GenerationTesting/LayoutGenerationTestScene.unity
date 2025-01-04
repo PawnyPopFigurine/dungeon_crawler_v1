@@ -456,14 +456,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _useDebugSeed: 1
+  _useDebugSeed: 0
   _debugSeed: 515
   _printDebug: 0
   _settings:
     Seed: 0
     Theme: 1
     CriticalPathRoomCount: 5
-    SecondaryRoomChance: 0.478
+    SecondaryRoomChance: 1
     MaxTotalRooms: 14
     DifficultyPointsMode: 1
     FixedEnemyPointsPerRoom: 7
