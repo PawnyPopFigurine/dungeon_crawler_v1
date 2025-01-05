@@ -876,6 +876,7 @@ MonoBehaviour:
   _projectileBehaviour: {fileID: 2856174434233586432}
   _visuals: {fileID: 7621910783319100864}
   _spawnPointVisuals: {fileID: 424096388714228249}
+  _overrideFacing: 4
 --- !u!1 &8215729066160779632
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,7 +1087,6 @@ MonoBehaviour:
   _controller: {fileID: 6711677943753088457}
   _projectileBehaviour: {fileID: 2856174434233586432}
   _chasePlayer: 0
-  _rigidbody: {fileID: 8141649510243351173}
 --- !u!114 &2856174434233586432
 MonoBehaviour:
   m_ObjectHideFlags: 0

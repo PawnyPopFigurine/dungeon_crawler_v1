@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6eb65312d6744e48a2e098d5bad5e15, type: 3}
-  m_Name: RectRoom_20x12_Var3
+  m_Name: Hallway_Room_Var1
   m_EditorClassIdentifier: 
   _definition:
     _weighting: 10
-    _id: RectRoom_20x12_Var3
-    _prefabController: {fileID: 2667284999973894481, guid: bff286c6c2e51a94a99f117610a24ff8, type: 3}
+    _id: Hallway_Room_Var1
+    _prefabController: {fileID: 2667284999973894481, guid: fae128e116e96f9429e8ffa71a0ba9db, type: 3}
     _hideInGame: 0
     _roomType: 1

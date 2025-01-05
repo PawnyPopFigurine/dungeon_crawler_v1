@@ -18,6 +18,7 @@ namespace JZK.Gameplay
         TwinStraight = 2,
         TwinSpread = 3,
         AimAtPlayer = 4,
+        X_Shape = 5,
 	}
 
     public class EnemyProjectileBehaviour : MonoBehaviour
@@ -173,6 +174,35 @@ namespace JZK.Gameplay
 
                         Vector2 shootDirection = playerPos - (Vector2)transform.position;
                         shootDirection.Normalize();
+                        if (!ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, shootDirection, _projectileSpeed, transform.position, _projectileLifetime, 1, out _))
+                        {
+
+                            //complain here
+                        };
+                    }
+                    break;
+                case EEnemyFiringPattern.X_Shape:
+                    for(int directionIndex = 0; directionIndex <= 3; ++directionIndex)
+					{
+                        float rotateDegrees = -1;
+                        switch(directionIndex)
+						{
+                            case 0:
+                                rotateDegrees = 45;
+                                break;
+                            case 1:
+                                rotateDegrees = 135;
+                                break;
+                            case 2:
+                                rotateDegrees = 225;
+                                break;
+                            case 3:
+                                rotateDegrees = 315;
+                                break;
+						}
+
+                        Vector2 shootDirection = GameplayHelper.GetRotatedVectorForDirection(_parentController.CurrentFacing, rotateDegrees);
+
                         if (!ProjectileSystem.Instance.RequestProjectileLaunch(_projectileType, shootDirection, _projectileSpeed, transform.position, _projectileLifetime, 1, out _))
                         {
 

@@ -28,7 +28,7 @@ namespace JZK.Level
 			Addressables.LoadAssetsAsync<GameObject>("game_room_prefab", LoadedAsset).Completed += LoadCompleted;
 		}
 
-		public static int MAX_ROOMS_PER_TYPE = 10;
+		public static int MAX_ROOMS_PER_TYPE = 20;
 		public Vector2 ROOM_RESET_POS => transform.position;
 
 		private Dictionary<string, List<RoomController>> _roomsPool = new();

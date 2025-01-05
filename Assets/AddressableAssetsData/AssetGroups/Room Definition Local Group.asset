@@ -41,6 +41,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - room_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38d4b0c3599ef254f9ef2aee9d4e1885
+    m_Address: Assets/Data/Rooms/Hallway/Hallway_Room_Var1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 41e51ee7d28d1b946925bde311dc4e6e
     m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_6x6.asset
     m_ReadOnly: 0
@@ -85,6 +91,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 887c565172b3fe446ba8b4eef61b01e9
     m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8990d329f6266c04388bc3d1938c826e
+    m_Address: Assets/Data/Rooms/X_Shape/X_Shape_Room_20x20.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - room_definition

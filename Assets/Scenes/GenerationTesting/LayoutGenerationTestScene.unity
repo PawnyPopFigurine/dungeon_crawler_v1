@@ -456,20 +456,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _useDebugSeed: 0
+  _useDebugSeed: 1
   _debugSeed: 515
   _printDebug: 0
   _settings:
     Seed: 0
-    Theme: 2
+    Theme: 1
     CriticalPathRoomCount: 10
-    SecondaryRoomChance: 0.398
-    MaxTotalRooms: 14
-    DifficultyPointsMode: 0
+    SecondaryRoomChance: 0
+    MaxTotalRooms: 19
+    DifficultyPointsMode: 1
     FixedEnemyPointsPerRoom: 8
     ScalingEnemyPointsStartAmount: 6
-    ScalingEnemyPointsScalingAmount: 6
+    ScalingEnemyPointsScalingAmount: 2
     LastRoomNoBranches: 0
+    BSPEnemyPlacement: 0
   _noEnemySpawnTile: {fileID: 11400000, guid: c69cf56a97c450b4496de63ce8f7e6b4, type: 2}
   _paintNoEnemySpawnTiles: 0
   _debugSpawnData:

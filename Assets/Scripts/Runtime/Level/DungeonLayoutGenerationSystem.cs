@@ -29,6 +29,7 @@ namespace JZK.Level
 		public int ScalingEnemyPointsStartAmount;
 		public int ScalingEnemyPointsScalingAmount;
 		public bool LastRoomNoBranches;
+		public bool BSPEnemyPlacement;
 	}
 
 	[System.Serializable]
@@ -76,6 +77,7 @@ namespace JZK.Level
 		public List<Vector3Int> UnoccupiedFloorPositions = new();	//takes placed enemies/objects into account
 		public List<Vector3Int> AllFloorPositions = new();
 		public List<Vector3Int> AllFloorEdgePositions = new();
+		public List<List<Vector3Int>> BSPDividedFloorPositions = new();
 
 		public class GenerationRoomConnectionData
 		{
