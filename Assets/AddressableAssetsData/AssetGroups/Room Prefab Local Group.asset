@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - game_room_prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27097fc7a873e6444874b8e550ffb95c
+    m_Address: Assets/Prefabs/Environment/Rooms/Rect_Shape/RectRoom_12x20_Var1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2d48462a22de8c64593b648cbf40d9f7
     m_Address: Assets/Prefabs/Environment/Rooms/Rect_Shape/RectRoom_4x16.prefab
     m_ReadOnly: 0

@@ -155,6 +155,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - room_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db5ab72c047473f4284b1d65fbb97555
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_12x20_Var1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ea10ed1533cdc364ba7ef70ec20875d2
     m_Address: Assets/Data/Rooms/Rect_Shape/Start/Start_RectRoom_6x6.asset
     m_ReadOnly: 0
