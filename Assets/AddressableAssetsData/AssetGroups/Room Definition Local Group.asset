@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - room_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4dbccdebe8fe6804bb3c6780294097b1
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var7.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 565ccf5225b0a8a4693d0d5f08c9c855
     m_Address: Assets/Data/Rooms/Cross_Shape/Cross_Shape_Room_10x10.asset
     m_ReadOnly: 0
@@ -119,6 +125,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - room_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c00ab28b45a6ee645b094a2b2806d7fe
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_16x4_Var2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c278318c6739ccc47ad8d6c1a5ddb459
     m_Address: Assets/Data/Rooms/8_Shape/8_Shape_Room_12x30.asset
     m_ReadOnly: 0
@@ -127,6 +139,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c3917229653e0b04d8207c3cc0134e16
     m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccd5ba118e4cf0648ad9b600062d6fe3
+    m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var6.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - room_definition

@@ -16,5 +16,5 @@ MonoBehaviour:
     _theme: 2
     _floorTile: {fileID: 11400000, guid: 80aa9d80c8f2d154bb370b9ee9eaffc3, type: 2}
     _wallTile: {fileID: 11400000, guid: 0015facc32cde2841bb97e3bc9cfdb91, type: 2}
-    _shutDoor: {fileID: 21300000, guid: 45bb1a12f4ac2c94b925f150209fa17a, type: 3}
-    _openDoor: {fileID: 21300000, guid: d5878d00d5ef46449aac995fdcb7991c, type: 3}
+    _shutDoor: {fileID: 21300000, guid: 2fdb0512f8ba83246ad5be343f9c6bb9, type: 3}
+    _openDoor: {fileID: 21300000, guid: f08dfb8609ad15941ab0d08cfb88ba6d, type: 3}
