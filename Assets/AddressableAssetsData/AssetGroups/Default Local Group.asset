@@ -64,6 +64,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0d6cd7ec5f80b0419d5c434bf1df488
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/PigChefMachete.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37ffdec0b092d5c4da8db0587f413deb, type: 2}
   m_SchemaSet:

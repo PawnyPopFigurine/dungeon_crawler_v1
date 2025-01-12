@@ -71,6 +71,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ebbc5afa8f70674d809e95bcdda1d32
+    m_Address: Assets/Data/Enemies/Food/pigChef_MoveShoot.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 879e9c4c46f271d409f231c769594132
     m_Address: Assets/Data/Enemies/Testing/testEnemyEasy_Big.asset
     m_ReadOnly: 0

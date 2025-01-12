@@ -16,6 +16,7 @@ namespace JZK.Gameplay
 		Test_Enemy_Projectile = 2,
 		Snake_Projectile = 3,
 		Ghost_Projectile = 4,
+		Pig_Chef_Machete = 5,
 	}
 
 	public class ProjectileSystem : PersistentSystem<ProjectileSystem>
