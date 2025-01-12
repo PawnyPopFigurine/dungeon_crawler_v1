@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 7c01b5a3c3677304dac75b4b1646f8b9
   m_SerializeEntries:
+  - m_GUID: 0f280676edaa85c42beaa1708895d73c
+    m_Address: Assets/Prefabs/Environment/Rooms/Circle_Shape/Circle_Shape_Room_20x20.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ae446926fe50e449be31284d57c85dd
     m_Address: Assets/Prefabs/Environment/Rooms/S_Shape/S_Shape_Room_16x16.prefab
     m_ReadOnly: 0
