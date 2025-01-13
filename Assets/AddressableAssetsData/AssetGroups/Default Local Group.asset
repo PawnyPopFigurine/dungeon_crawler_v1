@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: c805c52bc6783b44fbc1e6899904ddbd
   m_SerializeEntries:
+  - m_GUID: 0152404778df2384a86957605d179880
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/ChilliFire.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0ca7bb9102152e0408fc652918fe3465
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/TestEnemyProjectile.prefab
     m_ReadOnly: 0
@@ -66,6 +72,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0d6cd7ec5f80b0419d5c434bf1df488
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/PigChefMachete.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb394a1ad735de947a7f9480da93c4bb
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/ChilliFireLeft.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - projectile_prefabs

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: bat_Follow
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 10
+    _weighting: 7
     _id: bat_Follow
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: 5dd47b03c99fda9408348afd923a684e, type: 3}
     _difficultyPoints: 3
     _theme: 0
+    _placeAtEdge: 0

@@ -17,6 +17,6 @@ MonoBehaviour:
     _id: pigChef_MoveShoot
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: 651639940e8d94642b5dd04c55647ba7, type: 3}
-    _difficultyPoints: 3
+    _difficultyPoints: 4
     _theme: 2
     _placeAtEdge: 0

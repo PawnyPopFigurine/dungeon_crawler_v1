@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 366be871682d8744894e1ee153c8ebdb, type: 3}
-  m_Name: bigSpider_Patrol
+  m_Name: tomato_Move_Var1
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 7
-    _id: bigSpider_Patrol
+    _weighting: 10
+    _id: tomato_Move_Var1
     _hideInGame: 0
-    _enemyPrefab: {fileID: 7768730045968935509, guid: 87e35f91f0cf8a046827beb696c73c72, type: 3}
-    _difficultyPoints: 4
-    _theme: 0
+    _enemyPrefab: {fileID: 7768730045968935509, guid: d17e8fc0a18c8dc459776391298de06a, type: 3}
+    _difficultyPoints: 2
+    _theme: 2
     _placeAtEdge: 0

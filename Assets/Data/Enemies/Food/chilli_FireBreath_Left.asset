@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 366be871682d8744894e1ee153c8ebdb, type: 3}
-  m_Name: bigSpider_Patrol
+  m_Name: chilli_FireBreath_Left
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 7
-    _id: bigSpider_Patrol
+    _weighting: 10
+    _id: chilli_FireBreath_Left
     _hideInGame: 0
-    _enemyPrefab: {fileID: 7768730045968935509, guid: 87e35f91f0cf8a046827beb696c73c72, type: 3}
-    _difficultyPoints: 4
-    _theme: 0
+    _enemyPrefab: {fileID: 7768730045968935509, guid: 7e27e54bd745dca4cbb29c5f1ea6cabf, type: 3}
+    _difficultyPoints: 1
+    _theme: 2
     _placeAtEdge: 0

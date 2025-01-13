@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: snake_PatrolSquare_Shoot
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 10
+    _weighting: 7
     _id: snake_PatrolSquare_Shoot
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: 3cc89fb3e787a70418197dc5dad7a7e5, type: 3}
     _difficultyPoints: 2
     _theme: 0
+    _placeAtEdge: 0

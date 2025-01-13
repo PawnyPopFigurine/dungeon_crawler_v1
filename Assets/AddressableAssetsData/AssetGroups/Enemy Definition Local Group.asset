@@ -65,6 +65,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d5894fea269ba54cb3ad35038dc7c08
+    m_Address: Assets/Data/Enemies/Food/Chilli_FireBreath.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6d7570e484ec28b41b6d569ede3c9f59
     m_Address: Assets/Data/Enemies/Testing/testEnemyMedium.asset
     m_ReadOnly: 0
@@ -73,6 +79,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7ebbc5afa8f70674d809e95bcdda1d32
     m_Address: Assets/Data/Enemies/Food/pigChef_MoveShoot.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 872033acad7987c498ec55a1404e837d
+    m_Address: Assets/Data/Enemies/Food/aubergine_Move.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - enemy_definition
@@ -131,8 +143,26 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd4f965296b393f41b216fd39277ae31
+    m_Address: Assets/Data/Enemies/Food/tomato_Move_Var2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec718e633dd9c87458b27c1103708503
+    m_Address: Assets/Data/Enemies/Food/chilli_FireBreath_Left.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fc708a039f85ce741bbcb0e47b3b3385
     m_Address: Assets/Data/Enemies/Undead/skeleton_Patrol.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fee07e2a39b01654688dc14bc9c323b1
+    m_Address: Assets/Data/Enemies/Food/tomato_Move.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - enemy_definition
