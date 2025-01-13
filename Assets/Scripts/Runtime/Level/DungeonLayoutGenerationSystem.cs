@@ -28,6 +28,7 @@ namespace JZK.Level
 		public int FixedEnemyPointsPerRoom;
 		public int ScalingEnemyPointsStartAmount;
 		public int ScalingEnemyPointsScalingAmount;
+		public int ScalingEnemyPointsMaxAmount;
 		public bool LastRoomNoBranches;
 		public bool BSPEnemyPlacement;
 	}
@@ -640,7 +641,14 @@ namespace JZK.Level
 				default:
 					return settings.FixedEnemyPointsPerRoom;
 				case EDifficultyPointsMode.Scaling:
-					return settings.ScalingEnemyPointsStartAmount + (settings.ScalingEnemyPointsScalingAmount * (roomData.CriticalPathIndex - 1));
+					int rawVal = settings.ScalingEnemyPointsStartAmount + (settings.ScalingEnemyPointsScalingAmount * (roomData.CriticalPathIndex - 1));
+					int maxVal = settings.ScalingEnemyPointsMaxAmount;
+					if(maxVal <= 0)
+					{
+						return rawVal;
+					}
+					return rawVal >= maxVal ? maxVal : rawVal;
+					//return settings.ScalingEnemyPointsStartAmount + (settings.ScalingEnemyPointsScalingAmount * (roomData.CriticalPathIndex - 1));
 
 			}
 		}
