@@ -464,7 +464,7 @@ MonoBehaviour:
     Theme: 2
     CriticalPathRoomCount: 6
     SecondaryRoomChance: 0.656
-    MaxTotalRooms: 19
+    MaxTotalRooms: 10
     DifficultyPointsMode: 1
     FixedEnemyPointsPerRoom: 8
     ScalingEnemyPointsStartAmount: 6

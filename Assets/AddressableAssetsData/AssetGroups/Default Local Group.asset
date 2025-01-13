@@ -41,6 +41,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f309cb184683ee41a6fbf22bd2a4ef0
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/ChilliFireAutoRotate.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ce24769ea4d064439c0c064ff839289
     m_Address: Assets/Data/Themes/UndeadTheme.asset
     m_ReadOnly: 0

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 366be871682d8744894e1ee153c8ebdb, type: 3}
+  m_Name: chilli_FireBreath_Aim
+  m_EditorClassIdentifier: 
+  _definition:
+    _weighting: 10
+    _id: chilli_FireBreath_Aim
+    _hideInGame: 0
+    _enemyPrefab: {fileID: 7768730045968935509, guid: 5633f4ce50879984ea1f49ef69df7fa4, type: 3}
+    _difficultyPoints: 1
+    _theme: 2
+    _placeAtEdge: 0

@@ -19,6 +19,7 @@ namespace JZK.Gameplay
 		Pig_Chef_Machete = 5,
 		Chilli_Fire_Right = 6,
 		Chilli_Fire_Left = 7,
+		Chilli_Fire_Auto_Rot = 8,
 	}
 
 	public class ProjectileSystem : PersistentSystem<ProjectileSystem>

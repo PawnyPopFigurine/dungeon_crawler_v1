@@ -53,6 +53,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53250613cc0ba0b46935d8ce501da134
+    m_Address: Assets/Data/Enemies/Food/chilli_FireBreath_Aim.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 59f204312f77fa040a581a86f89eab02
     m_Address: Assets/Data/Enemies/Undead/frankenstein_PatrolUpDown.asset
     m_ReadOnly: 0
