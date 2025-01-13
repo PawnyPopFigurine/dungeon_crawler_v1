@@ -155,6 +155,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e862b8faf94e64d4ebbcde287be6cfab
+    m_Address: Assets/Data/Enemies/Food/apple_Green.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ec718e633dd9c87458b27c1103708503
     m_Address: Assets/Data/Enemies/Food/chilli_FireBreath_Left.asset
     m_ReadOnly: 0
