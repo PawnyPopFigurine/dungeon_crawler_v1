@@ -45,6 +45,29 @@ namespace JZK.Gameplay
             return null;
         }
 
+        public ItemDefinition GetRandomDefinition(System.Random random)
+		{
+            List<WeightedListItem> allDefs = new(_definition_LUT.Values);
+            return (ItemDefinition)GameplayHelper.GetWeightedListItem(allDefs, random);
+		}
+
+        public string GetRandomId(System.Random random)
+		{
+            return GetRandomDefinition(random).Id;
+		}
+
+        /*public string GetRandomItemId(System.Random random)
+		{
+            int idIndex = random.Next(0, _allIds.Count);
+            return _allIds[idIndex];
+		}
+
+        public ItemDefinition GetRandomDefinition(System.Random random)
+		{
+            string randomId = GetRandomItemId(random);
+            return GetDefinition(randomId);
+		}*/
+
 
         #region Load
 

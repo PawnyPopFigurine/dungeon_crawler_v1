@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healingAmount: 1
+  _parentController: {fileID: 5233647447913108814}
   _maxHeal: 0
 --- !u!1 &4757743075540019874
 GameObject:

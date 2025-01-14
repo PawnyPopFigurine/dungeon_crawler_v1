@@ -9,6 +9,8 @@ namespace JZK.Gameplay
 		[SerializeField] int _healingAmount = 1;
 		public int HealingAmount => _healingAmount;
 
+		[SerializeField] ItemController _parentController;
+
 		[SerializeField] bool _maxHeal;
 		public bool MaxHeal => _maxHeal;
 
@@ -29,8 +31,8 @@ namespace JZK.Gameplay
 				{
 					PlayerSystem.Instance.HealPlayerByAmount(_healingAmount);
 				}
-				
-				gameObject.SetActive(false);	//TODO: replace with pooling clear item
+
+				_parentController.OnCollected();
 			}
 		}
 	}

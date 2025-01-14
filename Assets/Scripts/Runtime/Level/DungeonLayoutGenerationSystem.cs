@@ -82,6 +82,7 @@ namespace JZK.Level
 		public List<Vector3Int> AllFloorPositions = new();
 		public List<Vector3Int> AllFloorEdgePositions = new();
 		public List<List<Vector3Int>> BSPDividedFloorPositions = new();
+		public List<string> SpawnItemIds = new();
 
 		public class GenerationRoomConnectionData
 		{
@@ -612,7 +613,6 @@ namespace JZK.Level
 
 
 			//populate combat rooms with enemies until enemy points value has been reached
-
 			Dictionary<string, int> enemySpawnCountLUT = new();
 			foreach (Guid combatRoom in combatRooms)
 			{
@@ -680,6 +680,15 @@ namespace JZK.Level
 						enemySpawnCountLUT.Add(spawnData.EnemyId, 1);
 					}
 				}
+			}
+
+			List<Guid> itemRoomIds = layoutData.GetAllRoomsOfType(ERoomType.StandardItem);
+			foreach(Guid itemId in itemRoomIds)
+			{
+				GenerationRoomData itemRoom = layoutData.Room_LUT[itemId];
+				itemRoom.SpawnItemIds.Clear();
+				ItemDefinition itemDef = ItemLoadSystem.Instance.GetRandomDefinition(random);
+				itemRoom.SpawnItemIds.Add(itemDef.Id);
 			}
 
 			float generationEndTime = Time.realtimeSinceStartup;

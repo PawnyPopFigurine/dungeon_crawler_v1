@@ -61,6 +61,7 @@ namespace JZK.Gameplay
 		[SerializeField] List<Tilemap> _corridorWalls;
 
 		[SerializeField] ItemSpawnPoint _itemSpawnPoint;
+		public ItemSpawnPoint ItemSpawnPoint => _itemSpawnPoint;
 		
 		void InitialiseDoormats()
 		{

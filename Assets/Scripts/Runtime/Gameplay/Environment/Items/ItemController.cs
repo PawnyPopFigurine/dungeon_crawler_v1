@@ -43,5 +43,10 @@ namespace JZK.Gameplay
         {
 
         }
+
+        public void OnCollected()
+		{
+            ItemPoolingSystem.Instance.ClearController(this);
+		}
     }
 }

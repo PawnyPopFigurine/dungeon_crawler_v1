@@ -121,6 +121,8 @@ namespace JZK.Framework
 			{
 				PaintFloorEdges();
 			}
+
+			SpawnItemsFromData(data);
 		}
 
 		void PaintFloorEdges()
@@ -130,6 +132,35 @@ namespace JZK.Framework
 				foreach(Vector3Int edgePos in controller.FloorEdgePositions)
 				{
 					controller.FloorTilemap.SetTile(edgePos, _noEnemySpawnTile);
+				}
+			}
+		}
+
+		public void SpawnItemsFromData(LayoutData data)
+		{
+			if(data == null)
+			{
+				return;
+			}
+
+			foreach (Guid id in data.Room_LUT.Keys)
+			{
+				RoomController controller = _generationData_Controller_LUT[id];
+				GenerationRoomData roomData = data.Room_LUT[id];
+
+				foreach(string itemId in roomData.SpawnItemIds)
+				{
+					if(!ItemPoolingSystem.Instance.RequestController(itemId, out ItemController itemController))
+					{
+						//complainHere
+						continue;
+					}
+
+					ItemSpawnPoint spawnPoint = controller.ItemSpawnPoint;
+
+					itemController.transform.parent = spawnPoint.transform;
+					itemController.transform.localPosition = Vector3.zero;
+					itemController.gameObject.SetActive(true);
 				}
 			}
 		}
