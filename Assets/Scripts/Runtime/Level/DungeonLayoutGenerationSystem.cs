@@ -446,19 +446,10 @@ namespace JZK.Level
 			}
 
 			//using door data from definitions, go through all unused doors and decide whether to add a secondary room
+			bool maxRoomCountReached = false;
 			List<Guid> critRoomShuffledGuids = layoutData.CriticalPathIds.OrderBy(x => random.NextDouble()).ToList();
 			foreach (Guid critRoomId in critRoomShuffledGuids)
 			{
-				//prevent secondary room addition if room limit is reached
-				if (settings.MaxTotalRooms > 0)
-				{
-					int totalRoomCount = layoutData.Room_LUT.Count;
-					if (totalRoomCount >= settings.MaxTotalRooms)
-					{
-						continue;
-					}
-				}
-
 				GenerationRoomData critRoom = layoutData.Room_LUT[critRoomId];
 				bool isFirstRoom = critRoom.CriticalPathIndex == 0;
 				bool isLastRoom = critRoom.CriticalPathIndex == critRoomShuffledGuids.Count - 1;
@@ -470,6 +461,23 @@ namespace JZK.Level
 
 				foreach (Guid doorId in critRoom.AllDoorIds)
 				{
+					//prevent secondary room addition if room limit is reached
+					if (maxRoomCountReached)
+					{
+						continue;
+					}
+
+					//work out if max rooms reached
+					if (settings.MaxTotalRooms > 0)
+					{
+						int totalRoomCount = layoutData.Room_LUT.Count;
+						if (totalRoomCount >= settings.MaxTotalRooms)
+						{
+							maxRoomCountReached = true;
+							continue;
+						}
+					}
+
 					GenerationDoorData doorData = layoutData.Door_LUT[doorId];
 					if (doorData.IsLinked)
 					{
@@ -584,18 +592,6 @@ namespace JZK.Level
 
 					EnemySpawnData spawnData = new();
 					spawnData.EnemyId = def.Id;
-
-
-					/*EnemySpawnData spawnData = new();
-					spawnData.EnemyId = def.Id;
-
-					int floorPosIndex = random.Next(roomData.UnoccupiedFloorPositions.Count);
-					Vector3Int floorPos = roomData.UnoccupiedFloorPositions[floorPosIndex];
-
-					if(!roomData.CanPlaceEnemyAtPoint(def, floorPos))
-					{
-						continue;
-					}*/
 
 					spawnData.FloorTilePos = validPos;
 

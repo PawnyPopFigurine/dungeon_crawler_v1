@@ -180,6 +180,8 @@ namespace JZK.Framework
 				return;
 			}
 
+			Debug.Log("[ROOMCOUNT] layout contains " + data.Room_LUT.Count.ToString() + " total rooms - seed " + _settings.Seed);
+
             float generationStartTime = Time.realtimeSinceStartup;
 
             Vector2 roomPrefabPos = Vector2.zero;
