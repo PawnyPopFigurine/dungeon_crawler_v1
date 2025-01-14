@@ -289,7 +289,7 @@ MonoBehaviour:
   _walkSpeed: 6
   _projectileSpeed: 10
   _projectileLifetime: 2
-  _maxHealth: 3
+  _maxHealth: 4
   _invincibilityTime: 2
   _rigidbody: {fileID: 868215981276151808}
   _renderer: {fileID: 3695575380780348078}

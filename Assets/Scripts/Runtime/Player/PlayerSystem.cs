@@ -150,5 +150,11 @@ namespace JZK.Gameplay
 			_controller.SetPlayerHealth(newHealthVal);
 			UI.GameplayUISystem.Instance.RefreshHealthBarForCurrentHealth();
 		}
+
+		public void MaxHealPlayer()
+		{
+			_controller.SetPlayerHealth(_controller.MaxHealth);
+			UI.GameplayUISystem.Instance.RefreshHealthBarForCurrentHealth();
+		}
 	}
 }
