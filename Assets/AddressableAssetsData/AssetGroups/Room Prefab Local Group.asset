@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 7c01b5a3c3677304dac75b4b1646f8b9
   m_SerializeEntries:
+  - m_GUID: 024802888fe06a643a29e8712196ffd9
+    m_Address: Assets/Prefabs/Environment/Rooms/StandardItem/Item_RectRoom_10x14.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0f280676edaa85c42beaa1708895d73c
     m_Address: Assets/Prefabs/Environment/Rooms/Circle_Shape/Circle_Shape_Room_20x20.prefab
     m_ReadOnly: 0
@@ -145,6 +151,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: afd0b654ac5d71b45828ff045efb1632
     m_Address: Assets/Prefabs/Environment/Rooms/Rect_Shape/RectRoom_20x12_Var6.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5f185d24a286bb4fb5c3077605f668d
+    m_Address: Assets/Prefabs/Environment/Rooms/StandardItem/Item_RectRoom_10x8.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - game_room_prefab

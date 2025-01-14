@@ -518,6 +518,12 @@ namespace JZK.Gameplay
 			return doorSideList.Count >= doorCount;
 		}
 
+		public bool HasExactDoorsOnSide(EOrthogonalDirection side, int doorCount)
+		{
+			List<RoomDoor> doorSideList = GetDoorListForSide(side);
+			return doorSideList.Count == doorCount;
+		}
+
 		public void SetEnemyCallbacks()
 		{
 			foreach(EnemyController enemy in _enemiesInRoom)

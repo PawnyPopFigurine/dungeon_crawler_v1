@@ -38,6 +38,7 @@ namespace JZK.Level
         private List<string> _nonCombatIds = new();
         private List<string> _startIds = new();
         private List<string> _endIds = new();
+        private List<string> _itemIds = new();
 
         public RoomDefinition GetDefinition(string id)
         {
@@ -60,6 +61,8 @@ namespace JZK.Level
                     return _startIds;
                 case ERoomType.End:
                     return _endIds;
+                case ERoomType.StandardItem:
+                    return _itemIds;
                 default:
                     return _allDefinitionIds;
             }
@@ -109,6 +112,50 @@ namespace JZK.Level
             return foundRoom;
         }
 
+        public RoomDefinition GetRandomDefinition_ExactDoorCount(System.Random random, GenerationRoomData.GenerationRoomConnectionData connectionData, out bool success, ERoomType requiredType = ERoomType.None)
+        {
+            int maxAttempts = 100;
+
+            List<string> roomIdList = GetListForRoomType(requiredType);
+
+            List<WeightedListItem> roomsInConsideration = new();
+
+            foreach (string considerId in roomIdList)
+            {
+                RoomDefinition considerRoom = _roomDefinition_LUT[considerId];
+                RoomController controller = considerRoom.PrefabController.GetComponent<RoomController>();
+                if (!controller.HasExactDoorsOnSide(EOrthogonalDirection.Up, connectionData.RequiredUpConnections))
+                {
+                    continue;
+                }
+                if (!controller.HasExactDoorsOnSide(EOrthogonalDirection.Down, connectionData.RequiredDownConnections))
+                {
+                    continue;
+                }
+                if (!controller.HasExactDoorsOnSide(EOrthogonalDirection.Left, connectionData.RequiredLeftConnections))
+                {
+                    continue;
+                }
+                if (!controller.HasExactDoorsOnSide(EOrthogonalDirection.Right, connectionData.RequiredRightConnections))
+                {
+                    continue;
+                }
+
+                roomsInConsideration.Add(considerRoom);
+            }
+
+            if (roomsInConsideration.Count == 0)
+            {
+                Debug.LogError("[GENERATION] failed to find room matching connection data for type - " + requiredType.ToString() + " - quit after " + maxAttempts.ToString() + " attempts");
+                success = false;
+                return null;
+            }
+
+            RoomDefinition foundRoom = (RoomDefinition)GameplayHelper.GetWeightedListItem(roomsInConsideration, random);
+            success = foundRoom != null;
+            return foundRoom;
+        }
+
         #region Load
 
         void LoadedAsset(RoomDefinitionSO asset)
@@ -138,6 +185,7 @@ namespace JZK.Level
             _startIds.Clear();
             _standardCombatIds.Clear();
             _nonCombatIds.Clear();
+            _itemIds.Clear();
 
             foreach(RoomDefinitionSO defSO in definitionSOs)
             {
@@ -163,6 +211,9 @@ namespace JZK.Level
                             break;
                         case ERoomType.End:
                             _endIds.Add(def.Id);
+                            break;
+                        case ERoomType.StandardItem:
+                            _itemIds.Add(def.Id);
                             break;
                         case ERoomType.None:
                             Debug.LogWarning("Please set type enum for room " + def.Id);

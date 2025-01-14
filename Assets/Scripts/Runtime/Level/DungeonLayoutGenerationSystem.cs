@@ -31,6 +31,9 @@ namespace JZK.Level
 		public int ScalingEnemyPointsMaxAmount;
 		public bool LastRoomNoBranches;
 		public bool BSPEnemyPlacement;
+		[Range(0, 1)]
+		public float ItemRoomChance;
+		public int MaxItemRooms;
 	}
 
 	[System.Serializable]
@@ -44,13 +47,13 @@ namespace JZK.Level
 		public ELevelTheme Theme;
 
 
-		public List<Guid> GetAllCombatRooms()
+		public List<Guid> GetAllRoomsOfType(ERoomType type)
 		{
 			List<Guid> returnList = new();
 
 			foreach (var room in Room_LUT.Values)
 			{
-				if (room.RoomType != ERoomType.StandardCombat)
+				if (room.RoomType != type)
 				{
 					continue;
 				}
@@ -183,9 +186,10 @@ namespace JZK.Level
 		{
 			PrefabId = def.Id;
 			RoomType = def.RoomType;
-			AllDoorIds.Clear();
 
 			RoomController controller = def.PrefabController.GetComponent<RoomController>();
+
+			AllDoorIds.Clear();
 
 			foreach (RoomDoor door in controller.Doors)
 			{
@@ -239,12 +243,9 @@ namespace JZK.Level
 
 		public bool TryGetDoorOnSide(EOrthogonalDirection roomSide, out GenerationDoorData foundDoor, bool mustBeUnlinked = false)
 		{
-			foreach (GenerationDoorData door in ParentLayout.Door_LUT.Values)
+			foreach (Guid doorId in AllDoorIds)
 			{
-				if (door.ParentRoomId != Id)
-				{
-					continue;
-				}
+				GenerationDoorData door = ParentLayout.Door_LUT[doorId];
 
 				if (door.SideOfRoom != roomSide)
 				{
@@ -494,6 +495,8 @@ namespace JZK.Level
 						EOrthogonalDirection secondaryRoomInDirection = GameplayHelper.GetOppositeDirection(doorData.SideOfRoom);
 						int currentConnectionCount = secondaryRoom.ConnectionData.GetRequirementsInDirection(secondaryRoomInDirection);
 						secondaryRoom.ConnectionData.SetConnectionCount(secondaryRoomInDirection, currentConnectionCount + 1);
+						int critCurrentConnectionCount = critRoom.ConnectionData.GetRequirementsInDirection(doorData.SideOfRoom);
+						critRoom.ConnectionData.SetConnectionCount(doorData.SideOfRoom, critCurrentConnectionCount + 1);
 						ERoomType secondaryRoomType = ERoomType.StandardCombat;
 						RoomDefinition secondaryRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, secondaryRoom.ConnectionData, out bool success, secondaryRoomType);
 						if (!success)
@@ -523,8 +526,68 @@ namespace JZK.Level
 				}
 			}
 
+
+			//replace existing combat rooms with item room definitions as required
+			List<Guid> combatRooms_PreItems = layoutData.GetAllRoomsOfType(ERoomType.StandardCombat);
+			List<Guid> combatRooms_PreItems_ShuffledGuids = combatRooms_PreItems.OrderBy(x => random.NextDouble()).ToList();
+			int numItemRooms = 0;
+			foreach(Guid combatRoom in combatRooms_PreItems_ShuffledGuids)
+			{
+				GenerationRoomData combatRoomData = layoutData.Room_LUT[combatRoom];
+
+				if(numItemRooms >= settings.MaxItemRooms)
+				{
+					continue;
+				}
+
+				if (random.NextDouble() < settings.ItemRoomChance)
+				{
+					RoomDefinition itemRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, combatRoomData.ConnectionData, out bool success, ERoomType.StandardItem);
+					if(!success)
+					{
+						Debug.LogError("[ITEMROOMGEN] failed finding prefab for item room "
+							+ " CONNETION DATA: Up - " + combatRoomData.ConnectionData.RequiredUpConnections + " - "
+							+ " Down - " + combatRoomData.ConnectionData.RequiredDownConnections + " - "
+							+ " Left - " + combatRoomData.ConnectionData.RequiredLeftConnections + " - "
+							+ " Right - " + combatRoomData.ConnectionData.RequiredRightConnections);
+						continue;
+					}
+					//find every door that was linking to prev definition
+					List<Guid> linkingIdsCache = new(combatRoomData.AllDoorIds);
+					List<GenerationDoorData> reattachDoors = new();
+					foreach(Guid linkingId in linkingIdsCache)
+					{
+						Guid linkToDoorId = layoutData.Door_LUT[linkingId].LinkDoorId;
+						if(linkToDoorId != Guid.Empty)
+						{
+							GenerationDoorData reattachDoor = layoutData.Door_LUT[linkToDoorId];
+							reattachDoors.Add(reattachDoor);
+						}
+					}
+
+
+					combatRoomData.SetDefinition(itemRoomDef);
+					foreach(GenerationDoorData door in reattachDoors)
+					{
+						door.LinkToDoor(null);
+						GenerationRoomData roomData = layoutData.Room_LUT[door.ParentRoomId];
+						if(!roomData.TryLinkToRoom(combatRoomData, door, out GenerationDoorData combatRoomDoor))
+						{
+							//complain here;
+						}
+						else
+						{
+							combatRoomDoor.Enabled = true;
+						}
+					}
+					
+					numItemRooms++;
+				}
+			}
+
+
 			//find active doors in combat rooms and remove potential enemy spawns using doormats
-			List<Guid> combatRooms = layoutData.GetAllCombatRooms();
+			List<Guid> combatRooms = layoutData.GetAllRoomsOfType(ERoomType.StandardCombat);
 			foreach (Guid combatRoom in combatRooms)
 			{
 				GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
@@ -549,11 +612,8 @@ namespace JZK.Level
 
 
 			//populate combat rooms with enemies until enemy points value has been reached
-			//int pointsPerRoom = settings.FixedEnemyPointsPerRoom;
 
 			Dictionary<string, int> enemySpawnCountLUT = new();
-
-
 			foreach (Guid combatRoom in combatRooms)
 			{
 				GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
@@ -625,6 +685,8 @@ namespace JZK.Level
 			float generationEndTime = Time.realtimeSinceStartup;
 			float generationTime = generationEndTime - generationStartTime;
 			Debug.Log("[GENERATION] layout data took " + generationTime + " seconds to generate");
+			int itemRoomCount = layoutData.GetAllRoomsOfType(ERoomType.StandardItem).Count;
+			Debug.Log("[ITEMROOMGEN] layout data has " + itemRoomCount + " total item rooms");
 			generationSuccess = true;
 			return layoutData;
 		}
