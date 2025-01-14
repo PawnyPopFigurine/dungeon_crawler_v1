@@ -21,7 +21,7 @@ namespace JZK.Level
         NonCombat = 2,
         Start = 3,
         End = 4,
-        Item = 5,
+        StandardItem = 5,
     }
 
     [System.Serializable]
