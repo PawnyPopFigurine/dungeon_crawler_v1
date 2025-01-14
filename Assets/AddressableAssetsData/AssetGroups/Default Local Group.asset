@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b93d3289ff1e3446bfb2a29f1043b04
+    m_Address: Assets/Data/Items/healPickup_MaxHP.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6ac4b13e96268dc45aa3283a41a44581
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/SnakeProjectile.prefab
     m_ReadOnly: 0
@@ -46,6 +52,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ba6688b6b8465e40bcfac76d5cf82a3
+    m_Address: Assets/Data/Items/healPickup_1HP.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item_definition
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ce24769ea4d064439c0c064ff839289
     m_Address: Assets/Data/Themes/UndeadTheme.asset

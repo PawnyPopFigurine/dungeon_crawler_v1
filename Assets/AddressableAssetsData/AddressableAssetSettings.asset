@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: c805c52bc6783b44fbc1e6899904ddbd
   m_currentHash:
     serializedVersion: 2
-    Hash: 8ba336e5dcc1769d159931039e9b4b3d
+    Hash: 58eb2c46b5231be79fc29dda9fe5c71b
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -98,6 +98,7 @@ MonoBehaviour:
     - room_definition
     - enemy_definition
     - theme_definition
+    - item_definition
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: a02584dc34281de40938dab1b5d4ef24, type: 2}

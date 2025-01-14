@@ -16,7 +16,8 @@ namespace JZK.Framework
 			new SystemReference<Gameplay.EnemyLoadSystem>(),
 			new SystemReference<Gameplay.EnemyPoolingSystem>(),
             new SystemReference<Gameplay.GameplaySystem>(),
-            new SystemReference<Gameplay.PlayerSystem>(),
+			new SystemReference<Gameplay.ItemLoadSystem>(),
+			new SystemReference<Gameplay.PlayerSystem>(),
             new SystemReference<Gameplay.ProjectileSystem>(),
 			new SystemReference<Gameplay.ThemeDataLoadSystem>(),
 
