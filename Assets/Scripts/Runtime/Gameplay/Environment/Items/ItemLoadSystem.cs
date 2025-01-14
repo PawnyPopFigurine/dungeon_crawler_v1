@@ -82,7 +82,7 @@ namespace JZK.Gameplay
                     _definition_LUT.Add(def.Id, def);
                     Debug.Log("[ITEMLOAD] added definition with ID " + def.Id + " to LUT");
 
-                    //EnemyPoolingSystem.Instance.CreateEnemyPoolFromDef(def);
+                    ItemPoolingSystem.Instance.CreatePoolFromDef(def);
                 }
             }
 

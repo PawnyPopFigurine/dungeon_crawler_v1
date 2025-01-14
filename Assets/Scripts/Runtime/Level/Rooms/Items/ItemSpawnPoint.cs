@@ -6,6 +6,7 @@ namespace JZK.Gameplay
 {
     public class ItemSpawnPoint : MonoBehaviour
     {
+        [SerializeField]
         string _spawnItemId;
         public string SpawnItemId => _spawnItemId;
 
@@ -14,7 +15,32 @@ namespace JZK.Gameplay
             _spawnItemId = newId;
 		}
 
-        bool _hasSpawnedItem;
+		public void ResetSpawn()
+		{
+            _hasSpawnedItem = false;
+		}
+
+        public void TrySpawnItem()
+		{
+            if(_hasSpawnedItem)
+			{
+                return;
+			}
+
+            if(!ItemPoolingSystem.Instance.RequestController(_spawnItemId, out ItemController controller))
+			{
+                //complain here
+                return;
+			}
+
+            controller.transform.SetParent(transform);
+            controller.transform.localPosition = Vector3.zero;
+            controller.gameObject.SetActive(true);
+
+            _hasSpawnedItem = true;
+		}
+
+		bool _hasSpawnedItem;
         public bool HasSpawnedItem => _hasSpawnedItem;
     }
 }

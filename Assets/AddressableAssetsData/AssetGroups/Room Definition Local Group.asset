@@ -23,6 +23,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - room_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24ac7976d4ee1fb4c92df581e1fff4e7
+    m_Address: Assets/Data/Rooms/StandardItem/Item_Hallway_BottomDoor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2f0cf735a4f25db4a9a4db29a926c162
     m_Address: Assets/Data/Rooms/E_Shape/E_Shape_Room_11x16.asset
     m_ReadOnly: 0
@@ -95,6 +101,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - room_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81d0991058555684ca76b7b1042bb986
+    m_Address: Assets/Data/Rooms/StandardItem/Item_Hallway_RightDoor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 887c565172b3fe446ba8b4eef61b01e9
     m_Address: Assets/Data/Rooms/Rect_Shape/RectRoom_20x12_Var1.asset
     m_ReadOnly: 0
@@ -121,6 +133,18 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a13e2ddf36470d44e952b713b76db285
     m_Address: Assets/Data/Rooms/Z_Shape/Z_Shape_Room_16x16.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4dca3c3f31271c41931cfdcb481281f
+    m_Address: Assets/Data/Rooms/StandardItem/Item_Hallway_TopDoor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b06684f0f3a7e8b408ddbfb04e1792d7
+    m_Address: Assets/Data/Rooms/StandardItem/Item_Hallway_LeftDoor.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - room_definition

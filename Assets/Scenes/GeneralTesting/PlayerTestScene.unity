@@ -122,6 +122,83 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &15895251
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 735726899}
+    m_Modifications:
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2449307494450319871, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: m_Name
+      value: ItemSpawnPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 3176422861800545979, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+      propertyPath: _spawnItemId
+      value: healPickup_MaxHP
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+--- !u!4 &15895252 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1933911378621759634, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+  m_PrefabInstance: {fileID: 15895251}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &15895253 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3176422861800545979, guid: c067cb76fa9c5594686c6d4bfcabdbd5, type: 3}
+  m_PrefabInstance: {fileID: 15895251}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1fa223ae385ceb408c9819303d123c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &496682870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,9 +366,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8647749795519328597, guid: 25ceadfdc85769b4485fcb618164a0cf, type: 3}
+      propertyPath: _itemSpawnPoint
+      value: 
+      objectReference: {fileID: 15895253}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2905034347371881279, guid: 25ceadfdc85769b4485fcb618164a0cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 15895252}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25ceadfdc85769b4485fcb618164a0cf, type: 3}
 --- !u!4 &735726899 stripped

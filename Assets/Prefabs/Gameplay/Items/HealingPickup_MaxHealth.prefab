@@ -204,6 +204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1366901836228255483}
+  - component: {fileID: 7444886221357756697}
   m_Layer: 0
   m_Name: HealingPickup_MaxHealth
   m_TagString: Untagged
@@ -227,3 +228,16 @@ Transform:
   - {fileID: 1530717257910581314}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7444886221357756697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742438608701582673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8168b129dc4fce84fa946b4ea522f752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _definitionId: healPickup_MaxHP

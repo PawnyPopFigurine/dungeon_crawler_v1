@@ -430,7 +430,6 @@ namespace JZK.Gameplay
 				return;
 			}
 
-			//OpenAllDoors();
 			_hasClearedRoom = true;
 		}
 
@@ -470,21 +469,30 @@ namespace JZK.Gameplay
 			GameplaySystem.Instance.OnPlayerEnterRoom(this);
 
 			ERoomType roomType = RoomDefinitionLoadSystem.Instance.GetDefinition(_id).RoomType;
-			if(roomType == ERoomType.StandardCombat)
+			switch(roomType)
 			{
-                if (!_hasClearedRoom)
-                {
-					if(ShouldDoorsCloseOnFirstEntry())
+				case ERoomType.StandardCombat:
+					if (!_hasClearedRoom)
 					{
-                        CloseAllDoors();
+						if (ShouldDoorsCloseOnFirstEntry())
+						{
+							CloseAllDoors();
 
-                        foreach (EnemyController enemy in _enemiesInRoom)
-                        {
-                            enemy.OnRoomEntered();
-                        }
-                    }
-                }
-            }
+							foreach (EnemyController enemy in _enemiesInRoom)
+							{
+								enemy.OnRoomEntered();
+							}
+						}
+					}
+					break;
+				case ERoomType.StandardItem:
+					if(!_hasClearedRoom)
+					{
+						_itemSpawnPoint.TrySpawnItem();
+					}
+					ClearRoom();
+					break;
+			}
 		}
 
 		public void ResetController()
@@ -496,6 +504,11 @@ namespace JZK.Gameplay
 
 			_enemiesInRoom.Clear();
 			_hasClearedRoom = false;
+
+			if(null != _itemSpawnPoint)
+			{
+				_itemSpawnPoint.ResetSpawn();
+			}
 			//TODO: stuff here
 		}
 

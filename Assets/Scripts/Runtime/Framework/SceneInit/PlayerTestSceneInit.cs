@@ -16,6 +16,7 @@ namespace JZK.Framework
 
 			new SystemReference<Gameplay.GameplaySystem>(),
 			new SystemReference<Gameplay.ItemLoadSystem>(),
+			new SystemReference<Gameplay.ItemPoolingSystem>(),
 			new SystemReference<Gameplay.PlayerSystem>(),
 			new SystemReference<Gameplay.ProjectileSystem>(),
 
