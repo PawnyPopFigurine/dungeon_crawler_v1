@@ -17,6 +17,6 @@ MonoBehaviour:
     _id: bigSpider_Patrol
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: 87e35f91f0cf8a046827beb696c73c72, type: 3}
-    _difficultyPoints: 4
+    _difficultyPoints: 8
     _theme: 0
     _placeAtEdge: 0
