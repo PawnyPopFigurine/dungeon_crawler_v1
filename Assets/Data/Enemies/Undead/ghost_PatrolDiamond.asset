@@ -17,6 +17,6 @@ MonoBehaviour:
     _id: ghost_PatrolDiamond
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: e833ea1828db9be41b988c88b7af564a, type: 3}
-    _difficultyPoints: 2
+    _difficultyPoints: 3
     _theme: 1
     _placeAtEdge: 0

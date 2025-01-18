@@ -250,6 +250,20 @@ namespace JZK.Framework
 
 			foreach (GenerationDoorData doorData in data.Door_LUT.Values)
 			{
+				if(!_generationData_Controller_LUT.ContainsKey(doorData.ParentRoomId))
+				{
+					Debug.LogError("[GENERATION] DOOR CONTAINS OUTDATED ROOM REFERENCE");
+					continue;
+				}
+				if(doorData.IndexInRoom < 0 || doorData.IndexInRoom >= _generationData_Controller_LUT[doorData.ParentRoomId].Doors.Count)
+				{
+					Debug.LogError("[GENERATION] DOOR DATA HAS INVALID INDEX " + doorData.IndexInRoom + " FOR ROOM " + _generationData_Controller_LUT[doorData.ParentRoomId].Id);
+					continue;
+				}
+				/*if(!_generationData_Controller_LUT[doorData.ParentRoomId].Doors.ContainsKey(doorData.IndexInRoom))
+				{
+
+				}*/
 				RoomDoor door = _generationData_Controller_LUT[doorData.ParentRoomId].Doors[doorData.IndexInRoom];
 				door.SetDoorEnabled(doorData.Enabled);
 				Guid linkDoorId = doorData.LinkDoorId;

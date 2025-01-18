@@ -34,6 +34,7 @@ namespace JZK.Level
 		[Range(0, 1)]
 		public float ItemRoomChance;
 		public int MaxItemRooms;
+		public bool UseRoomDefMaxCountLimit = true;
 	}
 
 	[System.Serializable]
@@ -45,6 +46,8 @@ namespace JZK.Level
 		public List<Guid> SecondaryRoomIds = new();
 
 		public ELevelTheme Theme;
+
+		public Dictionary<string, int> RoomCount_LUT = new();
 
 
 		public List<Guid> GetAllRoomsOfType(ERoomType type)
@@ -190,6 +193,11 @@ namespace JZK.Level
 
 			RoomController controller = def.PrefabController.GetComponent<RoomController>();
 
+			foreach(Guid doorId in AllDoorIds)
+			{
+				ParentLayout.Door_LUT.Remove(doorId);
+			}
+
 			AllDoorIds.Clear();
 
 			foreach (RoomDoor door in controller.Doors)
@@ -205,6 +213,15 @@ namespace JZK.Level
 			UnoccupiedFloorPositions = new(controller.FloorTilePositions);
 			AllFloorPositions = new(controller.FloorTilePositions);
 			AllFloorEdgePositions = new(controller.FloorEdgePositions);
+
+			if (ParentLayout.RoomCount_LUT.ContainsKey(def.Id))
+			{
+				ParentLayout.RoomCount_LUT[def.Id] += 1;
+			}
+			else
+			{
+				ParentLayout.RoomCount_LUT.Add(def.Id, 1);
+			}
 		}
 
 		public bool TryLinkToRoom(GenerationRoomData linkToRoom, GenerationDoorData outwardDoor, out GenerationDoorData otherRoomDoor)
@@ -405,8 +422,8 @@ namespace JZK.Level
 				{
 					roomType = ERoomType.End;
 				}
-
-				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success, roomType);
+				//RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success, roomType);
+				RoomDefinition roomDef = GetRandomRoomForConnectionDataAndType(critRoom.ConnectionData, roomType, layoutData, random, settings, out bool success);
 				if (success)
 				{
 					critRoom.SetDefinition(roomDef);
@@ -499,7 +516,8 @@ namespace JZK.Level
 						int critCurrentConnectionCount = critRoom.ConnectionData.GetRequirementsInDirection(doorData.SideOfRoom);
 						critRoom.ConnectionData.SetConnectionCount(doorData.SideOfRoom, critCurrentConnectionCount + 1);
 						ERoomType secondaryRoomType = ERoomType.StandardCombat;
-						RoomDefinition secondaryRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, secondaryRoom.ConnectionData, out bool success, secondaryRoomType);
+						//RoomDefinition secondaryRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, secondaryRoom.ConnectionData, out bool success, secondaryRoomType);
+						RoomDefinition secondaryRoomDef = GetRandomRoomForConnectionDataAndType(secondaryRoom.ConnectionData, secondaryRoomType, layoutData, random, settings, out bool success);
 						if (!success)
 						{
 							Debug.LogError("[GENERATION] failed finding prefab for secondary path room " + secondaryRoom.CriticalPathIndex.ToString() + " - "
@@ -543,8 +561,9 @@ namespace JZK.Level
 
 				if (random.NextDouble() < settings.ItemRoomChance)
 				{
-					RoomDefinition itemRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, combatRoomData.ConnectionData, out bool success, ERoomType.StandardItem);
-					if(!success)
+					//RoomDefinition itemRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, combatRoomData.ConnectionData, out bool success, ERoomType.StandardItem);
+					RoomDefinition itemRoomDef = GetRandomRoomForConnectionDataAndType(combatRoomData.ConnectionData, ERoomType.StandardItem, layoutData, random, settings, out bool success);
+					if (!success)
 					{
 						Debug.LogError("[ITEMROOMGEN] failed finding prefab for item room "
 							+ " CONNETION DATA: Up - " + combatRoomData.ConnectionData.RequiredUpConnections + " - "
@@ -718,6 +737,43 @@ namespace JZK.Level
 					//return settings.ScalingEnemyPointsStartAmount + (settings.ScalingEnemyPointsScalingAmount * (roomData.CriticalPathIndex - 1));
 
 			}
+		}
+
+		RoomDefinition GetRandomRoomForConnectionDataAndType(GenerationRoomData.GenerationRoomConnectionData connectionData, ERoomType type, LayoutData layoutData, System.Random random, LayoutGenerationSettings settings, out bool success)
+		{
+			if(!settings.UseRoomDefMaxCountLimit)
+			{
+				return RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, connectionData, out success, ERoomType.StandardItem);
+			}
+			List<RoomDefinition> possibleRooms = RoomDefinitionLoadSystem.Instance.GetAllDefinitionsForTypeAndConnections(connectionData, out success, type);
+			List<RoomDefinition> roomsExceedingMaxLimit = new();
+			foreach (RoomDefinition room in possibleRooms)
+			{
+				int limit = room.MaxPerLevel;
+				if (layoutData.RoomCount_LUT.TryGetValue(room.Id, out int currentAmount))
+				{
+					if (currentAmount >= limit)
+					{
+						roomsExceedingMaxLimit.Add(room);
+					}
+				}
+			}
+
+			if (roomsExceedingMaxLimit.Count != possibleRooms.Count)
+			{
+				foreach (RoomDefinition overLimitRoom in roomsExceedingMaxLimit)
+				{
+					possibleRooms.Remove(overLimitRoom);
+				}
+			}
+
+			List<WeightedListItem> listItems = new();
+			foreach (RoomDefinition room in possibleRooms)
+			{
+				listItems.Add(room);
+			}
+			RoomDefinition roomDef = (RoomDefinition)GameplayHelper.GetWeightedListItem(listItems, random);
+			return roomDef;
 		}
 
 		bool TryGetSpawnPosForEnemy(EnemyDefinition enemyDef, GenerationRoomData roomData, System.Random random, out Vector3Int validPos)

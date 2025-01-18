@@ -17,6 +17,6 @@ MonoBehaviour:
     _id: frankenstein_PatrolLeftRight
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: b516920252546f7498181605dba45b96, type: 3}
-    _difficultyPoints: 2
+    _difficultyPoints: 4
     _theme: 1
     _placeAtEdge: 0
