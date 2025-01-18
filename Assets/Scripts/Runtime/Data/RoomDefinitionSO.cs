@@ -42,6 +42,9 @@ namespace JZK.Level
         [SerializeField]
         ERoomType _roomType;
         public ERoomType RoomType => _roomType;
+        [SerializeField]
+        int _maxPerLevel = 1;
+        public int MaxPerLevel => _maxPerLevel;
         
 
         public RoomDefinition CreateCopy()
@@ -52,6 +55,7 @@ namespace JZK.Level
                 _hideInGame = _hideInGame,
                 _prefabController = _prefabController,
                 _roomType = _roomType,
+                _maxPerLevel = _maxPerLevel,
             };
 
             returnCopy.SetWeighting(Weighting);
