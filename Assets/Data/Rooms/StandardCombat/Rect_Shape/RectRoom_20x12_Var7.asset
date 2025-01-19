@@ -18,3 +18,4 @@ MonoBehaviour:
     _prefabController: {fileID: 2667284999973894481, guid: 605fd0632e35fc941a453953d6724fd5, type: 3}
     _hideInGame: 0
     _roomType: 1
+    _maxPerLevel: 2

@@ -20,3 +20,5 @@ MonoBehaviour:
     _difficultyPoints: 10
     _theme: 2
     _placeAtEdge: 0
+    _maxPerRoom: 0
+    _maxPerLevel: 1

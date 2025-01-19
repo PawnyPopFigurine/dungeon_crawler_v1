@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: RectRoom_10x8_Var1
   m_EditorClassIdentifier: 
   _definition:
+    _weighting: 10
     _id: RectRoom_10x8_Var1
     _prefabController: {fileID: 2667284999973894481, guid: c3c023cfb2026374eb1e83020faf836a, type: 3}
     _hideInGame: 0
     _roomType: 1
+    _maxPerLevel: 2

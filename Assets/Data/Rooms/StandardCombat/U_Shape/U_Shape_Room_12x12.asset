@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: U_Shape_Room_12x12
   m_EditorClassIdentifier: 
   _definition:
+    _weighting: 10
     _id: U_Shape_Room_12x12
     _prefabController: {fileID: 2667284999973894481, guid: f4748b517f04ea347ae2416edc4718fb, type: 3}
     _hideInGame: 0
     _roomType: 1
+    _maxPerLevel: 2
