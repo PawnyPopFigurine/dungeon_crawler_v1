@@ -197,3 +197,6 @@ MonoBehaviour:
   _speedMult: 1
   _sprite: {fileID: 7654886698988900759}
   _rotateToMatchTrajectory: 1
+  _wobblyPattern: 0
+  _frequency: 0
+  _amplitude: 0

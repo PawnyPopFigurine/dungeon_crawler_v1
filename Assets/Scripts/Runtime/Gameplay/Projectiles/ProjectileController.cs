@@ -32,6 +32,14 @@ namespace JZK.Gameplay
 
 		[SerializeField] bool _rotateToMatchTrajectory;
 
+		[SerializeField] bool _wobblyPattern;
+
+		private Vector2 _perpendicularTrajectory;
+
+		[SerializeField] float _frequency;
+
+		[SerializeField] float _amplitude;
+
 		public void InitialiseOnLoad()
 		{
 			_id = Guid.NewGuid();
@@ -40,6 +48,17 @@ namespace JZK.Gameplay
 		public virtual void PrepareForLaunch()
 		{
 			//do stuff here
+			if(_wobblyPattern)
+			{
+				float rotateByDegrees = 90;
+
+				float rotateByRadians = rotateByDegrees * (Mathf.PI / 180);
+
+				float rotatedShootDirectionX = (_trajectory.x * Mathf.Cos(rotateByRadians)) - (_trajectory.y * Mathf.Sin(rotateByRadians));
+				float rotatedShootDirectionY = (_trajectory.x * Mathf.Sin(rotateByRadians)) + (_trajectory.y * Mathf.Cos(rotateByRadians));
+
+				_perpendicularTrajectory = new(rotatedShootDirectionX, rotatedShootDirectionY);
+			}
 		}
 
 		public void Launch(Vector2 trajectory, float speed, Vector2 launchPos, float lifespan)
@@ -73,8 +92,21 @@ namespace JZK.Gameplay
 		public virtual void UpdateMovement(float deltaTime)
 		{
 			Vector2 nextPosition = new(transform.position.x, transform.position.y);
-			nextPosition.x += _trajectory.x * Speed * deltaTime;
-			nextPosition.y += _trajectory.y * Speed * deltaTime;
+			if (_wobblyPattern)
+			{
+				nextPosition.x += _trajectory.x * Speed * deltaTime;
+				nextPosition.y += _trajectory.y * Speed * deltaTime;
+
+				float currentAmplitude = Mathf.Cos(_timeSinceFired * _frequency);
+				nextPosition.x += currentAmplitude * _amplitude * _perpendicularTrajectory.x * deltaTime;
+				nextPosition.y += currentAmplitude * _amplitude * _perpendicularTrajectory.y * deltaTime;
+			}
+			else
+			{
+				nextPosition.x += _trajectory.x * Speed * deltaTime;
+				nextPosition.y += _trajectory.y * Speed * deltaTime;
+			}
+			
 
 			transform.position = nextPosition;
 		}
