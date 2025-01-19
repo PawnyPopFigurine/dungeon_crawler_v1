@@ -743,18 +743,21 @@ namespace JZK.Level
 		{
 			if(!settings.UseRoomDefMaxCountLimit)
 			{
-				return RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, connectionData, out success, ERoomType.StandardItem);
+				return RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, connectionData, out success, type);
 			}
 			List<RoomDefinition> possibleRooms = RoomDefinitionLoadSystem.Instance.GetAllDefinitionsForTypeAndConnections(connectionData, out success, type);
 			List<RoomDefinition> roomsExceedingMaxLimit = new();
 			foreach (RoomDefinition room in possibleRooms)
 			{
 				int limit = room.MaxPerLevel;
-				if (layoutData.RoomCount_LUT.TryGetValue(room.Id, out int currentAmount))
+				if(room.MaxPerLevel > 0)
 				{
-					if (currentAmount >= limit)
+					if (layoutData.RoomCount_LUT.TryGetValue(room.Id, out int currentAmount))
 					{
-						roomsExceedingMaxLimit.Add(room);
+						if (currentAmount >= limit)
+						{
+							roomsExceedingMaxLimit.Add(room);
+						}
 					}
 				}
 			}
