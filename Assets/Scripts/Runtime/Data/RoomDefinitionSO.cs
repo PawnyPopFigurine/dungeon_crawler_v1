@@ -43,7 +43,7 @@ namespace JZK.Level
         ERoomType _roomType;
         public ERoomType RoomType => _roomType;
         [SerializeField]
-        int _maxPerLevel = 1;
+        int _maxPerLevel;
         public int MaxPerLevel => _maxPerLevel;
         
 

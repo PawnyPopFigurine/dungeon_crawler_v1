@@ -34,7 +34,9 @@ namespace JZK.Level
 		[Range(0, 1)]
 		public float ItemRoomChance;
 		public int MaxItemRooms;
-		public bool UseRoomDefMaxCountLimit = true;
+		public bool UseRoomDefMaxPerLevel = true;
+		public bool UseEnemyDefMaxPerRoom = true;
+		public bool UseEnemyDefMaxPerLevel = true;
 	}
 
 	[System.Serializable]
@@ -48,6 +50,7 @@ namespace JZK.Level
 		public ELevelTheme Theme;
 
 		public Dictionary<string, int> RoomCount_LUT = new();
+		public Dictionary<string, int> EnemyCount_LUT = new();
 
 
 		public List<Guid> GetAllRoomsOfType(ERoomType type)
@@ -86,6 +89,8 @@ namespace JZK.Level
 		public List<Vector3Int> AllFloorEdgePositions = new();
 		public List<List<Vector3Int>> BSPDividedFloorPositions = new();
 		public List<string> SpawnItemIds = new();
+
+		public Dictionary<string, int> EnemyCount_LUT = new();
 
 		public class GenerationRoomConnectionData
 		{
@@ -632,7 +637,7 @@ namespace JZK.Level
 
 
 			//populate combat rooms with enemies until enemy points value has been reached
-			Dictionary<string, int> enemySpawnCountLUT = new();
+			//Dictionary<string, int> enemySpawnCountLUT = new();
 			foreach (Guid combatRoom in combatRooms)
 			{
 				GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
@@ -649,7 +654,9 @@ namespace JZK.Level
 						break;
 					}
 
-					List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(roomPointsToSpend, enemySpawnCountLUT, settings.Theme);
+					EnemyDefinition def = GetRandomEnemyDefForDifficultyPoints(roomPointsToSpend, layoutData, settings, roomData.Id, random);
+
+					/*List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(roomPointsToSpend, layoutData.EnemyCount_LUT, settings.Theme);
 					if (allPossibleDefs.Count == 0)
 					{
 						Debug.LogWarning("[ENEMYGEN] - no possible enemy definitions remaining for room " + roomData.Id.ToString() + " - it will appear with no enemies!");
@@ -662,7 +669,7 @@ namespace JZK.Level
 						weightedItems.Add(possibleDef);
 					}
 
-					EnemyDefinition def = (EnemyDefinition)GameplayHelper.GetWeightedListItem(weightedItems, random);
+					EnemyDefinition def = (EnemyDefinition)GameplayHelper.GetWeightedListItem(weightedItems, random);*/
 
 					if(!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
 					{
@@ -682,6 +689,15 @@ namespace JZK.Level
 
 					roomData.EnemySpawnData.Add(spawnData);
 
+					if(roomData.EnemyCount_LUT.ContainsKey(def.Id))
+					{
+						roomData.EnemyCount_LUT[def.Id]++;
+					}
+					else
+					{
+						roomData.EnemyCount_LUT.Add(def.Id, 1);
+					}
+
 					Debug.Log("[ENEMYGEN] placing enemy of type " + def.Id +
 					" in room " + roomData.CriticalPathIndex.ToString() +
 					" - spending " + def.DifficultyPoints.ToString() +
@@ -690,13 +706,13 @@ namespace JZK.Level
 
 					roomPointsToSpend -= def.DifficultyPoints;
 
-					if (enemySpawnCountLUT.ContainsKey(def.Id))
+					if (layoutData.EnemyCount_LUT.ContainsKey(def.Id))
 					{
-						enemySpawnCountLUT[def.Id]++;
+						layoutData.EnemyCount_LUT[def.Id]++;
 					}
 					else
 					{
-						enemySpawnCountLUT.Add(spawnData.EnemyId, 1);
+						layoutData.EnemyCount_LUT.Add(spawnData.EnemyId, 1);
 					}
 				}
 			}
@@ -739,9 +755,80 @@ namespace JZK.Level
 			}
 		}
 
+		EnemyDefinition GetRandomEnemyDefForDifficultyPoints(int difficultyPoints, LayoutData layoutData, LayoutGenerationSettings settings, Guid roomId, System.Random random)
+		{
+			List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(difficultyPoints, layoutData.EnemyCount_LUT, settings.Theme);
+			if (allPossibleDefs.Count == 0)
+			{
+				Debug.LogWarning("[ENEMYGEN] - no possible enemy definitions remaining for room " + roomId.ToString() + " - it will appear with no enemies!");
+				return null;
+			}
+
+			List<WeightedListItem> weightedItems = new();
+			foreach (EnemyDefinition possibleDef in allPossibleDefs)
+			{
+				weightedItems.Add(possibleDef);
+			}
+
+			/*if(!settings.UseEnemyDefMaxPerLevel && !settings.UseEnemyDefMaxPerRoom)
+			{
+				return (EnemyDefinition)GameplayHelper.GetWeightedListItem(weightedItems, random);
+			}*/
+
+			List<EnemyDefinition> defsExceedingMaxLimit = new();
+
+			GenerationRoomData roomData = layoutData.Room_LUT[roomId];
+			foreach(EnemyDefinition enemy in allPossibleDefs)
+			{
+				if (defsExceedingMaxLimit.Contains(enemy))
+				{
+					continue;
+				}
+
+				if (enemy.MaxPerLevel > 0 && settings.UseEnemyDefMaxPerLevel)
+				{
+					if(layoutData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForLevel))
+					{
+						if(countForLevel >= enemy.MaxPerLevel)
+						{
+							defsExceedingMaxLimit.Add(enemy);
+						}
+					}
+				}
+
+				if(enemy.MaxPerRoom > 0 && settings.UseEnemyDefMaxPerRoom)
+				{
+					if(roomData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForRoom))
+					{
+						if(countForRoom >= enemy.MaxPerRoom)
+						{
+							defsExceedingMaxLimit.Add(enemy);
+						}
+					}
+				}
+			}
+
+			if(defsExceedingMaxLimit.Count != allPossibleDefs.Count)
+			{
+				foreach(EnemyDefinition removeDef in defsExceedingMaxLimit)
+				{
+					allPossibleDefs.Remove(removeDef);
+				}
+			}
+
+			List<WeightedListItem> listItems = new();
+			foreach(EnemyDefinition def in allPossibleDefs)
+			{
+				listItems.Add(def);
+			}
+
+			EnemyDefinition enemyDef = (EnemyDefinition)GameplayHelper.GetWeightedListItem(listItems, random);
+			return enemyDef;
+		}
+
 		RoomDefinition GetRandomRoomForConnectionDataAndType(GenerationRoomData.GenerationRoomConnectionData connectionData, ERoomType type, LayoutData layoutData, System.Random random, LayoutGenerationSettings settings, out bool success)
 		{
-			if(!settings.UseRoomDefMaxCountLimit)
+			if(!settings.UseRoomDefMaxPerLevel)
 			{
 				return RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, connectionData, out success, type);
 			}

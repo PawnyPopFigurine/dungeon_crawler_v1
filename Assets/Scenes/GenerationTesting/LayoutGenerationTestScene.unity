@@ -463,7 +463,7 @@ MonoBehaviour:
     Seed: 0
     Theme: 2
     CriticalPathRoomCount: 10
-    SecondaryRoomChance: 0.278
+    SecondaryRoomChance: 0.245
     MaxTotalRooms: 21
     DifficultyPointsMode: 1
     FixedEnemyPointsPerRoom: 8
@@ -474,7 +474,9 @@ MonoBehaviour:
     BSPEnemyPlacement: 0
     ItemRoomChance: 0.128
     MaxItemRooms: 2
-    UseRoomDefMaxCountLimit: 1
+    UseRoomDefMaxPerLevel: 1
+    UseEnemyDefMaxPerRoom: 1
+    UseEnemyDefMaxPerLevel: 1
   _noEnemySpawnTile: {fileID: 11400000, guid: c69cf56a97c450b4496de63ce8f7e6b4, type: 2}
   _paintNoEnemySpawnTiles: 0
   _debugSpawnData:

@@ -40,6 +40,12 @@ namespace JZK.Gameplay
         private List<Vector3Int> _requiredFloorPoints = new();
         public List<Vector3Int> RequiredFloorPoints => _requiredFloorPoints;
 
+        [SerializeField] int _maxPerRoom;
+        public int MaxPerRoom => _maxPerRoom;
+
+        [SerializeField] int _maxPerLevel;
+        public int MaxPerLevel => _maxPerLevel;
+
         public void Initialise()
         {
             _occupyPoints.Clear();
@@ -85,6 +91,8 @@ namespace JZK.Gameplay
                 _theme = _theme,
                 _placeAtEdge = _placeAtEdge,
                 _occupyPoints = _occupyPoints,
+                _maxPerLevel = _maxPerLevel,
+                _maxPerRoom = _maxPerRoom,
             };
 
             copy.SetWeighting(Weighting);
