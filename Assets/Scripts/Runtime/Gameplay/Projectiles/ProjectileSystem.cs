@@ -20,6 +20,9 @@ namespace JZK.Gameplay
 		Chilli_Fire_Right = 6,
 		Chilli_Fire_Left = 7,
 		Chilli_Fire_Auto_Rot = 8,
+		Black_Tomato_Proj = 9,
+		Green_Ghost_Proj = 10,
+		Imp_Proj = 11,
 	}
 
 	public class ProjectileSystem : PersistentSystem<ProjectileSystem>

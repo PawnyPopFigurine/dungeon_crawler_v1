@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: pigChef_MoveShoot
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 10
+    _weighting: 20
     _id: pigChef_MoveShoot
     _hideInGame: 0
     _enemyPrefab: {fileID: 7768730045968935509, guid: 651639940e8d94642b5dd04c55647ba7, type: 3}
-    _difficultyPoints: 10
+    _difficultyPoints: 15
     _theme: 2
-    _placeAtEdge: 0
-    _maxPerRoom: 0
-    _maxPerLevel: 1
+    _maxPerRoom: 1
+    _maxPerLevel: 2

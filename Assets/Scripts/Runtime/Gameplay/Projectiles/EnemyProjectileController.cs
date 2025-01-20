@@ -7,12 +7,16 @@ namespace JZK.Gameplay
 {
     public class EnemyProjectileController : ProjectileController
     {
+		[SerializeField] bool _immuneToWallCollision;
 		private void OnTriggerEnter2D(Collider2D collider)
 		{
 			switch (collider.gameObject.tag)
 			{
 				case "CollideAllProjectiles":
-					ProjectileSystem.Instance.ClearProjectile(this);
+					if(!_immuneToWallCollision)
+					{
+						ProjectileSystem.Instance.ClearProjectile(this);
+					}
 					break;
 				case "PlayerTrigger":
 					PlayerSystem.Instance.OnPlayerHitHazard(this.gameObject);

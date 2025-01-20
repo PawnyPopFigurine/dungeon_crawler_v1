@@ -30,7 +30,7 @@ namespace JZK.Level
 		public int ScalingEnemyPointsScalingAmount;
 		public int ScalingEnemyPointsMaxAmount;
 		public bool LastRoomNoBranches;
-		public bool BSPEnemyPlacement;
+		//public bool BSPEnemyPlacement;
 		[Range(0, 1)]
 		public float ItemRoomChance;
 		public int MaxItemRooms;
@@ -156,13 +156,13 @@ namespace JZK.Level
 
 		public bool CanPlaceEnemyAtPoint(EnemyDefinition def, Vector3Int startPoint)
 		{
-			if(def.PlaceAtEdge)
+			/*if(def.PlaceAtEdge)
 			{
 				if(!AllFloorEdgePositions.Contains(startPoint))
 				{
 					return false;
 				}
-			}
+			}*/
 			foreach(Vector3Int occupyPos in def.OccupyPoints)
 			{
 				Vector3Int relativeOccupyPos = startPoint + occupyPos;

@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 5792506865513129887}
   - component: {fileID: 6711677943753088457}
   m_Layer: 7
-  m_Name: Ghost_PatrolDiamond
+  m_Name: Green_Ghost_PatrolDiamond
   m_TagString: DestroyAndDestroyedByPlayerProj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -901,7 +901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312c415ef825bd244bd7a97fe64e4ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _definitionId: ghost_PatrolDiamond
+  _definitionId: green_Ghost_PatrolDiamond
   _destructibleComponent: {fileID: 1297299398133086163}
   _occupyTiles: {fileID: 1067730782048642000}
   _requiredFloorTiles: {fileID: 2844871949613205494}
@@ -990,7 +990,7 @@ SpriteRenderer:
   m_SortingLayerID: -1586643163
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0e9d2d5288b2524409f88a8617a88df5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8505a24d856cde94980193fa4a197851, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1037,7 +1037,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.64}
+    oldSize: {x: 0.96, y: 0.96}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5776bf542a4c7247b5cefdb58a8694b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 1
+  _maxHealth: 3
   _controller: {fileID: 6711677943753088457}
 --- !u!114 &8538759671814575478
 MonoBehaviour:
@@ -1133,14 +1133,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentController: {fileID: 6711677943753088457}
-  _projectileType: 4
+  _projectileType: 10
   _behaviourType: 1
   _patternType: 4
-  _autoFireInterval: 3.6
-  _projectileSpeed: 3
-  _projectileLifetime: 20
-  _straightSpreadShotDistance: 0.4
-  _spreadShotRotation: 35
+  _autoFireInterval: 2.2
+  _projectileSpeed: 2
+  _projectileLifetime: 5
+  _straightSpreadShotDistance: 0
+  _spreadShotRotation: 0
 --- !u!1 &8956200355325181660
 GameObject:
   m_ObjectHideFlags: 0

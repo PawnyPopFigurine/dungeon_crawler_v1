@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 366be871682d8744894e1ee153c8ebdb, type: 3}
-  m_Name: bigSkull_Shoot
+  m_Name: black_Tomato_Move_Var2
   m_EditorClassIdentifier: 
   _definition:
-    _weighting: 10
-    _id: bigSkull_Shoot
+    _weighting: 20
+    _id: black_Tomato_Move_Var2
     _hideInGame: 0
-    _enemyPrefab: {fileID: 7768730045968935509, guid: 5ba0062ceac3fe840a59373fdbf50891, type: 3}
-    _difficultyPoints: 7
-    _theme: 1
-    _maxPerRoom: 2
+    _enemyPrefab: {fileID: 7768730045968935509, guid: 4dc6eede50534494fbcac10d365567b4, type: 3}
+    _difficultyPoints: 9
+    _theme: 2
+    _maxPerRoom: 3
     _maxPerLevel: 0

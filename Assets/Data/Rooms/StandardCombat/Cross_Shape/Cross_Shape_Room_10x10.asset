@@ -16,6 +16,6 @@ MonoBehaviour:
     _weighting: 10
     _id: Cross_Shape_Room_10x10
     _prefabController: {fileID: 2667284999973894481, guid: 455987fd0820c4c48b17c5fe953972e8, type: 3}
-    _hideInGame: 0
+    _hideInGame: 1
     _roomType: 1
     _maxPerLevel: 2

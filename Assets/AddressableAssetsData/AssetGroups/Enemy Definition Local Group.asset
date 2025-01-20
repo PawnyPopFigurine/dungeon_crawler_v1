@@ -65,6 +65,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5aaab3cc5d416984791d408b15ff4762
+    m_Address: Assets/Data/Enemies/Food/black_Tomato_Move_Var2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 632885a33b443de4ea11752df127eeab
+    m_Address: Assets/Data/Enemies/NoTheme/inp_Shoot.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6ac26f1cab640cb4295bc3dcd5928978
     m_Address: Assets/Data/Enemies/Undead/ghost_PatrolDiamond.asset
     m_ReadOnly: 0
@@ -125,6 +137,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - enemy_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c103a4009beb2947ac9cf8ae02d6cdb
+    m_Address: Assets/Data/Enemies/Undead/green_Ghost_PatrolDiamond.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a7ec090889ce7d048949bc544494c843
     m_Address: Assets/Data/Enemies/Testing/skeleton_PatrolLeftRight_TestRare.asset
     m_ReadOnly: 0
@@ -145,6 +163,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cf4c2ffba3494d042895473fc0db6f95
     m_Address: Assets/Data/Enemies/Testing/testEnemyEasy.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - enemy_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dca852ee8c961a34082b4024303aaf9e
+    m_Address: Assets/Data/Enemies/Food/black_Tomato_Move_Var1.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - enemy_definition

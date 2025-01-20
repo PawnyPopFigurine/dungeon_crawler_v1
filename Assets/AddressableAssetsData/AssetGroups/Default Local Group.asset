@@ -29,6 +29,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a70759c393750a46a614e84dd03cf1f
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/BlackTomatoProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3efd9502659c9c242b3fe72577f5339d
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/ImpProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5b93d3289ff1e3446bfb2a29f1043b04
     m_Address: Assets/Data/Items/healPickup_MaxHP.asset
     m_ReadOnly: 0
@@ -64,6 +76,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - theme_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e05b9a2e1d031d40a03bc0850c3beae
+    m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/GreenGhostProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a759432ce67992541a94bf3a52c28c0e
     m_Address: Assets/Prefabs/Player/Player.prefab
