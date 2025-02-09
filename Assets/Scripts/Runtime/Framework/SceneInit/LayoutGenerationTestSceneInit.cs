@@ -7,6 +7,13 @@ using UnityEngine.Tilemaps;
 
 namespace JZK.Framework
 {
+	public enum EGenerationMode
+	{
+		None,
+		FromSettings,
+		FromGrammar,
+	}
+
 	public class LayoutGenerationTestSceneInit : SceneInit
 	{
 		ISystemReference<MonoBehaviour>[] _systems = new ISystemReference<MonoBehaviour>[]
@@ -37,6 +44,8 @@ namespace JZK.Framework
 		[SerializeField] private int _debugSeed;
 
 		[SerializeField] bool _printDebug;
+
+		[SerializeField] EGenerationMode _generationMode;
 
 		[SerializeField] LevelGrammarDefinitionSO _grammarDef;
 
@@ -88,18 +97,52 @@ namespace JZK.Framework
 		{
 			InitialiseSeed();
 
-			System.Random random = new(_settings.Seed);
-
-			LayoutData generatedLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_settings, random, out bool success);
-
-			if(success)
+			switch(_generationMode)
 			{
-				_currentLayout = generatedLayout;
-				CreateDungeonFromData(_currentLayout);
-            }
-			else
-			{
-				Debug.LogError("[GENERATION] Layout generation failed with seed " + _settings.Seed.ToString());
+				case EGenerationMode.FromSettings:
+					{
+                        System.Random random = new(_settings.Seed);
+
+                        LayoutData generatedLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_settings, random, out bool success);
+
+                        if (success)
+                        {
+                            _currentLayout = generatedLayout;
+                            CreateDungeonFromData(_currentLayout);
+                        }
+                        else
+                        {
+                            Debug.LogError("[GENERATION] Layout generation failed with seed " + _settings.Seed.ToString());
+                        }
+                    }
+                    
+                    break;
+				case EGenerationMode.FromGrammar:
+					{
+                        int grammarSeed = DateTime.Now.Millisecond;
+                        if (_grammarDef.Definition.UseFixedSeed)
+                        {
+                            grammarSeed = _grammarDef.Definition.FixedSeed;
+                        }
+
+                        System.Random random = new(grammarSeed);
+
+						LayoutData generatedLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_grammarDef.Definition, random, out bool success);
+                        if (success)
+                        {
+                            _currentLayout = generatedLayout;
+                            CreateDungeonFromData(_currentLayout);
+                        }
+                        else
+                        {
+                            Debug.LogError("[GENERATION] Layout generation failed with seed " + _settings.Seed.ToString());
+                        }
+                    }
+					
+                    break;
+				default:
+					Debug.LogError("[GENERATION] no generation set up for mode " + _generationMode.ToString());
+					break;
 			}
         }
 
@@ -233,7 +276,9 @@ namespace JZK.Framework
 					//complain
 				}
 
-				ThemeDefinition themeDef = ThemeDataLoadSystem.Instance.ThemeData_LUT[data.Theme];
+				ELevelTheme roomTheme = roomData.OverrideRoomTheme != ELevelTheme.None ? roomData.OverrideRoomTheme : data.Theme;
+
+				ThemeDefinition themeDef = ThemeDataLoadSystem.Instance.ThemeData_LUT[roomTheme];
 
 				controller.DisableAllDoors();
 				controller.RepaintFloorTiles(themeDef.FloorTile);

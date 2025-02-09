@@ -3,6 +3,8 @@ using JZK.Gameplay;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace JZK.Level
@@ -89,6 +91,8 @@ namespace JZK.Level
 		public List<Vector3Int> AllFloorEdgePositions = new();
 		public List<List<Vector3Int>> BSPDividedFloorPositions = new();
 		public List<string> SpawnItemIds = new();
+		public ELevelTheme OverrideRoomTheme;
+		public Guid GrammarNodeId = Guid.Empty;
 
 		public Dictionary<string, int> EnemyCount_LUT = new();
 
@@ -332,6 +336,13 @@ namespace JZK.Level
 		public Vector3Int FloorTilePos;
 	}
 
+	[System.Serializable]
+	public class GenerationNodeLinkData
+	{
+		public Guid OutwardNodeId;
+		public Guid InwardNodeId;
+	}
+
 	public class DungeonLayoutGenerationSystem : PersistentSystem<DungeonLayoutGenerationSystem>
 	{
 		private SystemLoadData _loadData = new SystemLoadData()
@@ -355,6 +366,376 @@ namespace JZK.Level
 
 		const int SET_ENEMY_ATTEMPTS = 200;
 		const int SET_ENEMY_POS_ATTEMPTS = 200;
+
+		public LayoutData GenerateDungeonLayout(LevelGrammarDefinition grammar, System.Random random, out bool generationSuccess)
+		{
+            float generationStartTime = Time.realtimeSinceStartup;
+
+			generationSuccess = false;
+
+			Dictionary<Guid, Guid> nodeIdToGenDataId_LUT = new();
+			Dictionary<Guid, Guid> genDataIdToNodeId_LUT = new();
+
+			Dictionary<RoomLinkData, EOrthogonalDirection> linkDataToOutwardDirection_LUT = new();
+			List<GenerationNodeLinkData> successfulLinks = new();
+
+            LayoutData layoutData = new();
+
+			layoutData.Theme = grammar.BaseLevelTheme;
+
+			foreach(LevelGrammarNodeDefinition roomNode in grammar.Nodes)
+			{
+				GenerationRoomData roomData = new GenerationRoomData();
+				roomData.Initialise(layoutData, -1, false);
+				roomData.GrammarNodeId = roomNode.NodeGuid;
+
+				if(roomNode.OverrideTheme != ELevelTheme.None)
+				{
+					roomData.OverrideRoomTheme = roomNode.OverrideTheme;
+				}
+
+				//create connection data
+				roomData.ConnectionData = new();
+				foreach(RoomLinkData linkData in roomNode.RoomLinkData)
+				{
+					EOrthogonalDirection linkDirection = EOrthogonalDirection.Invalid;
+
+					if(linkData.UseFixedSide)
+					{
+						linkDirection = linkData.FixedSide;
+					}
+					else
+					{
+						Guid linkToNodeId = linkData.LinkToNode.Id;
+						//if room data for destination has been created, make this linking direction opposide to that
+						if(nodeIdToGenDataId_LUT.TryGetValue(linkToNodeId, out Guid linkToRoomDataId))
+						{
+							GenerationRoomData linkToRoom = layoutData.Room_LUT[linkToRoomDataId];
+							foreach(Guid doorId in linkToRoom.AllDoorIds)
+							{
+								GenerationDoorData door = layoutData.Door_LUT[doorId];
+								if(door.ParentRoomId != linkToRoomDataId)
+								{
+									continue;
+								}
+
+								EOrthogonalDirection inwardDirection = door.SideOfRoom;
+								EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(inwardDirection);
+
+								linkDirection = outwardDirection;
+							}
+						}
+
+						//otherwise, make random direction
+						else
+						{
+							List<EOrthogonalDirection> validDirections = new();
+
+							//if destination has fixed ID, ensure this room's outward connection can link to it
+							if(roomNode.UseFixedId || grammar.Nodes_LUT[linkToNodeId].UseFixedId)
+							{
+								if(roomNode.UseFixedId)
+								{
+                                    RoomController roomPrefabController = RoomDefinitionLoadSystem.Instance.GetDefinition(roomNode.FixedId).PrefabController.GetComponent<RoomController>();
+                                    foreach (RoomDoor door in roomPrefabController.Doors)
+                                    {
+                                        EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(door.SideOfRoom);
+                                        if (!validDirections.Contains(outwardDirection))
+                                        {
+                                            validDirections.Add(outwardDirection);
+                                        }
+                                    }
+                                }
+                                if (grammar.Nodes_LUT[linkToNodeId].UseFixedId)
+                                {
+                                    RoomController linkToPrefabController = RoomDefinitionLoadSystem.Instance.GetDefinition(grammar.Nodes_LUT[linkToNodeId].FixedId).PrefabController.GetComponent<RoomController>();
+                                    foreach (RoomDoor door in linkToPrefabController.Doors)
+                                    {
+                                        EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(door.SideOfRoom);
+                                        if (!validDirections.Contains(outwardDirection))
+                                        {
+                                            validDirections.Add(outwardDirection);
+                                        }
+                                    }
+                                }
+                            }
+							
+							else
+							{
+								validDirections = new()
+								{
+									EOrthogonalDirection.Up,
+									EOrthogonalDirection.Down,
+									EOrthogonalDirection.Left,
+									EOrthogonalDirection.Right
+								};
+							}
+
+							int linkDirectionIndex = random.Next(validDirections.Count);
+							linkDirection = validDirections[linkDirectionIndex];
+
+							//linkDirection = GameplayHelper.GetRandomDirection(random);
+						}
+					}
+
+                    linkDataToOutwardDirection_LUT.Add(linkData, linkDirection);
+
+                    int currentConnections = roomData.ConnectionData.GetRequirementsInDirection(linkDirection);
+					roomData.ConnectionData.SetConnectionCount(linkDirection, currentConnections + 1);
+				}
+
+				//find appropriate room ID using connection data
+				//string roomPrefabId = string.Empty;
+				RoomDefinition roomDef = null;
+
+				if(roomNode.UseFixedId)
+				{
+                    roomDef = RoomDefinitionLoadSystem.Instance.GetDefinition(roomNode.FixedId);
+				}
+				else
+				{
+					ERoomType roomType = ERoomType.None;
+					if(roomNode.UseFixedRoomType)
+					{
+						roomType = roomNode.FixedRoomType;
+					}
+					else
+					{
+						roomType = GameplayHelper.GetRandomRoomTypeForGrammarNode(random);
+					}
+
+					roomDef = GetRandomRoomForConnectionDataAndType(roomData.ConnectionData,
+						roomType,
+						layoutData,
+						random,
+						true,
+						out bool success);
+					if(!success)
+					{
+						//complain here
+					}
+					else
+					{
+						//roomData.SetDefinition(roomDef);
+					}
+				}
+
+				if(null == roomDef)
+				{
+					//complain here
+				}
+
+				roomData.SetDefinition(roomDef);
+
+				layoutData.Room_LUT.TryAdd(roomData.Id, roomData);
+
+				nodeIdToGenDataId_LUT.TryAdd(roomNode.NodeGuid, roomData.Id);
+				genDataIdToNodeId_LUT.TryAdd(roomData.Id, roomNode.NodeGuid);
+			}
+
+            //link room data
+            foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
+			{
+                Guid roomDataGuid = nodeIdToGenDataId_LUT[roomNode.NodeGuid];
+                GenerationRoomData roomData = layoutData.Room_LUT[roomDataGuid];
+
+                foreach (RoomLinkData linkData in roomNode.RoomLinkData)
+				{
+                    Guid linkToNodeGuid = linkData.LinkToNode.Id;
+
+					bool identicalLinkFound = false;
+
+                    foreach (GenerationNodeLinkData successLink in successfulLinks)
+					{
+						if(successLink.OutwardNodeId == roomNode.NodeGuid && successLink.InwardNodeId == linkToNodeGuid ||
+							successLink.InwardNodeId == roomNode.NodeGuid && successLink.OutwardNodeId == linkToNodeGuid)
+						{
+							identicalLinkFound = true;
+						}
+					}
+
+					if(identicalLinkFound)
+					{
+						continue;
+					}
+
+					Guid linkToRoomGuid = nodeIdToGenDataId_LUT[linkToNodeGuid];
+					GenerationRoomData linkToRoomData = layoutData.Room_LUT[linkToRoomGuid];
+
+					EOrthogonalDirection outwardDirection = linkDataToOutwardDirection_LUT[linkData];
+
+					if(!roomData.TryLinkToRoom(linkToRoomData, outwardDirection, out GenerationDoorData thisRoomDoor, out GenerationDoorData otherRoomDoor))
+					{
+                        Debug.LogWarning("[GENERATION] failed linking from room " + roomData.PrefabId.ToString() + 
+							" node ID " + roomNode.Id +
+							" - outward direction " + outwardDirection.ToString());
+                    }
+
+					else
+					{
+                        thisRoomDoor.Enabled = true;
+                        otherRoomDoor.Enabled = true;
+
+						GenerationNodeLinkData successLinkData = new()
+						{
+							OutwardNodeId = linkToNodeGuid,
+							InwardNodeId = roomNode.NodeGuid
+						};
+						successfulLinks.Add(successLinkData);
+
+						Debug.Log("[GENERATION] linked node " + roomNode.Id + " to node " + grammar.Nodes_LUT[linkToNodeGuid].Id);
+                    }
+				}
+			}
+
+            //find active doors in combat rooms and remove potential enemy spawns using doormats
+            List<Guid> combatRooms = layoutData.GetAllRoomsOfType(ERoomType.StandardCombat);
+            foreach (Guid combatRoom in combatRooms)
+            {
+                GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
+
+                foreach (Guid door in roomData.AllDoorIds)
+                {
+                    GenerationDoorData doorData = layoutData.Door_LUT[door];
+                    if (!doorData.Enabled)
+                    {
+                        continue;
+                    }
+
+                    RoomController controller = RoomDefinitionLoadSystem.Instance.GetDefinition(roomData.PrefabId).PrefabController.GetComponent<RoomController>();
+                    List<Vector3Int> activeDoormat = controller.Doormat_LUT[doorData.IndexInRoom];
+
+                    foreach (Vector3Int doormatPos in activeDoormat)
+                    {
+                        roomData.UnoccupiedFloorPositions.Remove(doormatPos);
+                    }
+                }
+            }
+
+            //populate combat rooms with enemies
+            foreach (Guid combatRoom in combatRooms)
+            {
+                GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
+				Guid nodeGuid = genDataIdToNodeId_LUT[combatRoom];
+				LevelGrammarNodeDefinition node = grammar.Nodes_LUT[nodeGuid];
+
+				//Fixed enemy spawns
+				foreach(FixedEnemySpawnDataItem fixedSpawn in node.FixedEnemySpawns)
+				{
+                    EnemyDefinition fixedEnemyDef = EnemyLoadSystem.Instance.GetDefinition(fixedSpawn.EnemyId);
+
+                    EnemySpawnData spawnData = new();
+					spawnData.EnemyId = fixedSpawn.EnemyId;
+
+					if(fixedSpawn.UseFixedCoords)
+					{
+						spawnData.FloorTilePos = new(
+							fixedSpawn.FixedCoords.x,
+							fixedSpawn.FixedCoords.y);
+					}
+					else
+					{
+						if(!TryGetSpawnPosForEnemy(fixedEnemyDef, roomData, random, out Vector3Int spawnPos))
+						{
+							//complain here
+							return null;
+						}
+						spawnData.FloorTilePos = spawnPos;
+					}
+
+                    foreach (Vector3Int occupyPos in fixedEnemyDef.OccupyPoints)
+                    {
+                        Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
+                        roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
+                    }
+
+                    roomData.EnemySpawnData.Add(spawnData);
+				}
+
+				//Random enemy spawns
+				if(node.SpawnRandomEnemies)
+				{
+                    int roomPointsToSpend = node.RandomEnemySpawnData.DifficultyPoints;
+
+                    Debug.Log("[ENEMYGEN] have " +
+                    roomPointsToSpend.ToString() + " enemy points for room with index " + roomData.CriticalPathIndex);
+
+                    for (int setEnemyAttempt = 0; setEnemyAttempt < SET_ENEMY_ATTEMPTS; ++setEnemyAttempt)
+                    {
+                        if (roomPointsToSpend <= 0)
+                        {
+                            Debug.Log("[ENEMYGEN] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
+                            break;
+                        }
+
+                        EnemyDefinition def = GetRandomEnemyDefForDifficultyPoints(roomPointsToSpend, layoutData, grammar.BaseLevelTheme, true, true, roomData.Id, random);
+
+                        if (!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
+                        {
+                            continue;
+                        }
+
+                        EnemySpawnData spawnData = new();
+                        spawnData.EnemyId = def.Id;
+
+                        spawnData.FloorTilePos = validPos;
+
+                        foreach (Vector3Int occupyPos in def.OccupyPoints)
+                        {
+                            Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
+                            roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
+                        }
+
+                        roomData.EnemySpawnData.Add(spawnData);
+
+                        if (roomData.EnemyCount_LUT.ContainsKey(def.Id))
+                        {
+                            roomData.EnemyCount_LUT[def.Id]++;
+                        }
+                        else
+                        {
+                            roomData.EnemyCount_LUT.Add(def.Id, 1);
+                        }
+
+                        Debug.Log("[ENEMYGEN] placing enemy of type " + def.Id +
+                        " in room " + roomData.CriticalPathIndex.ToString() +
+                        " - spending " + def.DifficultyPoints.ToString() +
+                        " of remaining " + roomPointsToSpend.ToString() + " points, leaving " +
+                        (roomPointsToSpend - def.DifficultyPoints).ToString() + " remaining points");
+
+                        roomPointsToSpend -= def.DifficultyPoints;
+
+                        if (layoutData.EnemyCount_LUT.ContainsKey(def.Id))
+                        {
+                            layoutData.EnemyCount_LUT[def.Id]++;
+                        }
+                        else
+                        {
+                            layoutData.EnemyCount_LUT.Add(spawnData.EnemyId, 1);
+                        }
+                    }
+                }	
+            }
+
+            //assign item rooms with item IDs
+            List<Guid> itemRoomIds = layoutData.GetAllRoomsOfType(ERoomType.StandardItem);
+            foreach (Guid itemId in itemRoomIds)
+            {
+                GenerationRoomData itemRoom = layoutData.Room_LUT[itemId];
+                itemRoom.SpawnItemIds.Clear();
+                ItemDefinition itemDef = ItemLoadSystem.Instance.GetRandomDefinition(random);
+                itemRoom.SpawnItemIds.Add(itemDef.Id);
+            }
+
+            float generationEndTime = Time.realtimeSinceStartup;
+            float generationTime = generationEndTime - generationStartTime;
+            Debug.Log("[GENERATION] layout data took " + generationTime + " seconds to generate");
+            int itemRoomCount = layoutData.GetAllRoomsOfType(ERoomType.StandardItem).Count;
+            Debug.Log("[ITEMROOMGEN] layout data has " + itemRoomCount + " total item rooms");
+            generationSuccess = true;
+			return layoutData;
+		}
+
 
 		public LayoutData GenerateDungeonLayout(LayoutGenerationSettings settings, System.Random random, out bool generationSuccess)
 		{
@@ -428,7 +809,7 @@ namespace JZK.Level
 					roomType = ERoomType.End;
 				}
 				//RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, critRoom.ConnectionData, out bool success, roomType);
-				RoomDefinition roomDef = GetRandomRoomForConnectionDataAndType(critRoom.ConnectionData, roomType, layoutData, random, settings, out bool success);
+				RoomDefinition roomDef = GetRandomRoomForConnectionDataAndType(critRoom.ConnectionData, roomType, layoutData, random, settings.UseRoomDefMaxPerLevel, out bool success);
 				if (success)
 				{
 					critRoom.SetDefinition(roomDef);
@@ -522,7 +903,7 @@ namespace JZK.Level
 						critRoom.ConnectionData.SetConnectionCount(doorData.SideOfRoom, critCurrentConnectionCount + 1);
 						ERoomType secondaryRoomType = ERoomType.StandardCombat;
 						//RoomDefinition secondaryRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, secondaryRoom.ConnectionData, out bool success, secondaryRoomType);
-						RoomDefinition secondaryRoomDef = GetRandomRoomForConnectionDataAndType(secondaryRoom.ConnectionData, secondaryRoomType, layoutData, random, settings, out bool success);
+						RoomDefinition secondaryRoomDef = GetRandomRoomForConnectionDataAndType(secondaryRoom.ConnectionData, secondaryRoomType, layoutData, random, settings.UseRoomDefMaxPerLevel, out bool success);
 						if (!success)
 						{
 							Debug.LogError("[GENERATION] failed finding prefab for secondary path room " + secondaryRoom.CriticalPathIndex.ToString() + " - "
@@ -567,7 +948,7 @@ namespace JZK.Level
 				if (random.NextDouble() < settings.ItemRoomChance)
 				{
 					//RoomDefinition itemRoomDef = RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, combatRoomData.ConnectionData, out bool success, ERoomType.StandardItem);
-					RoomDefinition itemRoomDef = GetRandomRoomForConnectionDataAndType(combatRoomData.ConnectionData, ERoomType.StandardItem, layoutData, random, settings, out bool success);
+					RoomDefinition itemRoomDef = GetRandomRoomForConnectionDataAndType(combatRoomData.ConnectionData, ERoomType.StandardItem, layoutData, random, settings.UseRoomDefMaxPerLevel, out bool success);
 					if (!success)
 					{
 						Debug.LogError("[ITEMROOMGEN] failed finding prefab for item room "
@@ -637,7 +1018,6 @@ namespace JZK.Level
 
 
 			//populate combat rooms with enemies until enemy points value has been reached
-			//Dictionary<string, int> enemySpawnCountLUT = new();
 			foreach (Guid combatRoom in combatRooms)
 			{
 				GenerationRoomData roomData = layoutData.Room_LUT[combatRoom];
@@ -654,22 +1034,7 @@ namespace JZK.Level
 						break;
 					}
 
-					EnemyDefinition def = GetRandomEnemyDefForDifficultyPoints(roomPointsToSpend, layoutData, settings, roomData.Id, random);
-
-					/*List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(roomPointsToSpend, layoutData.EnemyCount_LUT, settings.Theme);
-					if (allPossibleDefs.Count == 0)
-					{
-						Debug.LogWarning("[ENEMYGEN] - no possible enemy definitions remaining for room " + roomData.Id.ToString() + " - it will appear with no enemies!");
-						break;
-					}
-
-					List<WeightedListItem> weightedItems = new();
-					foreach(EnemyDefinition possibleDef in allPossibleDefs)
-					{
-						weightedItems.Add(possibleDef);
-					}
-
-					EnemyDefinition def = (EnemyDefinition)GameplayHelper.GetWeightedListItem(weightedItems, random);*/
+					EnemyDefinition def = GetRandomEnemyDefForDifficultyPoints(roomPointsToSpend, layoutData, settings.Theme, settings.UseEnemyDefMaxPerLevel, settings.UseEnemyDefMaxPerRoom, roomData.Id, random);
 
 					if(!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
 					{
@@ -717,6 +1082,7 @@ namespace JZK.Level
 				}
 			}
 
+			//assign item rooms with item IDs
 			List<Guid> itemRoomIds = layoutData.GetAllRoomsOfType(ERoomType.StandardItem);
 			foreach(Guid itemId in itemRoomIds)
 			{
@@ -755,9 +1121,9 @@ namespace JZK.Level
 			}
 		}
 
-		EnemyDefinition GetRandomEnemyDefForDifficultyPoints(int difficultyPoints, LayoutData layoutData, LayoutGenerationSettings settings, Guid roomId, System.Random random)
+		EnemyDefinition GetRandomEnemyDefForDifficultyPoints(int difficultyPoints, LayoutData layoutData, ELevelTheme theme, bool useMaxPerLevel, bool useMaxPerRoom, Guid roomId, System.Random random)
 		{
-			List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPoints(difficultyPoints, layoutData.EnemyCount_LUT, settings.Theme);
+			List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPointsAndTheme(difficultyPoints, layoutData.EnemyCount_LUT, theme);
 			if (allPossibleDefs.Count == 0)
 			{
 				Debug.LogWarning("[ENEMYGEN] - no possible enemy definitions remaining for room " + roomId.ToString() + " - it will appear with no enemies!");
@@ -785,7 +1151,7 @@ namespace JZK.Level
 					continue;
 				}
 
-				if (enemy.MaxPerLevel > 0 && settings.UseEnemyDefMaxPerLevel)
+				if (enemy.MaxPerLevel > 0 && useMaxPerLevel)
 				{
 					if(layoutData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForLevel))
 					{
@@ -796,7 +1162,7 @@ namespace JZK.Level
 					}
 				}
 
-				if(enemy.MaxPerRoom > 0 && settings.UseEnemyDefMaxPerRoom)
+				if(enemy.MaxPerRoom > 0 && useMaxPerRoom)
 				{
 					if(roomData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForRoom))
 					{
@@ -826,9 +1192,9 @@ namespace JZK.Level
 			return enemyDef;
 		}
 
-		RoomDefinition GetRandomRoomForConnectionDataAndType(GenerationRoomData.GenerationRoomConnectionData connectionData, ERoomType type, LayoutData layoutData, System.Random random, LayoutGenerationSettings settings, out bool success)
+		RoomDefinition GetRandomRoomForConnectionDataAndType(GenerationRoomData.GenerationRoomConnectionData connectionData, ERoomType type, LayoutData layoutData, System.Random random, bool useRoomsMaxPerLevel, out bool success)
 		{
-			if(!settings.UseRoomDefMaxPerLevel)
+			if(!useRoomsMaxPerLevel)
 			{
 				return RoomDefinitionLoadSystem.Instance.GetRandomDefinition(random, connectionData, out success, type);
 			}

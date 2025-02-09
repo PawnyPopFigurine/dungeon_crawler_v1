@@ -17,5 +17,5 @@ MonoBehaviour:
     _id: RectRoom_16x4
     _prefabController: {fileID: 2667284999973894481, guid: 8cce547c43944f74297ca23d66f6c02b, type: 3}
     _hideInGame: 0
-    _roomType: 1
+    _roomType: 2
     _maxPerLevel: 2

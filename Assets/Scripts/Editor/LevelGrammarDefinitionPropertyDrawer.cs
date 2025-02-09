@@ -28,6 +28,12 @@ namespace Levels
             SerializedProperty prop_Id = property.FindPropertyRelative("_id");
             EditorGUILayout.PropertyField(prop_Id);
 
+            SerializedProperty prop_UseFixedSeed = property.FindPropertyRelative("_useFixedSeed");
+            EditorGUILayout.PropertyField(prop_UseFixedSeed);
+
+            SerializedProperty prop_FixedSeed = property.FindPropertyRelative("_fixedSeed");
+            EditorGUILayout.PropertyField(prop_FixedSeed);
+
             SerializedProperty prop_BaseLevelTheme = property.FindPropertyRelative("_baseLevelTheme");
             EditorGUILayout.PropertyField(prop_BaseLevelTheme);
 

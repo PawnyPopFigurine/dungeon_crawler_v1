@@ -30,8 +30,16 @@ namespace JZK.Level
         public string Id => _id;
 
         [SerializeField]
+        bool _useFixedSeed;
+        public bool UseFixedSeed => _useFixedSeed;
+
+        [SerializeField]
+        int _fixedSeed;
+        public int FixedSeed => _fixedSeed;
+
+        [SerializeField]
         ELevelTheme _baseLevelTheme;
-        public ELevelTheme ELevelTheme => _baseLevelTheme;
+        public ELevelTheme BaseLevelTheme => _baseLevelTheme;
 
         [SerializeField] List<LevelGrammarNodeDefinition> _nodes = new();
         public List<LevelGrammarNodeDefinition> Nodes => _nodes;
@@ -79,18 +87,28 @@ namespace JZK.Level
         }
 #endif
 
-        [SerializeField] string _roomId;
-        public string RoomId => _roomId;
+        [SerializeField] bool _useFixedId;
+        public bool UseFixedId => _useFixedId;
 
-        [SerializeField] ERoomType _roomType;
-        public ERoomType RoomType => _roomType;
+        [SerializeField] string _fixedId;
+        public string FixedId => _fixedId;
+
+        [SerializeField] bool _useFixedRoomType;
+        public bool UseFixedRoomType => _useFixedRoomType;
+
+        [SerializeField] ERoomType _fixedRoomType;
+        public ERoomType FixedRoomType => _fixedRoomType;
         [SerializeField] ELevelTheme _overrideTheme;
         public ELevelTheme OverrideTheme => _overrideTheme;
 
         [SerializeField] List<FixedEnemySpawnDataItem> _fixedEnemySpawns = new();
         public List<FixedEnemySpawnDataItem> FixedEnemySpawns => _fixedEnemySpawns;
 
+        [SerializeField] bool _spawnRandomEnemies;
+        public bool SpawnRandomEnemies => _spawnRandomEnemies;
+
         [SerializeField] RandomEnemySpawnData _randomEnemySpawnData;
+        public RandomEnemySpawnData RandomEnemySpawnData => _randomEnemySpawnData;
 
         [SerializeField] List<RoomLinkData> _roomLinkData = new();
         public List<RoomLinkData> RoomLinkData => _roomLinkData;
@@ -106,8 +124,8 @@ namespace JZK.Level
         [SerializeField] bool _useFixedCoords;
         public bool UseFixedCoords => _useFixedCoords;
 
-        [SerializeField] Vector2 _fixedCoords;
-        public Vector2 FixedCoords => _fixedCoords;
+        [SerializeField] Vector2Int _fixedCoords;
+        public Vector2Int FixedCoords => _fixedCoords;
     }
 
     [System.Serializable]

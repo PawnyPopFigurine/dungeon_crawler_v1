@@ -14,14 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: testLevelGrammar
+    _useFixedSeed: 1
+    _fixedSeed: 102
     _baseLevelTheme: 2
     _nodes:
-    - _nodeId: start room
-      _guidString: 81a1d349-203b-405b-bfc6-b7b192a563f2
-      _roomId: Start_RectRoom_6x6
-      _roomType: 0
+    - _nodeId: 0 - start room
+      _guidString: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 3
       _overrideTheme: 0
       _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 0
         _enemyCount: 0
@@ -30,23 +35,125 @@ MonoBehaviour:
         _excludeThemes: 
       _roomLinkData:
       - _linkToNode:
-          _guidString: 3722fd32-ca2d-41ae-970d-df888d9fc893
+          _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
         _useFixedSide: 0
         _fixedSide: 0
-    - _nodeId: first combat room
-      _guidString: 3722fd32-ca2d-41ae-970d-df888d9fc893
-      _roomId: 
-      _roomType: 1
+    - _nodeId: 1 - first combat room
+      _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
       _overrideTheme: 0
-      _fixedEnemySpawns: []
+      _fixedEnemySpawns:
+      - _enemyId: ghost_PatrolDiamond
+        _useFixedCoords: 0
+        _fixedCoords: {x: 0, y: 0}
+      _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 10
-        _enemyCount: 3
+        _difficultyPoints: 6
+        _enemyCount: 0
         _includeIds: []
         _includeThemes: 
         _excludeThemes: 
       _roomLinkData:
       - _linkToNode:
-          _guidString: 81a1d349-203b-405b-bfc6-b7b192a563f2
+          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+        _useFixedSide: 0
+        _fixedSide: 0
+      - _linkToNode:
+          _guidString: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
+        _useFixedSide: 0
+        _fixedSide: 0
+    - _nodeId: 2 - second combat room
+      _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _enemyCount: 0
+        _includeIds: []
+        _includeThemes: 
+        _excludeThemes: 
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 139292dc-4281-4420-911e-35730707dc4c
+        _useFixedSide: 0
+        _fixedSide: 0
+      - _linkToNode:
+          _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+        _useFixedSide: 0
+        _fixedSide: 0
+    - _nodeId: 3 - empty hallway
+      _guidString: 139292dc-4281-4420-911e-35730707dc4c
+      _useFixedId: 1
+      _fixedId: RectRoom_4x16
+      _useFixedRoomType: 0
+      _fixedRoomType: 2
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _enemyCount: 0
+        _includeIds: []
+        _includeThemes: 
+        _excludeThemes: 
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
+        _useFixedSide: 0
+        _fixedSide: 0
+      - _linkToNode:
+          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+        _useFixedSide: 0
+        _fixedSide: 0
+    - _nodeId: 4 - third combat room
+      _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _enemyCount: 0
+        _includeIds: []
+        _includeThemes: 
+        _excludeThemes: 
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
+        _useFixedSide: 0
+        _fixedSide: 0
+      - _linkToNode:
+          _guidString: 139292dc-4281-4420-911e-35730707dc4c
+        _useFixedSide: 0
+        _fixedSide: 0
+    - _nodeId: 5 - end room
+      _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 4
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _enemyCount: 0
+        _includeIds: []
+        _includeThemes: 
+        _excludeThemes: 
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
         _useFixedSide: 0
         _fixedSide: 0

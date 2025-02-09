@@ -35,7 +35,7 @@ namespace JZK.Level
 
         private List<string> _allDefinitionIds = new();
         private List<string> _standardCombatIds = new();
-        private List<string> _nonCombatIds = new();
+        private List<string> _emptyIds = new();
         private List<string> _startIds = new();
         private List<string> _endIds = new();
         private List<string> _itemIds = new();
@@ -55,8 +55,8 @@ namespace JZK.Level
             {
                 case ERoomType.StandardCombat:
                     return _standardCombatIds;
-                case ERoomType.NonCombat:
-                    return _nonCombatIds;
+                case ERoomType.Empty:
+                    return _emptyIds;
                 case ERoomType.Start:
                     return _startIds;
                 case ERoomType.End:
@@ -228,7 +228,7 @@ namespace JZK.Level
             _endIds.Clear();
             _startIds.Clear();
             _standardCombatIds.Clear();
-            _nonCombatIds.Clear();
+            _emptyIds.Clear();
             _itemIds.Clear();
 
             foreach(RoomDefinitionSO defSO in definitionSOs)
@@ -247,8 +247,8 @@ namespace JZK.Level
                         case ERoomType.StandardCombat:
                             _standardCombatIds.Add(def.Id);
                             break;
-                        case ERoomType.NonCombat:
-                            _nonCombatIds.Add(def.Id);
+                        case ERoomType.Empty:
+                            _emptyIds.Add(def.Id);
                             break;
                         case ERoomType.Start:
                             _startIds.Add(def.Id);

@@ -18,7 +18,7 @@ namespace JZK.Level
     {
         None = 0,
         StandardCombat = 1,
-        NonCombat = 2,
+        Empty = 2,
         Start = 3,
         End = 4,
         StandardItem = 5,

@@ -1,3 +1,4 @@
+using JZK.Level;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -141,6 +142,18 @@ namespace JZK.Gameplay
 
             Vector2 rotatedDirection = new(rotatedDirectionX, rotatedDirectionY);
             return rotatedDirection;
+        }
+
+        static List<ERoomType> ROOM_TYPES_FOR_RANDOM_NODES = new List<ERoomType>()
+        {   ERoomType.StandardCombat,
+            ERoomType.StandardItem,
+            ERoomType.Empty,
+        };
+
+        public static ERoomType GetRandomRoomTypeForGrammarNode(System.Random random)
+        {
+            int typeIndex = random.Next(ROOM_TYPES_FOR_RANDOM_NODES.Count);
+            return ROOM_TYPES_FOR_RANDOM_NODES[typeIndex];
         }
     }
 }
