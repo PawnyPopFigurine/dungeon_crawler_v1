@@ -38,6 +38,8 @@ namespace JZK.Framework
 
 		[SerializeField] bool _printDebug;
 
+		[SerializeField] LevelGrammarDefinitionSO _grammarDef;
+
 		[SerializeField] LayoutGenerationSettings _settings;
 
 		private int _currentDebugTileIndex;
@@ -66,6 +68,8 @@ namespace JZK.Framework
 			Setup(_systems);
 
 			InitialiseSeed();
+
+			_grammarDef.Definition.Initialise();
 		}
 
 

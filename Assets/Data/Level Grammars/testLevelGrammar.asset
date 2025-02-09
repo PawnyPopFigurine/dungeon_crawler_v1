@@ -21,13 +21,27 @@ MonoBehaviour:
       _roomId: Start_RectRoom_6x6
       _roomType: 0
       _overrideTheme: 0
-      _fixedEnemySpawns:
-      - _enemyId: Ghost_PatrolDiamond
-        _useFixedCoords: 0
-        _fixedCoords: {x: 0, y: 0}
+      _fixedEnemySpawns: []
       _randomEnemySpawnData:
         _difficultyPoints: 0
         _enemyCount: 0
+        _includeIds: []
+        _includeThemes: 
+        _excludeThemes: 
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 3722fd32-ca2d-41ae-970d-df888d9fc893
+        _useFixedSide: 0
+        _fixedSide: 0
+    - _nodeId: first combat room
+      _guidString: 3722fd32-ca2d-41ae-970d-df888d9fc893
+      _roomId: 
+      _roomType: 1
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _randomEnemySpawnData:
+        _difficultyPoints: 10
+        _enemyCount: 3
         _includeIds: []
         _includeThemes: 
         _excludeThemes: 

@@ -13,6 +13,13 @@ namespace JZK.Level
         [SerializeField]
         private LevelGrammarDefinition _definition;
         public LevelGrammarDefinition Definition => _definition;
+
+        /*private void Awake()
+        {
+            _definition.InitialiseOnAwake();
+        }*/
+
+        
     }
 
     [System.Serializable]
@@ -28,6 +35,19 @@ namespace JZK.Level
 
         [SerializeField] List<LevelGrammarNodeDefinition> _nodes = new();
         public List<LevelGrammarNodeDefinition> Nodes => _nodes;
+
+        private Dictionary<Guid, LevelGrammarNodeDefinition> _nodes_LUT = new();
+        public Dictionary<Guid, LevelGrammarNodeDefinition> Nodes_LUT => _nodes_LUT;
+
+        public void Initialise()
+        {
+            _nodes_LUT.Clear();
+
+            foreach(LevelGrammarNodeDefinition node in _nodes)
+            {
+                _nodes_LUT.Add(node.NodeGuid, node);
+            }
+        }
     }
 
     [System.Serializable]
