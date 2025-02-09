@@ -20,6 +20,14 @@ namespace JZK.Gameplay
         Food = 2,
     }
 
+    [System.Flags]
+    public enum ELevelTheme_Flag
+    {
+        None = 0,
+        Undead = 1,
+        Food = 2,
+    }
+
     public static class GameplayHelper
     {
 		public static Vector2 INVALID_PLAYER_POS = new(-1, -1);
