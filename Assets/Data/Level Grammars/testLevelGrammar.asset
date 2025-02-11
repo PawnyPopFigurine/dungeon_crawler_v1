@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: testLevelGrammar
-    _useFixedSeed: 1
+    _useFixedSeed: 0
     _fixedSeed: 102
     _baseLevelTheme: 2
     _nodes:

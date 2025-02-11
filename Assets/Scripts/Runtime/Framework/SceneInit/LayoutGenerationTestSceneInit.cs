@@ -126,6 +126,7 @@ namespace JZK.Framework
                         }
 
                         System.Random random = new(grammarSeed);
+						Debug.Log("[GENERATION] Grammar seed " + grammarSeed);
 
 						LayoutData generatedLayout = DungeonLayoutGenerationSystem.Instance.GenerateDungeonLayout(_grammarDef.Definition, random, out bool success);
                         if (success)
