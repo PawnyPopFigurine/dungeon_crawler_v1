@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: testLevelGrammar
-    _useFixedSeed: 0
-    _fixedSeed: 102
+    _useFixedSeed: 1
+    _fixedSeed: 133
     _baseLevelTheme: 2
     _nodes:
     - _nodeId: 0 - start room
@@ -92,7 +92,7 @@ MonoBehaviour:
     - _nodeId: 3 - empty hallway
       _guidString: 139292dc-4281-4420-911e-35730707dc4c
       _useFixedId: 1
-      _fixedId: RectRoom_4x16
+      _fixedId: RectRoom_16x4
       _useFixedRoomType: 0
       _fixedRoomType: 2
       _overrideTheme: 1
