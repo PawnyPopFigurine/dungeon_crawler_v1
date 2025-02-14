@@ -246,6 +246,22 @@ namespace JZK.Level
 			return true;
 		}
 
+		public bool CanLinkToRoom(GenerationRoomData linkToRoom, EOrthogonalDirection requiredSide)
+		{
+			if (!TryGetDoorOnSide(requiredSide, out _, true))
+			{
+				return false;
+			}
+
+			EOrthogonalDirection oppositeSide = GameplayHelper.GetOppositeDirection(requiredSide);
+			if (!linkToRoom.TryGetDoorOnSide(oppositeSide, out _, true))
+			{
+				return false;
+			}
+
+			return true;
+		}
+
 		public bool TryLinkToRoom(GenerationRoomData linkToRoom, EOrthogonalDirection requiredSide, out GenerationDoorData foundDoor, out GenerationDoorData otherRoomDoor)
 		{
 			foundDoor = null;
@@ -564,7 +580,7 @@ namespace JZK.Level
 
 					EOrthogonalDirection outwardDirection = linkDataToOutwardDirection_LUT[linkData];
 
-					if(!roomData.TryLinkToRoom(linkToRoomData, outwardDirection, out GenerationDoorData thisRoomDoor, out GenerationDoorData otherRoomDoor))
+					if (!roomData.TryLinkToRoom(linkToRoomData, outwardDirection, out GenerationDoorData thisRoomDoor, out GenerationDoorData otherRoomDoor))
 					{
                         Debug.LogWarning("[GENERATION] failed linking from room " + roomData.PrefabId.ToString() + 
 							" node ID " + roomNode.Id +
