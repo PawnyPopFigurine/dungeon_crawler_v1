@@ -381,7 +381,7 @@ namespace JZK.Level
 		}
 
 		const int SET_ENEMY_ATTEMPTS = 200;
-		const int SET_ENEMY_POS_ATTEMPTS = 200;
+		const int SET_ENEMY_POS_ATTEMPTS = 500;
 
 		public LayoutData GenerateDungeonLayout(LevelGrammarDefinition grammar, System.Random random, out bool generationSuccess)
 		{
@@ -399,16 +399,28 @@ namespace JZK.Level
 
 			layoutData.Theme = grammar.BaseLevelTheme;
 
-			foreach(LevelGrammarNodeDefinition roomNode in grammar.Nodes)
+			//initial room data creation
+			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
 			{
 				GenerationRoomData roomData = new GenerationRoomData();
 				roomData.Initialise(layoutData, -1, false);
 				roomData.GrammarNodeId = roomNode.NodeGuid;
 
-				if(roomNode.OverrideTheme != ELevelTheme.None)
+				if (roomNode.OverrideTheme != ELevelTheme.None)
 				{
 					roomData.OverrideRoomTheme = roomNode.OverrideTheme;
 				}
+
+				layoutData.Room_LUT.TryAdd(roomData.Id, roomData);
+
+				nodeIdToGenDataId_LUT.TryAdd(roomNode.NodeGuid, roomData.Id);
+				genDataIdToNodeId_LUT.TryAdd(roomData.Id, roomNode.NodeGuid);
+			}
+
+			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
+			{
+				Guid roomDataGuid = nodeIdToGenDataId_LUT[roomNode.NodeGuid];
+				GenerationRoomData roomData = layoutData.Room_LUT[roomDataGuid];
 
 				//create connection data
 				roomData.ConnectionData = new();
@@ -423,78 +435,55 @@ namespace JZK.Level
 					else
 					{
 						Guid linkToNodeId = linkData.LinkToNode.Id;
-						//if room data for destination has been created, make this linking direction opposide to that
-						if(nodeIdToGenDataId_LUT.TryGetValue(linkToNodeId, out Guid linkToRoomDataId))
+						List<EOrthogonalDirection> validDirections = new();
+
+						//if destination has fixed ID, ensure this room's outward connection can link to it
+						if (roomNode.UseFixedId || grammar.Nodes_LUT[linkToNodeId].UseFixedId)
 						{
-							GenerationRoomData linkToRoom = layoutData.Room_LUT[linkToRoomDataId];
-							foreach(Guid doorId in linkToRoom.AllDoorIds)
+							if (roomNode.UseFixedId)
 							{
-								GenerationDoorData door = layoutData.Door_LUT[doorId];
-								if(door.ParentRoomId != linkToRoomDataId)
+								RoomController roomPrefabController = RoomDefinitionLoadSystem.Instance.GetDefinition(roomNode.FixedId).PrefabController.GetComponent<RoomController>();
+								foreach (RoomDoor door in roomPrefabController.Doors)
 								{
-									continue;
+									EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(door.SideOfRoom);
+									if (!validDirections.Contains(outwardDirection))
+									{
+										validDirections.Add(outwardDirection);
+									}
 								}
-
-								EOrthogonalDirection inwardDirection = door.SideOfRoom;
-								EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(inwardDirection);
-
-								linkDirection = outwardDirection;
+							}
+							if (grammar.Nodes_LUT[linkToNodeId].UseFixedId)
+							{
+								RoomController linkToPrefabController = RoomDefinitionLoadSystem.Instance.GetDefinition(grammar.Nodes_LUT[linkToNodeId].FixedId).PrefabController.GetComponent<RoomController>();
+								foreach (RoomDoor door in linkToPrefabController.Doors)
+								{
+									EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(door.SideOfRoom);
+									if (!validDirections.Contains(outwardDirection))
+									{
+										validDirections.Add(outwardDirection);
+									}
+								}
 							}
 						}
 
-						//otherwise, make random direction
 						else
 						{
-							List<EOrthogonalDirection> validDirections = new();
-
-							//if destination has fixed ID, ensure this room's outward connection can link to it
-							if(roomNode.UseFixedId || grammar.Nodes_LUT[linkToNodeId].UseFixedId)
+							validDirections = new()
 							{
-								if(roomNode.UseFixedId)
-								{
-                                    RoomController roomPrefabController = RoomDefinitionLoadSystem.Instance.GetDefinition(roomNode.FixedId).PrefabController.GetComponent<RoomController>();
-                                    foreach (RoomDoor door in roomPrefabController.Doors)
-                                    {
-                                        EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(door.SideOfRoom);
-                                        if (!validDirections.Contains(outwardDirection))
-                                        {
-                                            validDirections.Add(outwardDirection);
-                                        }
-                                    }
-                                }
-                                if (grammar.Nodes_LUT[linkToNodeId].UseFixedId)
-                                {
-                                    RoomController linkToPrefabController = RoomDefinitionLoadSystem.Instance.GetDefinition(grammar.Nodes_LUT[linkToNodeId].FixedId).PrefabController.GetComponent<RoomController>();
-                                    foreach (RoomDoor door in linkToPrefabController.Doors)
-                                    {
-                                        EOrthogonalDirection outwardDirection = GameplayHelper.GetOppositeDirection(door.SideOfRoom);
-                                        if (!validDirections.Contains(outwardDirection))
-                                        {
-                                            validDirections.Add(outwardDirection);
-                                        }
-                                    }
-                                }
-                            }
-							
-							else
-							{
-								validDirections = new()
-								{
-									EOrthogonalDirection.Up,
-									EOrthogonalDirection.Down,
-									EOrthogonalDirection.Left,
-									EOrthogonalDirection.Right
-								};
-							}
-
-							int linkDirectionIndex = random.Next(validDirections.Count);
-							linkDirection = validDirections[linkDirectionIndex];
-
-							//linkDirection = GameplayHelper.GetRandomDirection(random);
+								EOrthogonalDirection.Up,
+								EOrthogonalDirection.Down,
+								EOrthogonalDirection.Left,
+								EOrthogonalDirection.Right
+							};
 						}
+
+						int linkDirectionIndex = random.Next(validDirections.Count);
+						linkDirection = validDirections[linkDirectionIndex];
+
+						//linkDirection = GameplayHelper.GetRandomDirection(random);
 					}
 
-                    linkDataToOutwardDirection_LUT.Add(linkData, linkDirection);
+					linkDataToOutwardDirection_LUT.Add(linkData, linkDirection);
 
                     int currentConnections = roomData.ConnectionData.GetRequirementsInDirection(linkDirection);
 					roomData.ConnectionData.SetConnectionCount(linkDirection, currentConnections + 1);
@@ -543,10 +532,7 @@ namespace JZK.Level
 
 				roomData.SetDefinition(roomDef);
 
-				layoutData.Room_LUT.TryAdd(roomData.Id, roomData);
-
-				nodeIdToGenDataId_LUT.TryAdd(roomNode.NodeGuid, roomData.Id);
-				genDataIdToNodeId_LUT.TryAdd(roomData.Id, roomNode.NodeGuid);
+				
 			}
 
             //link room data
@@ -584,7 +570,9 @@ namespace JZK.Level
 					{
                         Debug.LogWarning("[GENERATION] failed linking from room " + roomData.PrefabId.ToString() + 
 							" node ID " + roomNode.Id +
-							" - outward direction " + outwardDirection.ToString());
+							" - outward direction " + outwardDirection.ToString() +
+							" to room " + linkToRoomData.PrefabId.ToString()
+							);
                     }
 
 					else
@@ -643,6 +631,8 @@ namespace JZK.Level
                     EnemySpawnData spawnData = new();
 					spawnData.EnemyId = fixedSpawn.EnemyId;
 
+					bool spawnPosFail = false;
+
 					if(fixedSpawn.UseFixedCoords)
 					{
 						spawnData.FloorTilePos = new(
@@ -654,18 +644,25 @@ namespace JZK.Level
 						if(!TryGetSpawnPosForEnemy(fixedEnemyDef, roomData, random, out Vector3Int spawnPos))
 						{
 							//complain here
-							return null;
+							Debug.LogWarning("[GENERATION] [GRAMMARGEN] [ENEMYGEN] Failed to place fixed enemy " + fixedEnemyDef.Id + " in node " + node.Id + " - it will not appear!");
+							spawnPosFail = true;
 						}
-						spawnData.FloorTilePos = spawnPos;
+						else
+						{
+							spawnData.FloorTilePos = spawnPos;
+						}
 					}
 
-                    foreach (Vector3Int occupyPos in fixedEnemyDef.OccupyPoints)
-                    {
-                        Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
-                        roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
-                    }
+					if(!spawnPosFail)
+					{
+						foreach (Vector3Int occupyPos in fixedEnemyDef.OccupyPoints)
+						{
+							Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
+							roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
+						}
 
-                    roomData.EnemySpawnData.Add(spawnData);
+						roomData.EnemySpawnData.Add(spawnData);
+					}
 				}
 
 				//Random enemy spawns
