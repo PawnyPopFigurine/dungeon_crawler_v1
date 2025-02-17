@@ -15,7 +15,7 @@ MonoBehaviour:
   _definition:
     _id: testLevelGrammar
     _useFixedSeed: 1
-    _fixedSeed: 139
+    _fixedSeed: 155
     _baseLevelTheme: 2
     _nodes:
     - _nodeId: 0 - start room
