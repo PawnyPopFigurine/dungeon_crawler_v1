@@ -155,5 +155,16 @@ namespace JZK.Gameplay
             int typeIndex = random.Next(ROOM_TYPES_FOR_RANDOM_NODES.Count);
             return ROOM_TYPES_FOR_RANDOM_NODES[typeIndex];
         }
+
+        public static List<EOrthogonalDirection> GetFourDirections()
+		{
+            return new()
+            {
+                EOrthogonalDirection.Down,
+                EOrthogonalDirection.Left,
+                EOrthogonalDirection.Right,
+                EOrthogonalDirection.Up,
+            };
+		}
     }
 }

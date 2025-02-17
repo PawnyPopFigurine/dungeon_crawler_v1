@@ -78,7 +78,7 @@ namespace JZK.Level
 	{
 		//TODO: override theme enum
 		public Guid Id = Guid.NewGuid();
-		public string PrefabId;
+		public string PrefabId = string.Empty;
 		public ERoomType RoomType;
 		public List<Guid> AllDoorIds = new();
 		public LayoutData ParentLayout;
@@ -355,8 +355,23 @@ namespace JZK.Level
 	[System.Serializable]
 	public class GenerationNodeLinkData
 	{
-		public Guid OutwardNodeId;
-		public Guid InwardNodeId;
+		/*public Guid OutwardNodeId;
+		public Guid InwardNodeId;*/
+		public Guid NodeID;
+
+		public Dictionary<Guid, OuterLink> OuterLink_LUT = new();
+
+		public class OuterLink
+		{
+			public Guid NodeID;
+			public EOrthogonalDirection FixedDirection;
+			public List<EOrthogonalDirection> PossibleDirections = new();
+		}
+
+		public int MaxUpLinks;
+		public int MaxDownLinks;
+		public int MaxLeftLinks;
+		public int MaxRightLinks;
 	}
 
 	public class DungeonLayoutGenerationSystem : PersistentSystem<DungeonLayoutGenerationSystem>
@@ -392,12 +407,15 @@ namespace JZK.Level
 			Dictionary<Guid, Guid> nodeIdToGenDataId_LUT = new();
 			Dictionary<Guid, Guid> genDataIdToNodeId_LUT = new();
 
-			Dictionary<RoomLinkData, EOrthogonalDirection> linkDataToOutwardDirection_LUT = new();
-			List<GenerationNodeLinkData> successfulLinks = new();
+			Dictionary<GenerationNodeLinkData.OuterLink, EOrthogonalDirection> linkDataToOutwardDirection_LUT = new();
+			List<(Guid, Guid)> successfulLinks = new();
 
             LayoutData layoutData = new();
 
 			layoutData.Theme = grammar.BaseLevelTheme;
+
+			Dictionary<Guid, GenerationNodeLinkData> nodeLinks_LUT = new();
+			//List<GenerationNodeLinkData> nodeLinksList = new();
 
 			//initial room data creation
 			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
@@ -411,10 +429,139 @@ namespace JZK.Level
 					roomData.OverrideRoomTheme = roomNode.OverrideTheme;
 				}
 
+				if(roomNode.UseFixedId)
+				{
+					RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetDefinition(roomNode.FixedId);
+					roomData.SetDefinition(roomDef);
+				}
+
 				layoutData.Room_LUT.TryAdd(roomData.Id, roomData);
 
 				nodeIdToGenDataId_LUT.TryAdd(roomNode.NodeGuid, roomData.Id);
 				genDataIdToNodeId_LUT.TryAdd(roomData.Id, roomNode.NodeGuid);
+			}
+
+			//Initial link data creation
+			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
+			{
+				//only do fixed ID nodes first, as their constraints will have a knock-on effect on other nodes
+				if(!roomNode.UseFixedId)
+				{
+					continue;
+				}
+
+				GenerationNodeLinkData linkData = new();
+				linkData.NodeID = roomNode.NodeGuid;
+
+				foreach(RoomLinkData linkDef in roomNode.RoomLinkData)
+				{
+					GenerationNodeLinkData.OuterLink outerLink = new();
+					outerLink.FixedDirection = linkDef.UseFixedSide ? 
+						linkDef.FixedSide : 
+						EOrthogonalDirection.Invalid;   //use Invalid to mean Any Direction
+
+					//set constranints on which link directions are valid for nodes with pre-set room defs (not every room can support every side)
+					//TODO: maybe need to go further with this, and set constraints on how MANY times each potential direction can be used for room defs where that's the case?
+					List<EOrthogonalDirection> possibleOuterDirections = new();
+					RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetDefinition(roomNode.FixedId);
+					RoomController linkToPrefabController = roomDef.PrefabController.GetComponent<RoomController>();
+
+					linkData.MaxUpLinks = linkToPrefabController.GetDoorListForSide(EOrthogonalDirection.Up).Count;
+					linkData.MaxDownLinks = linkToPrefabController.GetDoorListForSide(EOrthogonalDirection.Down).Count;
+					linkData.MaxLeftLinks = linkToPrefabController.GetDoorListForSide(EOrthogonalDirection.Left).Count;
+					linkData.MaxRightLinks = linkToPrefabController.GetDoorListForSide(EOrthogonalDirection.Right).Count;
+
+					foreach (EOrthogonalDirection direction in GameplayHelper.GetFourDirections())
+					{
+						bool roomHasDirection = false;
+
+						foreach (RoomDoor door in linkToPrefabController.Doors)
+						{
+							if (door.SideOfRoom != direction)
+							{
+								continue;
+							}
+
+							roomHasDirection = true;
+						}
+
+						if (roomHasDirection)
+						{
+							possibleOuterDirections.Add(direction);
+						}
+					}
+
+					outerLink.PossibleDirections = new(possibleOuterDirections);    //need to make sure the equivalent outer link on the other room's connection data is set - or maybe update link data so there's only 1 for every pair of links?
+
+
+					outerLink.NodeID = linkDef.LinkToNode.Id;
+					linkData.OuterLink_LUT.Add(linkDef.LinkToNode.Id, outerLink);
+
+				}
+
+				nodeLinks_LUT.Add(roomNode.NodeGuid, linkData);
+			}
+
+			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
+			{
+				if (roomNode.UseFixedId)
+				{
+					continue;
+				}
+
+				GenerationNodeLinkData linkData = new();
+				linkData.NodeID = roomNode.NodeGuid;
+
+				foreach (RoomLinkData linkDef in roomNode.RoomLinkData)
+				{
+					Guid linkToNodeId = linkDef.LinkToNode.Id;
+					Guid linkToRoomId = nodeIdToGenDataId_LUT[linkToNodeId];
+					GenerationRoomData linkToRoom = layoutData.Room_LUT[linkToRoomId];
+
+					GenerationNodeLinkData.OuterLink outerLink = new();
+					outerLink.FixedDirection = linkDef.UseFixedSide ?
+						linkDef.FixedSide :
+						EOrthogonalDirection.Invalid;   //use Invalid to mean Any Direction
+					outerLink.NodeID = linkDef.LinkToNode.Id;
+
+					List<EOrthogonalDirection> possibleOuterDirections = new();
+
+					if (linkToRoom.PrefabId != string.Empty)
+					{
+						//if destination is predefined (or using fixed direction, most likely), ensure the possible outer directions are restricted here as a result
+						GenerationNodeLinkData.OuterLink equivalentLink = FindEquivalentLink(nodeLinks_LUT, outerLink, linkData);
+						if(null != equivalentLink)
+						{
+							foreach (EOrthogonalDirection direction in equivalentLink.PossibleDirections)
+							{
+								EOrthogonalDirection opposideDir = GameplayHelper.GetOppositeDirection(direction);
+								possibleOuterDirections.Add(opposideDir);
+							}
+						}
+					}
+
+					else
+					{
+						possibleOuterDirections = new()
+						{
+							EOrthogonalDirection.Down,
+							EOrthogonalDirection.Up,
+							EOrthogonalDirection.Left,
+							EOrthogonalDirection.Right
+						};
+
+						linkData.MaxUpLinks = -1;
+						linkData.MaxDownLinks = -1;
+						linkData.MaxLeftLinks = -1;
+						linkData.MaxRightLinks = -1;
+
+					}
+
+					outerLink.PossibleDirections = new(possibleOuterDirections);
+					linkData.OuterLink_LUT.Add(linkDef.LinkToNode.Id, outerLink);
+				}
+
+				nodeLinks_LUT.Add(roomNode.NodeGuid, linkData);
 			}
 
 			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
@@ -424,7 +571,59 @@ namespace JZK.Level
 
 				//create connection data
 				roomData.ConnectionData = new();
-				foreach(RoomLinkData linkData in roomNode.RoomLinkData)
+
+				GenerationNodeLinkData linkData = nodeLinks_LUT[roomNode.NodeGuid];
+
+				foreach(Guid linkToNode in linkData.OuterLink_LUT.Keys)
+				{
+					GenerationNodeLinkData.OuterLink outerLink = linkData.OuterLink_LUT[linkToNode];
+					List<EOrthogonalDirection> possibleDirections = new();
+					if(outerLink.FixedDirection != EOrthogonalDirection.Invalid)
+					{
+						possibleDirections.Add(outerLink.FixedDirection);
+					}
+					else
+					{
+						foreach(EOrthogonalDirection outDirection in outerLink.PossibleDirections)
+						{
+							possibleDirections.Add(outDirection);
+						}
+						//possibleDirections.Add(outerLink.PossibleDirections);
+					}
+
+					if(roomData.ConnectionData.RequiredUpConnections >= linkData.MaxUpLinks && linkData.MaxUpLinks > 0)
+					{
+						possibleDirections.Remove(EOrthogonalDirection.Up);
+					}
+					if(roomData.ConnectionData.RequiredDownConnections >= linkData.MaxDownLinks && linkData.MaxDownLinks > 0)
+					{
+						possibleDirections.Remove(EOrthogonalDirection.Down);
+					}
+					if(roomData.ConnectionData.RequiredLeftConnections >= linkData.MaxLeftLinks && linkData.MaxLeftLinks > 0)
+					{
+						possibleDirections.Remove(EOrthogonalDirection.Left);
+					}
+					if(roomData.ConnectionData.RequiredRightConnections >= linkData.MaxRightLinks && linkData.MaxRightLinks > 0)
+					{
+						possibleDirections.Remove(EOrthogonalDirection.Right);
+					}
+
+					if(possibleDirections.Count == 0)
+					{
+						Debug.LogError("[GRAMMARGEN] [FAIL] no possible directions linking out from node " + roomNode.Id);
+						//return null;
+					}
+
+					int foundDirectionIndex = random.Next(possibleDirections.Count);
+					EOrthogonalDirection foundDirection = possibleDirections[foundDirectionIndex];
+
+					linkDataToOutwardDirection_LUT.Add(outerLink, foundDirection);
+
+					int currentConnections = roomData.ConnectionData.GetRequirementsInDirection(foundDirection);
+					roomData.ConnectionData.SetConnectionCount(foundDirection, currentConnections + 1);
+				}
+
+				/*foreach(RoomLinkData linkData in roomNode.RoomLinkData)
 				{
 					EOrthogonalDirection linkDirection = EOrthogonalDirection.Invalid;
 
@@ -487,7 +686,7 @@ namespace JZK.Level
 
                     int currentConnections = roomData.ConnectionData.GetRequirementsInDirection(linkDirection);
 					roomData.ConnectionData.SetConnectionCount(linkDirection, currentConnections + 1);
-				}
+				}*/
 
 				//find appropriate room ID using connection data
 				//string roomPrefabId = string.Empty;
@@ -536,7 +735,76 @@ namespace JZK.Level
 			}
 
             //link room data
-            foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
+			foreach(Guid linkDataId in nodeLinks_LUT.Keys)
+			{
+				GenerationNodeLinkData linkData = nodeLinks_LUT[linkDataId];
+
+				LevelGrammarNodeDefinition roomNode = grammar.Nodes_LUT[linkData.NodeID];
+				Guid roomDataId = nodeIdToGenDataId_LUT[linkData.NodeID];
+
+
+				GenerationRoomData roomData = layoutData.Room_LUT[roomDataId];
+
+				foreach (Guid linkToNodeId in linkData.OuterLink_LUT.Keys)
+				{
+					GenerationNodeLinkData.OuterLink outerLink = linkData.OuterLink_LUT[linkToNodeId];
+
+					Guid linkToRoomGuid = nodeIdToGenDataId_LUT[linkToNodeId];
+					GenerationRoomData linkToRoomData = layoutData.Room_LUT[linkToRoomGuid];
+
+					LevelGrammarNodeDefinition linkToNode = grammar.Nodes_LUT[linkToNodeId];
+
+
+					bool identicalLinkFound = false;
+
+					foreach ((Guid, Guid) successLink in successfulLinks)
+					{
+						if (successLink.Item1 == roomNode.NodeGuid && successLink.Item2 == linkToNodeId ||
+							successLink.Item2 == roomNode.NodeGuid && successLink.Item1 == linkToNodeId)
+						{
+							identicalLinkFound = true;
+						}
+					}
+
+					if (identicalLinkFound)
+					{
+						continue;
+					}
+
+
+					EOrthogonalDirection outDirection = linkDataToOutwardDirection_LUT[outerLink];
+
+					if (!roomData.TryLinkToRoom(linkToRoomData, outDirection, out GenerationDoorData thisRoomDoor, out GenerationDoorData otherRoomDoor))
+					{
+						Debug.LogWarning("[GENERATION] failed linking from room " + roomData.PrefabId.ToString() +
+							" node ID " + roomNode.Id + 
+							" - outward direction " + outDirection.ToString() +
+							" to room " + linkToRoomData.PrefabId.ToString() +
+							" node ID " + linkToNode.Id
+							);
+					}
+
+					else
+					{
+						thisRoomDoor.Enabled = true;
+						otherRoomDoor.Enabled = true;
+
+						(Guid, Guid) successLink = new(linkToNodeId, roomNode.NodeGuid);
+						successfulLinks.Add(successLink);
+
+
+						/*GenerationNodeLinkData successLinkData = new()
+						{
+							OutwardNodeId = linkToNodeGuid,
+							InwardNodeId = roomNode.NodeGuid
+						};
+						successfulLinks.Add(successLinkData);*/
+
+						Debug.Log("[GENERATION] linked node " + roomNode.Id + " to node " + linkToNode.Id);
+					}
+				}
+			}
+            /*foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
 			{
                 Guid roomDataGuid = nodeIdToGenDataId_LUT[roomNode.NodeGuid];
                 GenerationRoomData roomData = layoutData.Room_LUT[roomDataGuid];
@@ -590,7 +858,7 @@ namespace JZK.Level
 						Debug.Log("[GENERATION] linked node " + roomNode.Id + " to node " + grammar.Nodes_LUT[linkToNodeGuid].Id);
                     }
 				}
-			}
+			}*/
 
             //find active doors in combat rooms and remove potential enemy spawns using doormats
             List<Guid> combatRooms = layoutData.GetAllRoomsOfType(ERoomType.StandardCombat);
@@ -747,6 +1015,30 @@ namespace JZK.Level
             Debug.Log("[ITEMROOMGEN] layout data has " + itemRoomCount + " total item rooms");
             generationSuccess = true;
 			return layoutData;
+		}
+
+		public GenerationNodeLinkData.OuterLink FindEquivalentLink(Dictionary<Guid, GenerationNodeLinkData> allLinks, GenerationNodeLinkData.OuterLink refOutLink, GenerationNodeLinkData refLinkData)
+		{
+			foreach(Guid linkDataId in allLinks.Keys)
+			{
+				GenerationNodeLinkData linkData = allLinks[linkDataId];
+				if(linkData.NodeID != refOutLink.NodeID)
+				{
+					continue;
+				}
+
+				foreach(Guid linkToNodeId in linkData.OuterLink_LUT.Keys)
+				{
+					if(linkToNodeId != refLinkData.NodeID)
+					{
+						continue;
+					}
+
+					return linkData.OuterLink_LUT[linkToNodeId];
+				}
+			}
+
+			return null;
 		}
 
 
