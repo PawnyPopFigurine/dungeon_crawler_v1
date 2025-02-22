@@ -40,6 +40,11 @@ namespace Levels
             SerializedProperty prop_Nodes = property.FindPropertyRelative("_nodes");
             EditorGUILayout.PropertyField(prop_Nodes);
 
+            /*foreach(SerializedProperty prop_Node in prop_Nodes)
+			{
+                EditorGUILayout.PropertyField(prop_Node);
+			}*/
+
             EditorGUI.EndProperty();
         }
 
