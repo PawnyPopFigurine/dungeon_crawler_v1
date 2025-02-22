@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using JZK.Gameplay;
 using System;
+using Unity.VisualScripting;
 
 namespace JZK.Level
 {
@@ -55,6 +56,35 @@ namespace JZK.Level
             {
                 _nodes_LUT.Add(node.NodeGuid, node);
             }
+        }
+
+        public RoomLinkData GetOppositeLinkData(RoomLinkData inData, LevelGrammarNodeDefinition inDataParent)
+        {
+            bool foundLink = false;
+
+            foreach(LevelGrammarNodeDefinition node in _nodes)
+            {
+                if(foundLink)
+                {
+                    continue;
+                }
+
+                if(node.NodeGuid != inData.LinkToNode.Id)
+                {
+                    continue;
+                }
+
+                foreach(RoomLinkData linkData in node.RoomLinkData)
+                {
+                    if(linkData.LinkToNode.Id != inDataParent.NodeGuid)
+                    {
+                        continue;
+                    }
+                    foundLink = true;
+                    return linkData;
+                }
+            }
+            return null;
         }
     }
 
@@ -116,7 +146,6 @@ namespace JZK.Level
 
         [SerializeField] List<RoomLinkData> _roomLinkData = new();
         public List<RoomLinkData> RoomLinkData => _roomLinkData;
-
     }
 
     [System.Serializable]

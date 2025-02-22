@@ -40,19 +40,6 @@ namespace Levels
             SerializedProperty prop_Nodes = property.FindPropertyRelative("_nodes");
             EditorGUILayout.PropertyField(prop_Nodes, true);
 
-            /*foreach(SerializedProperty prop_Node in prop_Nodes)
-			{
-                EditorGUILayout.PropertyField(prop_Node);
-                if(prop_Node.isExpanded)
-                {
-                    EditorGUI.indentLevel++;
-
-                    EditorGUILayout.PropertyField(prop_Node.FindPropertyRelative("_nodeId"));
-
-                    EditorGUI.indentLevel--;
-                }
-			}*/
-
             EditorGUI.EndProperty();
         }
 
@@ -75,6 +62,28 @@ namespace Levels
             {
                 _levelGrammarNodeIdToGuid_LUT.TryAdd(node.Id, node.NodeGuid);
                 _levelGrammarNodeGuidToId_LUT.TryAdd(node.NodeGuid, node.Id);
+            }
+        }
+
+        void RefreshRoomLinkSides()
+        {
+            List<RoomLinkData> seenLinkDatas = new();
+
+            foreach(LevelGrammarNodeDefinition node in Definition.Nodes)
+            {
+                foreach(RoomLinkData roomLinkData in node.RoomLinkData)
+                {
+                    if(seenLinkDatas.Contains(roomLinkData))
+                    {
+                        continue;
+                    }
+
+                    seenLinkDatas.Add(roomLinkData);
+
+                    RoomLinkData opposideLink = Definition.GetOppositeLinkData(roomLinkData, node);
+
+
+                }
             }
         }
     }
