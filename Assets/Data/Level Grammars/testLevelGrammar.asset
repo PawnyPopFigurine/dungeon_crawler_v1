@@ -15,7 +15,7 @@ MonoBehaviour:
   _definition:
     _id: testLevelGrammar
     _useFixedSeed: 1
-    _fixedSeed: 28778
+    _fixedSeed: 26000
     _baseLevelTheme: 2
     _nodes:
     - _nodeId: 0 - start room
@@ -27,7 +27,7 @@ MonoBehaviour:
       _useOverrideTheme: 0
       _overrideTheme: 0
       _fixedEnemySpawns: []
-      _spawnRandomEnemies: 1
+      _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 0
         _enemyCount: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
       - _enemyId: apple_Green
         _useFixedCoords: 0
         _fixedCoords: {x: 0, y: 0}
-      _spawnRandomEnemies: 1
+      _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 11
         _enemyCount: 0

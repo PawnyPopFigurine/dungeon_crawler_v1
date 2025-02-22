@@ -327,8 +327,6 @@ namespace Levels
 
                     EditorGUI.PropertyField(contentRect, property, label, true);
 
-                    numProperties++;
-                    contentRect.y += LINE_HEIGHT;
                     if (property.isExpanded)
                     {
                         numProperties += property.arraySize + 1;
