@@ -24,9 +24,10 @@ MonoBehaviour:
       _fixedId: 
       _useFixedRoomType: 1
       _fixedRoomType: 3
+      _useOverrideTheme: 0
       _overrideTheme: 0
       _fixedEnemySpawns: []
-      _spawnRandomEnemies: 0
+      _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 0
         _enemyCount: 0
@@ -44,6 +45,7 @@ MonoBehaviour:
       _fixedId: Circle_Shape_Room_20x20
       _useFixedRoomType: 1
       _fixedRoomType: 1
+      _useOverrideTheme: 0
       _overrideTheme: 0
       _fixedEnemySpawns:
       - _enemyId: ghost_PatrolDiamond
@@ -71,6 +73,7 @@ MonoBehaviour:
       _fixedId: 
       _useFixedRoomType: 1
       _fixedRoomType: 1
+      _useOverrideTheme: 0
       _overrideTheme: 0
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
@@ -99,6 +102,7 @@ MonoBehaviour:
       _fixedId: RectRoom_4x16
       _useFixedRoomType: 0
       _fixedRoomType: 2
+      _useOverrideTheme: 1
       _overrideTheme: 1
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
@@ -123,6 +127,7 @@ MonoBehaviour:
       _fixedId: 
       _useFixedRoomType: 1
       _fixedRoomType: 1
+      _useOverrideTheme: 0
       _overrideTheme: 0
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
@@ -147,6 +152,7 @@ MonoBehaviour:
       _fixedId: 
       _useFixedRoomType: 1
       _fixedRoomType: 4
+      _useOverrideTheme: 0
       _overrideTheme: 0
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
@@ -167,12 +173,13 @@ MonoBehaviour:
       _fixedId: 
       _useFixedRoomType: 1
       _fixedRoomType: 1
+      _useOverrideTheme: 1
       _overrideTheme: 1
       _fixedEnemySpawns:
       - _enemyId: apple_Green
         _useFixedCoords: 0
         _fixedCoords: {x: 0, y: 0}
-      _spawnRandomEnemies: 0
+      _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
         _enemyCount: 0

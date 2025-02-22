@@ -448,7 +448,7 @@ namespace JZK.Level
 				roomData.Initialise(layoutData, -1, false);
 				roomData.GrammarNodeId = roomNode.NodeGuid;
 
-				if (roomNode.OverrideTheme != ELevelTheme.None)
+				if (roomNode.OverrideTheme != ELevelTheme.None && roomNode.UseOverrideTheme)
 				{
 					roomData.OverrideRoomTheme = roomNode.OverrideTheme;
 				}

@@ -38,11 +38,19 @@ namespace Levels
             EditorGUILayout.PropertyField(prop_BaseLevelTheme);
 
             SerializedProperty prop_Nodes = property.FindPropertyRelative("_nodes");
-            EditorGUILayout.PropertyField(prop_Nodes);
+            EditorGUILayout.PropertyField(prop_Nodes, true);
 
             /*foreach(SerializedProperty prop_Node in prop_Nodes)
 			{
                 EditorGUILayout.PropertyField(prop_Node);
+                if(prop_Node.isExpanded)
+                {
+                    EditorGUI.indentLevel++;
+
+                    EditorGUILayout.PropertyField(prop_Node.FindPropertyRelative("_nodeId"));
+
+                    EditorGUI.indentLevel--;
+                }
 			}*/
 
             EditorGUI.EndProperty();
