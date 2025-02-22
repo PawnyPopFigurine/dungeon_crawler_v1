@@ -88,6 +88,9 @@ namespace Levels
                 DrawPropertyField(ref contentRect, prop_RandomEnemySpawnData, new("Random Enemy Spawn Data"), ref numProperties);
             }
 
+            SerializedProperty prop_RoomLinkData = property.FindPropertyRelative("_roomLinkData");
+            DrawPropertyField(ref contentRect, prop_RoomLinkData, new("Link Data"), ref numProperties);
+
             float propertyHeight = GetHeightForPropertyCount(numProperties);
 
             if (_perPropertyHeights.ContainsKey(propertyPath))
@@ -295,6 +298,66 @@ namespace Levels
                         contentRect.y += LINE_HEIGHT;
                     }
                     break;
+                case "_roomLinkData":
+                    contentRect.height = LINE_HEIGHT;
+                    if (property.isExpanded)
+                    {
+                        contentRect.height += LINE_HEIGHT;
+                        contentRect.height += property.arraySize * LINE_HEIGHT;
+
+                        if (property.arraySize == 0)
+                        {
+                            contentRect.height += LINE_HEIGHT;
+                        }
+                        else
+                        {
+                            for (int arrayIndex = 0; arrayIndex < property.arraySize; arrayIndex++)
+                            {
+                                SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
+
+                                int lineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
+
+                                if (prop_ArrayElement.isExpanded)
+                                {
+                                    contentRect.height += LINE_HEIGHT * lineCount;
+                                }
+                            }
+                        }
+                    }
+
+                    EditorGUI.PropertyField(contentRect, property, label, true);
+
+                    numProperties++;
+                    contentRect.y += LINE_HEIGHT;
+                    if (property.isExpanded)
+                    {
+                        numProperties += property.arraySize + 1;
+                        contentRect.y += LINE_HEIGHT * property.arraySize + 1;
+
+                        if (property.arraySize == 0)
+                        {
+                            numProperties += 1;
+                            contentRect.y += LINE_HEIGHT;
+                        }
+                        else
+                        {
+                            for (int arrayIndex = 0; arrayIndex < property.arraySize; arrayIndex++)
+                            {
+                                SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
+                                if (prop_ArrayElement.isExpanded)
+                                {
+                                    int lineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
+
+                                    numProperties += lineCount;
+                                    contentRect.y += LINE_HEIGHT * lineCount;
+                                }
+                            }
+                        }
+                    }
+
+                    contentRect.y += LINE_HEIGHT;
+                    numProperties++;
+                    break;
                 default:
                     contentRect.height = LINE_HEIGHT;
                     EditorGUI.PropertyField(contentRect, property, label, true);
@@ -328,6 +391,8 @@ namespace Levels
             switch(parentPropertyName)
             {
                 case "_fixedEnemySpawns":
+                    return 3;
+                case "_roomLinkData":
                     return 3;
                 default:
                     Debug.Log("[EDITOR] No line count set for property " + parentPropertyName);
