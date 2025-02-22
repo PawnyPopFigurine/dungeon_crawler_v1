@@ -15,7 +15,7 @@ MonoBehaviour:
   _definition:
     _id: testLevelGrammar
     _useFixedSeed: 1
-    _fixedSeed: 155
+    _fixedSeed: 158
     _baseLevelTheme: 2
     _nodes:
     - _nodeId: 0 - start room
@@ -40,15 +40,15 @@ MonoBehaviour:
         _fixedSide: 0
     - _nodeId: 1 - first combat room
       _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
-      _useFixedId: 0
-      _fixedId: 
+      _useFixedId: 1
+      _fixedId: Circle_Shape_Room_20x20
       _useFixedRoomType: 1
       _fixedRoomType: 1
       _overrideTheme: 0
       _fixedEnemySpawns:
       - _enemyId: ghost_PatrolDiamond
-        _useFixedCoords: 0
-        _fixedCoords: {x: 0, y: 0}
+        _useFixedCoords: 1
+        _fixedCoords: {x: 5, y: -2}
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 6
