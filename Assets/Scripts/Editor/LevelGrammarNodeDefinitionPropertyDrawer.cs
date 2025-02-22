@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -28,12 +28,53 @@ namespace Levels
             EditorGUI.BeginProperty(position, label, property);
 
             SerializedProperty prop_NodeId = property.FindPropertyRelative("_nodeId");
+            string nodeId = prop_NodeId.stringValue;
+            DrawLabel(ref contentRect, new(nodeId), ref numProperties, FontStyle.Bold);
+
             DrawPropertyField(ref contentRect, prop_NodeId, new("Display ID"), ref numProperties);
 
             SerializedProperty prop_UseFixedId = property.FindPropertyRelative("_useFixedId");
+            bool useFixedId = prop_UseFixedId.boolValue;
             DrawPropertyField(ref contentRect, prop_UseFixedId, new("Fix Room Prefab ID"), ref numProperties);
 
-            float propertyHeight = GetHeightForPropertyCount(numProperties);
+            if(useFixedId)
+			{
+                SerializedProperty prop_FixedId = property.FindPropertyRelative("_fixedId");
+                DrawPropertyField(ref contentRect, prop_FixedId, new("Room Prefab ID"), ref numProperties);
+            }
+
+            else
+			{
+                DrawLabel(ref contentRect, new("Random Room Prefab Properties"), ref numProperties, FontStyle.Bold);
+
+                SerializedProperty prop_UseFixedRoomType = property.FindPropertyRelative("_useFixedRoomType");
+                bool useFixedRoomType = prop_UseFixedRoomType.boolValue;
+                DrawPropertyField(ref contentRect, prop_UseFixedRoomType, new("Use Fixed Room Type"), ref numProperties);
+
+                if(useFixedRoomType)
+				{
+                    SerializedProperty prop_FixedRoomType = property.FindPropertyRelative("_fixedRoomType");
+                    DrawPropertyField(ref contentRect, prop_FixedRoomType, new("Room Type"), ref numProperties);
+                }
+            }
+
+            SerializedProperty prop_FixedEnemySpawns = property.FindPropertyRelative("_fixedEnemySpawns");
+            DrawPropertyField_Array(ref contentRect, prop_FixedEnemySpawns, new("Fixed Enemy Spawns"), ref numProperties);
+
+            SerializedProperty prop_SpawnRandomEnemies = property.FindPropertyRelative("_spawnRandomEnemies");
+            bool spawnRandomEnemies = prop_SpawnRandomEnemies.boolValue;
+            DrawPropertyField(ref contentRect, prop_SpawnRandomEnemies, new("Spawn Random Enemies"), ref numProperties);
+
+            if(spawnRandomEnemies)
+			{
+                SerializedProperty prop_RandomEnemySpawns = property.FindPropertyRelative("_randomEnemySpawnData");
+                DrawPropertyField(ref contentRect, prop_RandomEnemySpawns, new("Random Enemy Spawn Data"), ref numProperties);
+            }
+
+            SerializedProperty prop_RoomLinkData = property.FindPropertyRelative("_roomLinkData");
+            DrawPropertyField_Array(ref contentRect, prop_RoomLinkData, new("Room Link Data"), ref numProperties);
+
+            *//*float propertyHeight = GetHeightForPropertyCount(numProperties);
 
             if (_perPropertyHeights.ContainsKey(propertyPath))
             {
@@ -42,7 +83,7 @@ namespace Levels
             else
             {
                 _perPropertyHeights.Add(propertyPath, propertyHeight);
-            }
+            }*//*
 
             EditorGUI.EndProperty();
         }
@@ -51,11 +92,44 @@ namespace Levels
         {
             contentRect.height = LINE_HEIGHT;
 
-            EditorGUI.PropertyField(contentRect, property, label);
+            EditorGUILayout.PropertyField(property);
+            // EditorGUI.PropertyField(contentRect, property, label);
 
             numProperties++;
 
             contentRect.y += LINE_HEIGHT;
+        }
+
+        void DrawPropertyField_Array(ref Rect contentRect, SerializedProperty property, GUIContent label, ref int numProperties)
+        {
+            int arrayCount = property.arraySize;
+
+            Debug.Log("[EDITOR] array size is " + arrayCount + " property " + property.name + " is array? " + property.isArray);
+
+            //contentRect.height = LINE_HEIGHT * arrayCount;
+
+            EditorGUILayout.PropertyField(property);
+            //EditorGUI.PropertyField(contentRect, property, label);
+
+            numProperties+= arrayCount;
+
+            //contentRect.y += LINE_HEIGHT * arrayCount;
+        }
+
+        void DrawLabel(ref Rect contentRect, GUIContent label, ref int numProperties, FontStyle styleEnum = FontStyle.Normal)
+		{
+            //contentRect.height = LINE_HEIGHT;
+
+            GUIStyle style = new();
+            style.fontStyle = styleEnum;
+            style.normal.textColor = Color.white;
+
+            EditorGUILayout.LabelField(label, style);
+            //EditorGUI.LabelField(contentRect, label, style);
+
+            numProperties++;
+
+            //contentRect.y += LINE_HEIGHT;
         }
 
         float GetHeightForPropertyCount(int numProperties)
@@ -78,3 +152,4 @@ namespace Levels
         }
     }
 }
+*/
