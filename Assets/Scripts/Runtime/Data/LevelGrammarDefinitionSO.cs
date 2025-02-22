@@ -152,8 +152,6 @@ namespace JZK.Level
     {
         [SerializeField] LevelGrammarNodeReference _linkToNode;
         public LevelGrammarNodeReference LinkToNode => _linkToNode;
-        /*[SerializeField] string _linkNodeId;
-        public string LinkNodeId => _linkNodeId;*/
 
         [SerializeField] bool _useFixedSide;
         public bool UseFixedSide => _useFixedSide;

@@ -15,7 +15,7 @@ MonoBehaviour:
   _definition:
     _id: testLevelGrammar
     _useFixedSeed: 1
-    _fixedSeed: 158
+    _fixedSeed: 28778
     _baseLevelTheme: 2
     _nodes:
     - _nodeId: 0 - start room
@@ -36,7 +36,7 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
-        _useFixedSide: 0
+        _useFixedSide: 1
         _fixedSide: 0
     - _nodeId: 1 - first combat room
       _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
@@ -59,12 +59,12 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
-        _useFixedSide: 0
+        _useFixedSide: 1
         _fixedSide: 0
       - _linkToNode:
           _guidString: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
-        _useFixedSide: 0
-        _fixedSide: 0
+        _useFixedSide: 1
+        _fixedSide: 2
     - _nodeId: 2 - second combat room
       _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
       _useFixedId: 0
@@ -83,16 +83,20 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: 139292dc-4281-4420-911e-35730707dc4c
-        _useFixedSide: 0
+        _useFixedSide: 1
         _fixedSide: 0
       - _linkToNode:
           _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
-        _useFixedSide: 0
-        _fixedSide: 0
+        _useFixedSide: 1
+        _fixedSide: 2
+      - _linkToNode:
+          _guidString: db2fa0c3-5799-4440-922a-b8dd82549993
+        _useFixedSide: 1
+        _fixedSide: 3
     - _nodeId: 3 - empty hallway
       _guidString: 139292dc-4281-4420-911e-35730707dc4c
       _useFixedId: 1
-      _fixedId: RectRoom_16x4
+      _fixedId: RectRoom_4x16
       _useFixedRoomType: 0
       _fixedRoomType: 2
       _overrideTheme: 1
@@ -107,12 +111,12 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
-        _useFixedSide: 0
+        _useFixedSide: 1
         _fixedSide: 0
       - _linkToNode:
           _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
-        _useFixedSide: 0
-        _fixedSide: 0
+        _useFixedSide: 1
+        _fixedSide: 2
     - _nodeId: 4 - third combat room
       _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
       _useFixedId: 0
@@ -131,12 +135,12 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
-        _useFixedSide: 0
+        _useFixedSide: 1
         _fixedSide: 0
       - _linkToNode:
           _guidString: 139292dc-4281-4420-911e-35730707dc4c
-        _useFixedSide: 0
-        _fixedSide: 0
+        _useFixedSide: 1
+        _fixedSide: 2
     - _nodeId: 5 - end room
       _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
       _useFixedId: 0
@@ -155,5 +159,28 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
-        _useFixedSide: 0
-        _fixedSide: 0
+        _useFixedSide: 1
+        _fixedSide: 2
+    - _nodeId: 2a - apple side room
+      _guidString: db2fa0c3-5799-4440-922a-b8dd82549993
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _overrideTheme: 1
+      _fixedEnemySpawns:
+      - _enemyId: apple_Green
+        _useFixedCoords: 0
+        _fixedCoords: {x: 0, y: 0}
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _enemyCount: 0
+        _includeIds: []
+        _includeThemes: 
+        _excludeThemes: 
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+        _useFixedSide: 1
+        _fixedSide: 1

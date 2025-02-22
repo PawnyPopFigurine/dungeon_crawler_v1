@@ -440,7 +440,6 @@ namespace JZK.Level
 			layoutData.Theme = grammar.BaseLevelTheme;
 
 			Dictionary<Guid, GenerationNodeLinkData> nodeLinks_LUT = new();
-			//List<GenerationNodeLinkData> nodeLinksList = new();
 
 			//initial room data creation
 			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
@@ -479,13 +478,10 @@ namespace JZK.Level
 					GenerationNodeLinkData.OuterLink outerLinkData = new();
 					outerLinkData.NodeID = linkToNode;
 					outerLinkData.FromNodeID = linkData.NodeID;
-					outerLinkData.PossibleDirections = new()
+					if(roomLinkDef.UseFixedSide)
 					{
-						EOrthogonalDirection.Up,
-						EOrthogonalDirection.Down,
-						EOrthogonalDirection.Left,
-						EOrthogonalDirection.Right
-					};
+						outerLinkData.FixedDirection = roomLinkDef.FixedSide;
+					}
 
 					linkData.OuterLink_LUT.Add(linkToNode, outerLinkData);
 				}
@@ -509,14 +505,65 @@ namespace JZK.Level
 
 					List<Guid> shuffledLinkNodeIds = linkData.OuterLink_LUT.Keys.OrderBy(x => random.NextDouble()).ToList();
 
+					List<RoomDoor> availableDoors = new(linkToPrefabController.Doors);
+
 					foreach(Guid linkToNodeId in shuffledLinkNodeIds)
 					{
 						GenerationNodeLinkData.OuterLink outerLink = linkData.OuterLink_LUT[linkToNodeId];
 
-						int doorIndex = shuffledLinkNodeIds.IndexOf(linkToNodeId);
-						RoomDoor roomDoor = linkToPrefabController.Doors[doorIndex];
-						EOrthogonalDirection outerSetDirection = roomDoor.SideOfRoom;
-						outerLink.FixLinkDirection(outerSetDirection, nodeLinks_LUT);
+						bool fixedLinkSuccess = false;
+
+						//if outer link has fixed direction, still need to find available door to assign here
+						if (outerLink.FixedDirection != EOrthogonalDirection.Invalid)
+						{
+							List<RoomDoor> availableDoorsOnFixedSide = new();
+
+							List<RoomDoor> doorListOnFixedSide = linkToPrefabController.GetDoorListForSide(outerLink.FixedDirection);
+							if(doorListOnFixedSide.Count == 0)
+							{
+								//complain here
+								Debug.Log("[GRAMMARGEN] node " + grammar.Nodes_LUT[nodeId].Id + " fixed room " + linkToPrefabController + " has no doors AT ALL on link side " + outerLink.FixedDirection.ToString() +
+									" linking to node " + grammar.Nodes_LUT[linkToNodeId].Id + " - will randomise direction");
+							}
+							else
+							{
+								foreach (RoomDoor door in doorListOnFixedSide)
+								{
+									if (availableDoors.Contains(door))
+									{
+										availableDoorsOnFixedSide.Add(door);
+									}
+								}
+
+								if (availableDoorsOnFixedSide.Count == 0)
+								{
+									//complain here
+									Debug.Log("[GRAMMARGEN] node " + grammar.Nodes_LUT[nodeId].Id + " fixed room " + linkToPrefabController + " has no doors REMAINING on link side " + outerLink.FixedDirection.ToString() +
+									" linking to node " + grammar.Nodes_LUT[linkToNodeId].Id + " - will randomise direction");
+								}
+
+								else
+								{
+									int doorIndex = random.Next(availableDoorsOnFixedSide.Count);
+									RoomDoor roomDoor = availableDoorsOnFixedSide[doorIndex];
+									EOrthogonalDirection outerSetDirection = roomDoor.SideOfRoom;
+									outerLink.FixLinkDirection(outerSetDirection, nodeLinks_LUT);
+									availableDoors.Remove(roomDoor);
+
+									fixedLinkSuccess = true;
+								}
+							}
+						}
+
+						if(!fixedLinkSuccess)
+						{
+							//randomly choose available door to assign
+							int doorIndex = random.Next(availableDoors.Count);
+							RoomDoor roomDoor = availableDoors[doorIndex];
+							EOrthogonalDirection outerSetDirection = roomDoor.SideOfRoom;
+							outerLink.FixLinkDirection(outerSetDirection, nodeLinks_LUT);
+							availableDoors.Remove(roomDoor);
+						}
 					}
 				}
 			}
