@@ -193,7 +193,7 @@ namespace Levels
                 case "_randomEnemySpawnData":
                     if (property.isExpanded)
                     {
-                        contentRect.height = LINE_HEIGHT * 6;
+                        contentRect.height = LINE_HEIGHT * 7;
 
                         SerializedProperty prop_IncludeIds = property.FindPropertyRelative("_includeIds");
                         if (prop_IncludeIds.isExpanded)
@@ -243,8 +243,8 @@ namespace Levels
 
                     if(property.isExpanded)
                     {
-                        numProperties += 6;
-                        contentRect.y += LINE_HEIGHT * 6;
+                        numProperties += 7;
+                        contentRect.y += LINE_HEIGHT * 7;
                         SerializedProperty prop_IncludeIds = property.FindPropertyRelative("_includeIds");
                         if (prop_IncludeIds.isExpanded)
                         {

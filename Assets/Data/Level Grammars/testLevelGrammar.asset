@@ -30,6 +30,7 @@ MonoBehaviour:
       _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 0
+        _fixEnemyCount: 0
         _enemyCount: 0
         _includeIds: []
         _includeThemes: 
@@ -54,6 +55,7 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 6
+        _fixEnemyCount: 0
         _enemyCount: 0
         _includeIds: []
         _includeThemes: 
@@ -78,8 +80,9 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 11
-        _enemyCount: 0
+        _difficultyPoints: 20
+        _fixEnemyCount: 1
+        _enemyCount: 2
         _includeIds: []
         _includeThemes: 
         _excludeThemes: 
@@ -108,6 +111,7 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
+        _fixEnemyCount: 0
         _enemyCount: 0
         _includeIds: []
         _includeThemes: 
@@ -133,6 +137,7 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
+        _fixEnemyCount: 0
         _enemyCount: 0
         _includeIds: []
         _includeThemes: 
@@ -158,6 +163,7 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
+        _fixEnemyCount: 0
         _enemyCount: 0
         _includeIds: []
         _includeThemes: 
@@ -182,6 +188,29 @@ MonoBehaviour:
       _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 11
+        _fixEnemyCount: 0
+        _enemyCount: 0
+        _includeIds: []
+        _includeThemes: 
+        _excludeThemes: 
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+        _useFixedSide: 1
+        _fixedSide: 1
+    - _nodeId: 3a - item room
+      _guidString: cf8be385-1254-4310-a56e-25681eeca15c
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 5
+      _useOverrideTheme: 0
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _fixEnemyCount: 0
         _enemyCount: 0
         _includeIds: []
         _includeThemes: 

@@ -167,6 +167,9 @@ namespace JZK.Level
         [SerializeField] int _difficultyPoints; //TODO: Give min/max values
         public int DifficultyPoints => _difficultyPoints;
 
+        [SerializeField] bool _fixEnemyCount;
+        public bool FixEnemyCount => _fixEnemyCount;
+        
         [SerializeField] int _enemyCount;   //TODO: min/max vals
         public int EnemyCount => _enemyCount;
 

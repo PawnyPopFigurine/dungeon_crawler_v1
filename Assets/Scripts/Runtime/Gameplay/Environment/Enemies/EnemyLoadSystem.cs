@@ -45,6 +45,59 @@ namespace JZK.Gameplay
             return null;
         }
 
+        public List<EnemyDefinition> GetAllDefinitionsClosestToDifficultyPoints(int points, Dictionary<string, int> enemyCountLUT, ELevelTheme theme)
+        {
+            List<EnemyDefinition> returnList = new();
+
+            int closestFoundPointsVal = 1;
+
+            foreach (EnemyDefinition definition in _enemyDefinition_LUT.Values)
+            {
+                if (definition.DifficultyPoints > points)
+                {
+                    continue;
+                }
+
+                if (definition.Theme != ELevelTheme.None)
+                {
+                    if (definition.Theme != theme)
+                    {
+                        continue;
+                    }
+                }
+
+                if (enemyCountLUT.TryGetValue(definition.Id, out int count))
+                {
+                    if (count >= EnemyPoolingSystem.MAX_ENEMIES_PER_TYPE)
+                    {
+                        continue;
+                    }
+                }
+
+                if(definition.DifficultyPoints < closestFoundPointsVal)
+                {
+                    continue;
+                }
+
+                if(definition.DifficultyPoints == closestFoundPointsVal)
+                {
+                    returnList.Add(definition);
+                    continue;
+                }
+
+                if(definition.DifficultyPoints > closestFoundPointsVal)
+                {
+                    closestFoundPointsVal = definition.DifficultyPoints;
+                    returnList.Clear();
+                    returnList.Add(definition);
+                }
+
+                returnList.Add(definition);
+            }
+
+            return returnList;
+        }
+
         public List<EnemyDefinition> GetAllDefinitionsForDifficultyPointsAndTheme(int points, Dictionary<string, int> enemyCountLUT, ELevelTheme theme)
         {
             List<EnemyDefinition> returnList = new();
