@@ -32,7 +32,7 @@ namespace Levels
 
             DrawLabel(ref contentRect, new(nodeId), ref numProperties, FontStyle.Bold);
 
-            DrawPropertyField(ref contentRect, prop_NodeId, new("Node ID"), ref numProperties);
+            DrawPropertyField(ref contentRect, prop_NodeId, new("Display Name"), ref numProperties);
 
             SerializedProperty prop_UseFixedId = property.FindPropertyRelative("_useFixedId");
             bool useFixedID = prop_UseFixedId.boolValue;
