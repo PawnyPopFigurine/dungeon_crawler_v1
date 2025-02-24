@@ -125,21 +125,21 @@ namespace Levels
             contentRect.y += LINE_HEIGHT;
         }
 
-        void DrawPropertyField(ref Rect contentRect, SerializedProperty property, GUIContent label, ref int numProperties)
-        {
+        int GetPropertyFieldLineCount(SerializedProperty property)
+		{
+            int lineCount = 1;
 
             switch(property.name)
-            {
+			{
                 case "_fixedEnemySpawns":
-                    contentRect.height = LINE_HEIGHT;
                     if (property.isExpanded)
                     {
-                        contentRect.height += LINE_HEIGHT;
-                        contentRect.height += property.arraySize * LINE_HEIGHT;
+                        //lineCount += 2;
+                        //lineCount += property.arraySize;
 
                         if (property.arraySize == 0)
                         {
-                            contentRect.height += LINE_HEIGHT;
+                            lineCount += 1;
                         }
                         else
                         {
@@ -147,172 +147,82 @@ namespace Levels
                             {
                                 SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
 
-                                int lineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
-
-                                if (prop_ArrayElement.isExpanded)
+                                int subLineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
+                                lineCount += subLineCount;
+                                /*if (prop_ArrayElement.isExpanded)
                                 {
-                                    contentRect.height += LINE_HEIGHT * lineCount;
+                                    //lineCount += 2;
+                                    lineCount += subLineCount;
                                 }
+                                else
+								{
+                                    lineCount += 1;
+                                }*/
                             }
                         }
                     }
-
-                    EditorGUI.PropertyField(contentRect, property, label, true);
-
-                    numProperties++;
-                    contentRect.y += LINE_HEIGHT;
-                    if (property.isExpanded)
-                    {
-                        numProperties += property.arraySize + 1;
-                        contentRect.y += LINE_HEIGHT * property.arraySize + 1;
-
-                        if (property.arraySize == 0)
-                        {
-                            numProperties += 1;
-                            contentRect.y += LINE_HEIGHT;
-                        }
-                        else
-                        {
-                            for (int arrayIndex = 0; arrayIndex < property.arraySize; arrayIndex++)
-                            {
-                                SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
-                                if (prop_ArrayElement.isExpanded)
-                                {
-                                    int lineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
-
-                                    numProperties += lineCount;
-                                    contentRect.y += LINE_HEIGHT * lineCount;
-                                }
-                            }
-                        }
-                    }
-
-                    contentRect.y += LINE_HEIGHT;
-                    numProperties++;
-                    return;
+                    Debug.Log("[HELLO] total line count for fixed enemy spawns is " + lineCount.ToString() + " - " + property.propertyPath);
+                    break;
                 case "_randomEnemySpawnData":
                     if (property.isExpanded)
                     {
-                        contentRect.height = LINE_HEIGHT * 7;
+                        lineCount = 7;
 
                         SerializedProperty prop_IncludeIds = property.FindPropertyRelative("_includeIds");
                         if (prop_IncludeIds.isExpanded)
                         {
                             if (prop_IncludeIds.arraySize == 0)
                             {
-                                contentRect.height += LINE_HEIGHT;
+                                lineCount += 1;
                             }
                             else
                             {
-                                contentRect.height += LINE_HEIGHT * prop_IncludeIds.arraySize;
+                                lineCount += prop_IncludeIds.arraySize;
                             }
                         }
 
-                        SerializedProperty prop_IncludeThemes = property.FindPropertyRelative("_includeThemes");
-                        if(prop_IncludeThemes.isExpanded)
-                        {
-                            if (prop_IncludeThemes.arraySize == 0)
-                            {
-                                contentRect.height += LINE_HEIGHT;
-                            }
-                            else
-                            {
-                                contentRect.height += LINE_HEIGHT * prop_IncludeThemes.arraySize;
-                            }
-                        }
-
-                        SerializedProperty prop_ExcludeThemes = property.FindPropertyRelative("_excludeThemes");
-                        if(prop_ExcludeThemes.isExpanded)
-                        {
-                            if(prop_ExcludeThemes.arraySize == 0)
-                            {
-                                contentRect.height += LINE_HEIGHT;
-                            }
-                            else
-                            {
-                                contentRect.height += LINE_HEIGHT * prop_ExcludeThemes.arraySize;
-                            }
-                        }
-                    }
-
-                    else
-                    {
-                        contentRect.height = LINE_HEIGHT;
-                    }
-                    EditorGUI.PropertyField(contentRect, property, label, true);
-
-                    if(property.isExpanded)
-                    {
-                        numProperties += 7;
-                        contentRect.y += LINE_HEIGHT * 7;
-                        SerializedProperty prop_IncludeIds = property.FindPropertyRelative("_includeIds");
-                        if (prop_IncludeIds.isExpanded)
-                        {
-                            numProperties += 2;
-                            contentRect.y += LINE_HEIGHT * 2;
-
-                            if (prop_IncludeIds.arraySize == 0)
-                            {
-                                numProperties++;
-                                contentRect.y += LINE_HEIGHT;
-                            }
-                            else
-                            {
-                                numProperties += prop_IncludeIds.arraySize;
-                                contentRect.y += LINE_HEIGHT * prop_IncludeIds.arraySize;
-                            }
-                        }
                         SerializedProperty prop_IncludeThemes = property.FindPropertyRelative("_includeThemes");
                         if (prop_IncludeThemes.isExpanded)
                         {
-                            numProperties += 2;
-                            contentRect.y += LINE_HEIGHT * 2;
-
                             if (prop_IncludeThemes.arraySize == 0)
                             {
-                                numProperties++;
-                                contentRect.y += LINE_HEIGHT;
+                                lineCount += 1;
                             }
                             else
                             {
-                                numProperties += prop_IncludeThemes.arraySize;
-                                contentRect.y += LINE_HEIGHT * prop_IncludeThemes.arraySize;
+                                lineCount += prop_IncludeThemes.arraySize;
                             }
                         }
+
                         SerializedProperty prop_ExcludeThemes = property.FindPropertyRelative("_excludeThemes");
                         if (prop_ExcludeThemes.isExpanded)
                         {
-                            numProperties += 2;
-                            contentRect.y += LINE_HEIGHT * 2;
-
                             if (prop_ExcludeThemes.arraySize == 0)
                             {
-                                numProperties++;
-                                contentRect.y += LINE_HEIGHT;
+                                lineCount += 1;
                             }
                             else
                             {
-                                numProperties += prop_ExcludeThemes.arraySize;
-                                contentRect.y += LINE_HEIGHT * prop_ExcludeThemes.arraySize;
+                                lineCount += prop_ExcludeThemes.arraySize;
                             }
                         }
                     }
+
                     else
                     {
-                        numProperties++;
-                        contentRect.y += LINE_HEIGHT;
+                        lineCount = 1;
                     }
                     break;
                 case "_roomLinkData":
-                    contentRect.height = LINE_HEIGHT;
+                    lineCount = 1;
                     if (property.isExpanded)
                     {
-                        contentRect.height += LINE_HEIGHT;
-                        contentRect.height += property.arraySize * LINE_HEIGHT;
+                        lineCount += 1;
+                        lineCount += property.arraySize;
 
                         if (property.arraySize == 0)
                         {
-                            contentRect.height += LINE_HEIGHT;
+                            lineCount += 1;
                         }
                         else
                         {
@@ -320,54 +230,31 @@ namespace Levels
                             {
                                 SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
 
-                                int lineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
+                                int subLineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
 
                                 if (prop_ArrayElement.isExpanded)
                                 {
-                                    contentRect.height += LINE_HEIGHT * lineCount;
+                                    lineCount += subLineCount;
                                 }
                             }
                         }
                     }
-
-                    EditorGUI.PropertyField(contentRect, property, label, true);
-
-                    if (property.isExpanded)
-                    {
-                        numProperties += property.arraySize + 1;
-                        contentRect.y += LINE_HEIGHT * property.arraySize + 1;
-
-                        if (property.arraySize == 0)
-                        {
-                            numProperties += 1;
-                            contentRect.y += LINE_HEIGHT;
-                        }
-                        else
-                        {
-                            for (int arrayIndex = 0; arrayIndex < property.arraySize; arrayIndex++)
-                            {
-                                SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
-                                if (prop_ArrayElement.isExpanded)
-                                {
-                                    int lineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
-
-                                    numProperties += lineCount;
-                                    contentRect.y += LINE_HEIGHT * lineCount;
-                                }
-                            }
-                        }
-                    }
-
-                    contentRect.y += LINE_HEIGHT;
-                    numProperties++;
                     break;
-                default:
-                    contentRect.height = LINE_HEIGHT;
-                    EditorGUI.PropertyField(contentRect, property, label, true);
-                    numProperties++;
-                    contentRect.y += LINE_HEIGHT;
-                    return;
             }
+
+            return lineCount;
+        }
+
+        void DrawPropertyField(ref Rect contentRect, SerializedProperty property, GUIContent label, ref int numProperties)
+        {
+            int lineCount = GetPropertyFieldLineCount(property);
+
+            contentRect.height += lineCount * LINE_HEIGHT;
+
+            EditorGUI.PropertyField(contentRect, property, label, true);
+
+            numProperties += lineCount;
+            contentRect.y += LINE_HEIGHT * lineCount;
         }
 
         float GetHeightForPropertyCount(int numProperties)
@@ -394,7 +281,13 @@ namespace Levels
             switch(parentPropertyName)
             {
                 case "_fixedEnemySpawns":
-                    return 3;
+                    int baseNum = 2;
+                    SerializedProperty prop_UseFixedCoords = property.FindPropertyRelative("_useFixedCoords");
+                    if(prop_UseFixedCoords.boolValue)
+					{
+                        baseNum++;
+					}
+                    return baseNum;
                 case "_roomLinkData":
                     return 3;
                 default:
