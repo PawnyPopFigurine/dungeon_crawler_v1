@@ -35,6 +35,8 @@ namespace JZK.Gameplay
         List<string> _allEnemyIds = new();
         Dictionary<string, EnemyDefinition> _enemyDefinition_LUT = new();
 
+        public const string DEFAULT_ENEMY_ID = "apple_Green";
+
         public EnemyDefinition GetDefinition(string id)
         {
             if(_enemyDefinition_LUT.ContainsKey(id))
@@ -44,6 +46,30 @@ namespace JZK.Gameplay
             Debug.LogWarning("Failed to get enemy definition for ID " + id + " - returning null");
             return null;
         }
+
+        public List<EnemyDefinition> GetAllDefsForTheme(ELevelTheme theme)
+		{
+            List<EnemyDefinition> returnList = new();
+
+            foreach(EnemyDefinition def in _enemyDefinition_LUT.Values)
+			{
+                if(theme == ELevelTheme.None || def.Theme == ELevelTheme.None)
+				{
+                    returnList.Add(def);
+				}
+                else
+				{
+                    if(theme != def.Theme)
+					{
+                        continue;
+					}
+
+                    returnList.Add(def);
+				}
+			}
+
+            return returnList;
+		}
 
         public List<EnemyDefinition> GetAllDefinitionsClosestToDifficultyPoints(int points, Dictionary<string, int> enemyCountLUT, ELevelTheme theme)
         {
@@ -97,6 +123,21 @@ namespace JZK.Gameplay
 
             return returnList;
         }
+
+        public List<EnemyDefinition> TrimListForDifficultyPoints(List<EnemyDefinition> inList, int points)
+		{
+            List<EnemyDefinition> trimmedList = new(inList);
+
+            foreach(EnemyDefinition def in inList)
+			{
+                if(def.DifficultyPoints > points)
+				{
+                    trimmedList.Remove(def);
+				}
+			}
+
+            return trimmedList;
+		}
 
         public List<EnemyDefinition> GetAllDefinitionsForDifficultyPointsAndTheme(int points, Dictionary<string, int> enemyCountLUT, ELevelTheme theme)
         {

@@ -14,12 +14,17 @@ namespace Levels
         bool _printDebug = false;
 
         const int LINE_HEIGHT = 20;
+        const int PADDING = 2;
 
         Dictionary<string, float> _perPropertyHeights = new();
+
+        List<int> _overrideSubPropertyHeights = new();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             string propertyPath = property.propertyPath;
+
+            _overrideSubPropertyHeights.Clear();
 
             int numProperties = 0;
 
@@ -98,6 +103,11 @@ namespace Levels
 
             float propertyHeight = GetHeightForPropertyCount(numProperties);
 
+            foreach(int overrideHeight in _overrideSubPropertyHeights)
+			{
+                propertyHeight += overrideHeight;
+			}
+
             if (_perPropertyHeights.ContainsKey(propertyPath))
             {
                 _perPropertyHeights[propertyPath] = propertyHeight;
@@ -125,11 +135,12 @@ namespace Levels
             contentRect.y += LINE_HEIGHT;
         }
 
-        int GetPropertyFieldLineCount(SerializedProperty property)
+        int GetPropertyFieldLineCount(SerializedProperty property, out int overrideHeight)
 		{
             int lineCount = 1;
+            overrideHeight = 0;
 
-            switch(property.name)
+            switch (property.name)
 			{
                 case "_fixedEnemySpawns":
                     if (property.isExpanded)
@@ -149,50 +160,73 @@ namespace Levels
                             }
                         }
                     }
-                    Debug.Log("[HELLO] total line count for fixed enemy spawns is " + lineCount.ToString() + " - " + property.propertyPath);
+
+                    overrideHeight += PADDING;
+
+                    for(int line = 0; line < lineCount; ++line)
+					{
+                        overrideHeight += LINE_HEIGHT;
+                        overrideHeight += PADDING;
+
+                    }
+                    //Debug.Log("[HELLO] total line count for fixed enemy spawns is " + lineCount.ToString() + " - " + property.propertyPath + " - property height is " + lineCount * LINE_HEIGHT + " - override height " + overrideHeight);
                     break;
                 case "_randomEnemySpawnData":
                     if (property.isExpanded)
                     {
-                        lineCount = 7;
+                        lineCount = 4;
 
-                        SerializedProperty prop_IncludeIds = property.FindPropertyRelative("_includeIds");
-                        if (prop_IncludeIds.isExpanded)
+                        SerializedProperty prop_RestrictType = property.FindPropertyRelative("_poolRestrictType");
+                        EEnemyPoolRestrictType restrictType = (EEnemyPoolRestrictType)prop_RestrictType.enumValueIndex;
+                        switch(restrictType)
+						{
+                            case EEnemyPoolRestrictType.IDs:
+                                SerializedProperty prop_IncludeIds = property.FindPropertyRelative("_poolIds");
+                                if (prop_IncludeIds.isExpanded)
+                                {
+                                    if (prop_IncludeIds.arraySize == 0)
+                                    {
+                                        lineCount += 1;
+                                    }
+                                    else
+                                    {
+                                        lineCount += prop_IncludeIds.arraySize;
+                                    }
+
+                                    lineCount += 2;
+                                }
+                                break;
+                            case EEnemyPoolRestrictType.LevelThemes:
+                                SerializedProperty prop_IncludeThemes = property.FindPropertyRelative("_poolThemes");
+                                if (prop_IncludeThemes.isExpanded)
+                                {
+                                    if (prop_IncludeThemes.arraySize == 0)
+                                    {
+                                        lineCount += 1;
+                                    }
+                                    else
+                                    {
+                                        lineCount += prop_IncludeThemes.arraySize;
+                                    }
+
+                                    lineCount += 2;
+                                }
+                                break;
+						}
+
+                        SerializedProperty prop_ExcludeIds = property.FindPropertyRelative("_excludeIds");
+                        if (prop_ExcludeIds.isExpanded)
                         {
-                            if (prop_IncludeIds.arraySize == 0)
+                            if (prop_ExcludeIds.arraySize == 0)
                             {
                                 lineCount += 1;
                             }
                             else
                             {
-                                lineCount += prop_IncludeIds.arraySize;
+                                lineCount += prop_ExcludeIds.arraySize;
                             }
-                        }
 
-                        SerializedProperty prop_IncludeThemes = property.FindPropertyRelative("_includeThemes");
-                        if (prop_IncludeThemes.isExpanded)
-                        {
-                            if (prop_IncludeThemes.arraySize == 0)
-                            {
-                                lineCount += 1;
-                            }
-                            else
-                            {
-                                lineCount += prop_IncludeThemes.arraySize;
-                            }
-                        }
-
-                        SerializedProperty prop_ExcludeThemes = property.FindPropertyRelative("_excludeThemes");
-                        if (prop_ExcludeThemes.isExpanded)
-                        {
-                            if (prop_ExcludeThemes.arraySize == 0)
-                            {
-                                lineCount += 1;
-                            }
-                            else
-                            {
-                                lineCount += prop_ExcludeThemes.arraySize;
-                            }
+                            lineCount += 2;
                         }
                     }
 
@@ -200,6 +234,7 @@ namespace Levels
                     {
                         lineCount = 1;
                     }
+                    //Debug.Log("[HELLO] total line count for random enemy spawn data is " + lineCount.ToString() + " - " + property.propertyPath + " - property height is " + lineCount * LINE_HEIGHT + " - override height " + overrideHeight);
                     break;
                 case "_roomLinkData":
                     lineCount = 1;
@@ -235,14 +270,28 @@ namespace Levels
 
         void DrawPropertyField(ref Rect contentRect, SerializedProperty property, GUIContent label, ref int numProperties)
         {
-            int lineCount = GetPropertyFieldLineCount(property);
+            int lineCount = GetPropertyFieldLineCount(property, out int overrideHeight);
+            if(overrideHeight == 0)
+			{
+                contentRect.height += lineCount * LINE_HEIGHT;
 
-            contentRect.height += lineCount * LINE_HEIGHT;
+                EditorGUI.PropertyField(contentRect, property, label, true);
 
-            EditorGUI.PropertyField(contentRect, property, label, true);
+                numProperties += lineCount;
+                contentRect.y += LINE_HEIGHT * lineCount;
+            }
+            else
+			{
+                //DON'T add to numProperties if overriding height - supPropertyHeights list accounts for it
 
-            numProperties += lineCount;
-            contentRect.y += LINE_HEIGHT * lineCount;
+                contentRect.height += overrideHeight;
+
+                EditorGUI.PropertyField(contentRect, property, label, true);
+                contentRect.y += overrideHeight;
+
+                _overrideSubPropertyHeights.Add(overrideHeight);
+            }
+            
         }
 
         float GetHeightForPropertyCount(int numProperties)

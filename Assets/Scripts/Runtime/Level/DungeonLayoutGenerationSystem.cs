@@ -785,194 +785,88 @@ namespace JZK.Level
 				//Random enemy spawns
 				if(node.SpawnRandomEnemies)
 				{
-					if(node.RandomEnemySpawnData.FixEnemyCount)
-					{
-                        //divide the total points by the enemy count, and pick a random enemy of those with the highest possible points value
-                        int roomPointsToSpend = node.RandomEnemySpawnData.DifficultyPoints;
-						int pointsGoalPerEnemy = (int)roomPointsToSpend / node.RandomEnemySpawnData.EnemyCount;
+					int roomPointsToSpend = node.RandomEnemySpawnData.DifficultyPoints;
 
-						for(int enemyCount = 0; enemyCount < node.RandomEnemySpawnData.EnemyCount; ++enemyCount)
+					Debug.Log("[ENEMYGEN] have " +
+					roomPointsToSpend.ToString() + " enemy points for room with index " + roomData.CriticalPathIndex);
+
+					ELevelTheme theme = (node.OverrideTheme != ELevelTheme.None && node.UseOverrideTheme) ? node.OverrideTheme : grammar.BaseLevelTheme;
+
+					List<EnemyDefinition> roomEnemyPool = GetAvailableEnemiesForRandomNodeSpawn(node.RandomEnemySpawnData, theme);
+
+					for (int setEnemyAttempt = 0; setEnemyAttempt < SET_ENEMY_ATTEMPTS; ++setEnemyAttempt)
+					{
+						if (roomPointsToSpend <= 0)
 						{
-							bool setEnemySuccess = false;
+							Debug.Log("[ENEMYGEN] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
+							break;
+						}
 
-                            for (int setEnemyAttempt = 0; setEnemyAttempt < SET_ENEMY_ATTEMPTS; ++setEnemyAttempt)
-                            {
-                                if (roomPointsToSpend <= 0)
-                                {
-                                    Debug.Log("[ENEMYGEN] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
-                                    break;
-                                }
-
-                                if (pointsGoalPerEnemy <= 0)
-                                {
-                                    break;
-                                }
-
-                                EnemyDefinition def = GetRandomEnemyDefForDifficultyPoints(pointsGoalPerEnemy, layoutData, grammar.BaseLevelTheme, true, true, roomData.Id, random, true);
-
-                                if (!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
-                                {
-                                    continue;
-                                }
-
-                                EnemySpawnData spawnData = new();
-                                spawnData.EnemyId = def.Id;
-
-                                spawnData.FloorTilePos = validPos;
-
-                                foreach (Vector3Int occupyPos in def.OccupyPoints)
-                                {
-                                    Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
-                                    roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
-                                }
-
-                                roomData.EnemySpawnData.Add(spawnData);
-
-                                if (roomData.EnemyCount_LUT.ContainsKey(def.Id))
-                                {
-                                    roomData.EnemyCount_LUT[def.Id]++;
-                                }
-                                else
-                                {
-                                    roomData.EnemyCount_LUT.Add(def.Id, 1);
-                                }
-
-                                Debug.Log("[ENEMYGEN] placing enemy of type " + def.Id +
-                                " in room " + roomData.CriticalPathIndex.ToString() +
-                                " - spending " + def.DifficultyPoints.ToString() +
-                                " of remaining " + roomPointsToSpend.ToString() + " points, leaving " +
-                                (roomPointsToSpend - def.DifficultyPoints).ToString() + " remaining points");
-
-                                roomPointsToSpend -= def.DifficultyPoints;
-
-                                if (layoutData.EnemyCount_LUT.ContainsKey(def.Id))
-                                {
-                                    layoutData.EnemyCount_LUT[def.Id]++;
-                                }
-                                else
-                                {
-                                    layoutData.EnemyCount_LUT.Add(spawnData.EnemyId, 1);
-                                }
-
-								setEnemySuccess = true;
-                                break;
-                            }
-
-							if(!setEnemySuccess)
+						List<EnemyDefinition> defsLeftForPoints = EnemyLoadSystem.Instance.TrimListForDifficultyPoints(roomEnemyPool, roomPointsToSpend);
+						List<EnemyDefinition> defsLeftForPoints_Cache = new(defsLeftForPoints);
+						foreach (EnemyDefinition enemyDef in defsLeftForPoints_Cache)
+						{
+							if (DoesEnemyExceedMaxLimit(enemyDef, true, true, roomData, layoutData))
 							{
-								EnemyDefinition def = EnemyLoadSystem.Instance.GetDefinition("apple_Green");
+								defsLeftForPoints.Remove(enemyDef);
+							}
+						}
 
-                                if (!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
-                                {
-                                    continue;
-                                }
+						List<WeightedListItem> listItems = new();
+						foreach (EnemyDefinition enemyDef in defsLeftForPoints)
+						{
+							listItems.Add(enemyDef);
+						}
 
-                                EnemySpawnData spawnData = new();
-                                spawnData.EnemyId = def.Id;
+						EnemyDefinition def = (EnemyDefinition)GameplayHelper.GetWeightedListItem(listItems, random);
 
-                                spawnData.FloorTilePos = validPos;
 
-                                foreach (Vector3Int occupyPos in def.OccupyPoints)
-                                {
-                                    Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
-                                    roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
-                                }
+						if (!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
+						{
+							continue;
+						}
 
-                                roomData.EnemySpawnData.Add(spawnData);
+						EnemySpawnData spawnData = new();
+						spawnData.EnemyId = def.Id;
 
-                                if (roomData.EnemyCount_LUT.ContainsKey(def.Id))
-                                {
-                                    roomData.EnemyCount_LUT[def.Id]++;
-                                }
-                                else
-                                {
-                                    roomData.EnemyCount_LUT.Add(def.Id, 1);
-                                }
+						spawnData.FloorTilePos = validPos;
 
-                                Debug.Log("[ENEMYGEN] placing enemy of type " + def.Id +
-                                " in room " + roomData.CriticalPathIndex.ToString() +
-                                " - spending " + def.DifficultyPoints.ToString() +
-                                " of remaining " + roomPointsToSpend.ToString() + " points, leaving " +
-                                (roomPointsToSpend - def.DifficultyPoints).ToString() + " remaining points");
+						foreach (Vector3Int occupyPos in def.OccupyPoints)
+						{
+							Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
+							roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
+						}
 
-                                roomPointsToSpend -= def.DifficultyPoints;
+						roomData.EnemySpawnData.Add(spawnData);
 
-                                if (layoutData.EnemyCount_LUT.ContainsKey(def.Id))
-                                {
-                                    layoutData.EnemyCount_LUT[def.Id]++;
-                                }
-                                else
-                                {
-                                    layoutData.EnemyCount_LUT.Add(spawnData.EnemyId, 1);
-                                }
-                            }
-                        }
-                    }
-					else
-					{
-                        int roomPointsToSpend = node.RandomEnemySpawnData.DifficultyPoints;
+						if (roomData.EnemyCount_LUT.ContainsKey(def.Id))
+						{
+							roomData.EnemyCount_LUT[def.Id]++;
+						}
+						else
+						{
+							roomData.EnemyCount_LUT.Add(def.Id, 1);
+						}
 
-                        Debug.Log("[ENEMYGEN] have " +
-                        roomPointsToSpend.ToString() + " enemy points for room with index " + roomData.CriticalPathIndex);
+						Debug.Log("[ENEMYGEN] placing enemy of type " + def.Id +
+						" in room " + roomData.CriticalPathIndex.ToString() +
+						" - spending " + def.DifficultyPoints.ToString() +
+						" of remaining " + roomPointsToSpend.ToString() + " points, leaving " +
+						(roomPointsToSpend - def.DifficultyPoints).ToString() + " remaining points");
 
-                        for (int setEnemyAttempt = 0; setEnemyAttempt < SET_ENEMY_ATTEMPTS; ++setEnemyAttempt)
-                        {
-                            if (roomPointsToSpend <= 0)
-                            {
-                                Debug.Log("[ENEMYGEN] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
-                                break;
-                            }
+						roomPointsToSpend -= def.DifficultyPoints;
 
-                            EnemyDefinition def = GetRandomEnemyDefForDifficultyPoints(roomPointsToSpend, layoutData, grammar.BaseLevelTheme, true, true, roomData.Id, random);
-
-                            if (!TryGetSpawnPosForEnemy(def, roomData, random, out Vector3Int validPos))
-                            {
-                                continue;
-                            }
-
-                            EnemySpawnData spawnData = new();
-                            spawnData.EnemyId = def.Id;
-
-                            spawnData.FloorTilePos = validPos;
-
-                            foreach (Vector3Int occupyPos in def.OccupyPoints)
-                            {
-                                Vector3Int relativeOccupyPos = occupyPos + spawnData.FloorTilePos;
-                                roomData.UnoccupiedFloorPositions.Remove(relativeOccupyPos);
-                            }
-
-                            roomData.EnemySpawnData.Add(spawnData);
-
-                            if (roomData.EnemyCount_LUT.ContainsKey(def.Id))
-                            {
-                                roomData.EnemyCount_LUT[def.Id]++;
-                            }
-                            else
-                            {
-                                roomData.EnemyCount_LUT.Add(def.Id, 1);
-                            }
-
-                            Debug.Log("[ENEMYGEN] placing enemy of type " + def.Id +
-                            " in room " + roomData.CriticalPathIndex.ToString() +
-                            " - spending " + def.DifficultyPoints.ToString() +
-                            " of remaining " + roomPointsToSpend.ToString() + " points, leaving " +
-                            (roomPointsToSpend - def.DifficultyPoints).ToString() + " remaining points");
-
-                            roomPointsToSpend -= def.DifficultyPoints;
-
-                            if (layoutData.EnemyCount_LUT.ContainsKey(def.Id))
-                            {
-                                layoutData.EnemyCount_LUT[def.Id]++;
-                            }
-                            else
-                            {
-                                layoutData.EnemyCount_LUT.Add(spawnData.EnemyId, 1);
-                            }
-                        }
-                    }
-                    
-                }	
-            }
+						if (layoutData.EnemyCount_LUT.ContainsKey(def.Id))
+						{
+							layoutData.EnemyCount_LUT[def.Id]++;
+						}
+						else
+						{
+							layoutData.EnemyCount_LUT.Add(spawnData.EnemyId, 1);
+						}
+					}
+				}
+			}
 
             //assign item rooms with item IDs
             List<Guid> itemRoomIds = layoutData.GetAllRoomsOfType(ERoomType.StandardItem);
@@ -1402,18 +1296,61 @@ namespace JZK.Level
 			}
 		}
 
-		EnemyDefinition GetRandomEnemyDefForDifficultyPoints(int difficultyPoints, LayoutData layoutData, ELevelTheme theme, bool useMaxPerLevel, bool useMaxPerRoom, Guid roomId, System.Random random, bool onlyClosestToDiffPoints = false)
+		List<EnemyDefinition> GetAvailableEnemiesForRandomNodeSpawn(RandomEnemySpawnData spawnData, ELevelTheme roomTheme)
 		{
-			List<EnemyDefinition> allPossibleDefs;
-			if(onlyClosestToDiffPoints)
-			{
-				allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsClosestToDifficultyPoints(difficultyPoints, layoutData.EnemyCount_LUT, theme);
+			List<EnemyDefinition> validDefs = new();
+
+			switch(spawnData.RestrictType)
+			{ 
+				case EEnemyPoolRestrictType.None:   //if no restriction, just use all the affordable enemy types for the room theme 
+					validDefs.AddRange(EnemyLoadSystem.Instance.GetAllDefsForTheme(roomTheme));
+					break;
+				case EEnemyPoolRestrictType.IDs:
+					foreach(string id in spawnData.IncludeIds)
+					{
+						validDefs.Add(EnemyLoadSystem.Instance.GetDefinition(id));
+					}
+					break;
+				case EEnemyPoolRestrictType.LevelThemes:
+					foreach(ELevelTheme theme in spawnData.IncludeThemes)
+					{
+						validDefs.AddRange(EnemyLoadSystem.Instance.GetAllDefsForTheme(theme));
+					}
+					break;
 			}
-			else
+
+			foreach(string removeId in spawnData.ExcludeIds)
 			{
-				allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPointsAndTheme(difficultyPoints, layoutData.EnemyCount_LUT, theme);
-            }
-            if (allPossibleDefs.Count == 0)
+				EnemyDefinition def = EnemyLoadSystem.Instance.GetDefinition(removeId);
+				if(validDefs.Contains(def))
+				{
+					validDefs.Remove(def);
+				}
+			}
+
+			List<EnemyDefinition> validCache = new(validDefs);
+			foreach(EnemyDefinition def in validCache)
+			{
+				if(def.DifficultyPoints > spawnData.DifficultyPoints)
+				{
+					validDefs.Remove(def);
+				}
+			}
+
+			if (validDefs.Count == 0)
+			{
+				EnemyDefinition defaultDef = EnemyLoadSystem.Instance.GetDefinition(EnemyLoadSystem.DEFAULT_ENEMY_ID);
+				validDefs.Add(defaultDef);
+			}
+
+
+			return validDefs;
+		}
+
+		EnemyDefinition GetRandomEnemyDefForDifficultyPoints(int difficultyPoints, LayoutData layoutData, ELevelTheme theme, bool useMaxPerLevel, bool useMaxPerRoom, Guid roomId, System.Random random)
+		{
+			List<EnemyDefinition> allPossibleDefs = EnemyLoadSystem.Instance.GetAllDefinitionsForDifficultyPointsAndTheme(difficultyPoints, layoutData.EnemyCount_LUT, theme);
+			if (allPossibleDefs.Count == 0)
 			{
 				Debug.LogWarning("[ENEMYGEN] - no possible enemy definitions remaining for room " + roomId.ToString() + " - it will appear with no enemies!");
 				return null;
@@ -1430,31 +1367,9 @@ namespace JZK.Level
 			GenerationRoomData roomData = layoutData.Room_LUT[roomId];
 			foreach(EnemyDefinition enemy in allPossibleDefs)
 			{
-				if (defsExceedingMaxLimit.Contains(enemy))
+				if(DoesEnemyExceedMaxLimit(enemy, useMaxPerLevel, useMaxPerRoom, roomData, layoutData))
 				{
-					continue;
-				}
-
-				if (enemy.MaxPerLevel > 0 && useMaxPerLevel)
-				{
-					if(layoutData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForLevel))
-					{
-						if(countForLevel >= enemy.MaxPerLevel)
-						{
-							defsExceedingMaxLimit.Add(enemy);
-						}
-					}
-				}
-
-				if(enemy.MaxPerRoom > 0 && useMaxPerRoom)
-				{
-					if(roomData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForRoom))
-					{
-						if(countForRoom >= enemy.MaxPerRoom)
-						{
-							defsExceedingMaxLimit.Add(enemy);
-						}
-					}
+					defsExceedingMaxLimit.Add(enemy);
 				}
 			}
 
@@ -1474,6 +1389,33 @@ namespace JZK.Level
 
 			EnemyDefinition enemyDef = (EnemyDefinition)GameplayHelper.GetWeightedListItem(listItems, random);
 			return enemyDef;
+		}
+
+		public bool DoesEnemyExceedMaxLimit(EnemyDefinition enemy, bool useMaxPerLevel, bool useMaxPerRoom, GenerationRoomData roomData, LayoutData layoutData)
+		{
+			if (enemy.MaxPerLevel > 0 && useMaxPerLevel)
+			{
+				if (layoutData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForLevel))
+				{
+					if (countForLevel >= enemy.MaxPerLevel)
+					{
+						return true;
+					}
+				}
+			}
+
+			if (enemy.MaxPerRoom > 0 && useMaxPerRoom)
+			{
+				if (roomData.EnemyCount_LUT.TryGetValue(enemy.Id, out int countForRoom))
+				{
+					if (countForRoom >= enemy.MaxPerRoom)
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
 		}
 
 		RoomDefinition GetRandomRoomForConnectionDataAndType(GenerationRoomData.GenerationRoomConnectionData connectionData, ERoomType type, LayoutData layoutData, System.Random random, bool useRoomsMaxPerLevel, out bool success)

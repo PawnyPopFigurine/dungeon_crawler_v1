@@ -162,25 +162,30 @@ namespace JZK.Level
     }
 
     [System.Serializable]
+    public enum EEnemyPoolRestrictType
+	{
+        None = 0,
+        IDs = 1,
+        LevelThemes = 2,
+	}
+
+    [System.Serializable]
     public class RandomEnemySpawnData
     {
         [SerializeField] int _difficultyPoints; //TODO: Give min/max values
         public int DifficultyPoints => _difficultyPoints;
 
-        [SerializeField] bool _fixEnemyCount;
-        public bool FixEnemyCount => _fixEnemyCount;
-        
-        [SerializeField] int _enemyCount;   //TODO: min/max vals
-        public int EnemyCount => _enemyCount;
+        [SerializeField] EEnemyPoolRestrictType _poolRestrictType;
+        public EEnemyPoolRestrictType RestrictType => _poolRestrictType;
 
-        [SerializeField] List<string> _includeIds = new();
-        public List<string> IncludeIds => _includeIds;
+        [SerializeField] List<string> _poolIds = new();
+        public List<string> IncludeIds => _poolIds;
 
-        [SerializeField] List<ELevelTheme> _includeThemes = new();
-        public List<ELevelTheme> IncludeThemes => _includeThemes;
+        [SerializeField] List<ELevelTheme> _poolThemes = new();
+        public List<ELevelTheme> IncludeThemes => _poolThemes;
 
-        [SerializeField] List<ELevelTheme> _excludeThemes = new();
-        public List<ELevelTheme> ExcludeThemes => _excludeThemes;
+        [SerializeField] List<string> _excludeIds = new();
+        public List<string> ExcludeIds => _excludeIds;
     }
 
     [System.Serializable]

@@ -15,7 +15,7 @@ MonoBehaviour:
   _definition:
     _id: testLevelGrammar
     _useFixedSeed: 1
-    _fixedSeed: 26000
+    _fixedSeed: 444
     _baseLevelTheme: 2
     _nodes:
     - _nodeId: 0 - start room
@@ -30,11 +30,10 @@ MonoBehaviour:
       _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 0
-        _fixEnemyCount: 0
-        _enemyCount: 0
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
@@ -54,12 +53,13 @@ MonoBehaviour:
         _fixedCoords: {x: 5, y: -2}
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 6
-        _fixEnemyCount: 0
-        _enemyCount: 0
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _difficultyPoints: 10
+        _poolRestrictType: 2
+        _poolIds:
+        - frankenstein_PatrolLeftRight
+        - frankenstein_PatrolUpDown
+        _poolThemes: 01000000
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
@@ -81,11 +81,10 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 20
-        _fixEnemyCount: 1
-        _enemyCount: 2
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: 139292dc-4281-4420-911e-35730707dc4c
@@ -111,11 +110,10 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
-        _fixEnemyCount: 0
-        _enemyCount: 0
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
@@ -137,11 +135,10 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
-        _fixEnemyCount: 0
-        _enemyCount: 0
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
@@ -163,11 +160,10 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
-        _fixEnemyCount: 0
-        _enemyCount: 0
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
@@ -188,11 +184,10 @@ MonoBehaviour:
       _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 11
-        _fixEnemyCount: 0
-        _enemyCount: 0
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
@@ -210,11 +205,10 @@ MonoBehaviour:
       _spawnRandomEnemies: 0
       _randomEnemySpawnData:
         _difficultyPoints: 11
-        _fixEnemyCount: 0
-        _enemyCount: 0
-        _includeIds: []
-        _includeThemes: 
-        _excludeThemes: 
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
