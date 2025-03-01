@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: testLevelGrammar
-    _useFixedSeed: 1
+    _useFixedSeed: 0
     _fixedSeed: 444
     _baseLevelTheme: 2
     _nodes:
@@ -37,8 +37,8 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
-        _useFixedSide: 1
-        _fixedSide: 1
+        _useFixedSide: 0
+        _fixedSide: 2
         _parentNode: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
     - _nodeId: 1 - first combat room with ghost
       _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
@@ -69,8 +69,8 @@ MonoBehaviour:
         _parentNode: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
       - _linkToNode:
           _guidString: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
-        _useFixedSide: 1
-        _fixedSide: 3
+        _useFixedSide: 0
+        _fixedSide: 0
         _parentNode: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
     - _nodeId: 2 - second combat room
       _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
@@ -158,6 +158,11 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 2
         _parentNode: 1a8b5446-6030-4138-a37f-d280bb78e345
+      - _linkToNode:
+          _guidString: cf8be385-1254-4310-a56e-25681eeca15c
+        _useFixedSide: 1
+        _fixedSide: 3
+        _parentNode: 1a8b5446-6030-4138-a37f-d280bb78e345
     - _nodeId: 5 - end room
       _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
       _useFixedId: 0
@@ -205,7 +210,7 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 1
         _parentNode: db2fa0c3-5799-4440-922a-b8dd82549993
-    - _nodeId: 3a - item room
+    - _nodeId: 4a - item room
       _guidString: cf8be385-1254-4310-a56e-25681eeca15c
       _useFixedId: 0
       _fixedId: 
@@ -223,7 +228,7 @@ MonoBehaviour:
         _excludeIds: []
       _roomLinkData:
       - _linkToNode:
-          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+          _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
         _useFixedSide: 1
         _fixedSide: 1
         _parentNode: cf8be385-1254-4310-a56e-25681eeca15c

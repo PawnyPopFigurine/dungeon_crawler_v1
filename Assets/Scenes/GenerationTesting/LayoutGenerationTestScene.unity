@@ -456,7 +456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _useDebugSeed: 1
+  _useDebugSeed: 0
   _debugSeed: 2787
   _printDebug: 0
   _generationMode: 2
