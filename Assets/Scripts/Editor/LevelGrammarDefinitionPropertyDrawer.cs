@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
-using JZK.Level;
 
-namespace Levels
+namespace JZK.Level
 {
+    
+
     [CustomPropertyDrawer(typeof(LevelGrammarDefinition))]
     public class LevelGrammarDefinitionPropertyDrawer : PropertyDrawer
     {
@@ -18,10 +19,23 @@ namespace Levels
         public static Dictionary<Guid, string> LevelGrammarNodeGuidToId_LUT => _levelGrammarNodeGuidToId_LUT;
         public static Dictionary<string, Guid> LevelGrammarNodeIdToGuid_LUT => _levelGrammarNodeIdToGuid_LUT;
 
+        public bool HelloWorld;
+
+        static List<RoomLinkUpdateData> _updateData = new();
+
+        
+
+        public static void AddRoomLinkDataForUpdate(RoomLinkUpdateData update)
+		{
+            _updateData.Add(update);
+
+        }
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             ValidateNodes();
             RefreshLookups();
+            RefreshRoomLinks();
 
             EditorGUI.BeginProperty(position, label, property);
 
@@ -43,6 +57,32 @@ namespace Levels
             EditorGUI.EndProperty();
         }
 
+        void RefreshRoomLinks()
+		{
+            foreach(RoomLinkUpdateData update in _updateData)
+			{
+                foreach (LevelGrammarNodeDefinition node in Definition.Nodes)
+				{
+                    if(node.NodeGuid != update.ParentNodeId)
+					{
+                        continue;
+					}
+                    foreach(RoomLinkData link in node.RoomLinkData)
+					{
+                        if(link.LinkToNode.Id != update.LinkToNodeId)
+						{
+                            continue;
+						}
+
+                        link.RefreshForUpdateData(update);
+					}
+				}
+
+            }
+
+            _updateData.Clear();
+		}
+
         void ValidateNodes()
         {
             List<Guid> existingNodeGuids = new();
@@ -62,28 +102,11 @@ namespace Levels
             {
                 _levelGrammarNodeIdToGuid_LUT.TryAdd(node.Id, node.NodeGuid);
                 _levelGrammarNodeGuidToId_LUT.TryAdd(node.NodeGuid, node.Id);
-            }
-        }
 
-        void RefreshRoomLinkSides()
-        {
-            List<RoomLinkData> seenLinkDatas = new();
-
-            foreach(LevelGrammarNodeDefinition node in Definition.Nodes)
-            {
-                foreach(RoomLinkData roomLinkData in node.RoomLinkData)
-                {
-                    if(seenLinkDatas.Contains(roomLinkData))
-                    {
-                        continue;
-                    }
-
-                    seenLinkDatas.Add(roomLinkData);
-
-                    RoomLinkData opposideLink = Definition.GetOppositeLinkData(roomLinkData, node);
-
-
-                }
+                foreach(RoomLinkData linkData in node.RoomLinkData)
+				{
+                    linkData.ParentNode = node.NodeGuid.ToString();
+				}
             }
         }
     }

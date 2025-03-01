@@ -6,7 +6,7 @@ using System;
 using JZK.Level;
 using Levels;
 
-namespace Level
+namespace JZK.Level
 {
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(LevelGrammarNodeReference))]

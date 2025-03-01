@@ -195,10 +195,64 @@ namespace JZK.Level
         public LevelGrammarNodeReference LinkToNode => _linkToNode;
 
         [SerializeField] bool _useFixedSide;
-        public bool UseFixedSide => _useFixedSide;
+        public bool UseFixedSide
+		{
+            get
+			{
+                return _useFixedSide;
+			}
+#if UNITY_EDITOR
+            set
+			{
+                _useFixedSide = value;
+			}
+#endif
+        }
 
         [SerializeField] EOrthogonalDirection _fixedSide;
         public EOrthogonalDirection FixedSide => _fixedSide;
+
+        [SerializeField] [HideInInspector]
+        private string _parentNode;
+        public string ParentNode
+		{
+            get
+			{
+                return _parentNode;
+			}
+#if UNITY_EDITOR
+			set
+			{
+                _parentNode = value;
+			}
+#endif
+        }
+
+#if UNITY_EDITOR
+        public void RefreshForUpdateData(RoomLinkUpdateData updateData)
+		{
+            if(updateData.UpdateUseFixedSide)
+			{
+                _useFixedSide = updateData.NewFixedSide;
+			}
+
+            if(updateData.UpdateFixedSideEnum)
+			{
+                _fixedSide = updateData.NewFixedSideEnum;
+			}
+		}
+#endif
+    }
+
+    [System.Serializable]
+    public class RoomLinkUpdateData
+    {
+        public Guid ParentNodeId;
+        public Guid LinkToNodeId;
+        public bool UpdateUseFixedSide;
+        public bool NewFixedSide;
+        public bool UpdateFixedSideEnum;
+        public EOrthogonalDirection NewFixedSideEnum;
     }
 
     [System.Serializable]
