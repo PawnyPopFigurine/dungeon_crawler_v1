@@ -134,9 +134,6 @@ namespace Levels
                 case "_fixedEnemySpawns":
                     if (property.isExpanded)
                     {
-                        //lineCount += 2;
-                        //lineCount += property.arraySize;
-
                         if (property.arraySize == 0)
                         {
                             lineCount += 1;
@@ -149,15 +146,6 @@ namespace Levels
 
                                 int subLineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
                                 lineCount += subLineCount;
-                                /*if (prop_ArrayElement.isExpanded)
-                                {
-                                    //lineCount += 2;
-                                    lineCount += subLineCount;
-                                }
-                                else
-								{
-                                    lineCount += 1;
-                                }*/
                             }
                         }
                     }
