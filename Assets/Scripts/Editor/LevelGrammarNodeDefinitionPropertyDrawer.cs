@@ -147,10 +147,12 @@ namespace Levels
                     {
                         if (property.arraySize == 0)
                         {
-                            lineCount += 1;
+                            lineCount += 2;
                         }
                         else
                         {
+                            lineCount += 1;
+
                             for (int arrayIndex = 0; arrayIndex < property.arraySize; arrayIndex++)
                             {
                                 SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
@@ -255,10 +257,7 @@ namespace Levels
 
                                 int subLineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
 
-                                if (prop_ArrayElement.isExpanded)
-                                {
-                                    lineCount += subLineCount;
-                                }
+                                lineCount += subLineCount;
                             }
                         }
                     }
@@ -318,15 +317,26 @@ namespace Levels
             switch(parentPropertyName)
             {
                 case "_fixedEnemySpawns":
-                    int baseNum = 2;
-                    SerializedProperty prop_UseFixedCoords = property.FindPropertyRelative("_useFixedCoords");
-                    if(prop_UseFixedCoords.boolValue)
-					{
-                        baseNum++;
-					}
-                    return baseNum;
+                    {
+                        int baseNum = 2;
+                        SerializedProperty prop_UseFixedCoords = property.FindPropertyRelative("_useFixedCoords");
+                        if (prop_UseFixedCoords.boolValue)
+                        {
+                            baseNum++;
+                        }
+                        return baseNum;
+                    }
+                    
                 case "_roomLinkData":
-                    return 3;
+                    {
+                        int baseNum = 2;
+                        SerializedProperty prop_UseFixedCoords = property.FindPropertyRelative("_useFixedSide");
+                        if (prop_UseFixedCoords.boolValue)
+                        {
+                            baseNum++;
+                        }
+                        return baseNum;
+                    }
                 default:
                     Debug.Log("[EDITOR] No line count set for property " + parentPropertyName);
                     return 1;
