@@ -28,6 +28,8 @@ namespace JZK.Level
 
             EditorGUI.BeginProperty(position, label, property);
 
+            SerializedProperty prop_FixedSide = property.FindPropertyRelative("_fixedSide");
+
             SerializedProperty prop_ParentNode = property.FindPropertyRelative("_parentNode");
             Guid parentNode = new(prop_ParentNode.stringValue);
 
@@ -59,12 +61,16 @@ namespace JZK.Level
 
                         linkData.UseFixedSide = prop_UseFixedSide.boolValue;
 
+                        EOrthogonalDirection oppositeLinkSide = GameplayHelper.GetOppositeDirection((EOrthogonalDirection)prop_FixedSide.enumValueIndex);
+
                         RoomLinkUpdateData updateData = new()
                         {
                             ParentNodeId = linkToNodeGuid,
                             LinkToNodeId = parentNode,
                             UpdateUseFixedSide = true,
-                            NewFixedSide = prop_UseFixedSide.boolValue
+                            NewFixedSide = prop_UseFixedSide.boolValue,
+                            UpdateFixedSideEnum = true,
+                            NewFixedSideEnum = oppositeLinkSide
                         };
 
                         LevelGrammarDefinitionPropertyDrawer.AddRoomLinkDataForUpdate(updateData);
@@ -76,7 +82,6 @@ namespace JZK.Level
 
             if(useFixedSide)
 			{
-                SerializedProperty prop_FixedSide = property.FindPropertyRelative("_fixedSide");
                 EOrthogonalDirection fixedSide = (EOrthogonalDirection)prop_FixedSide.enumValueIndex;
                 DrawPropertyField(ref contentRect, prop_FixedSide, new("Fixed Side"), ref numProperties);
                 if((EOrthogonalDirection)prop_FixedSide.enumValueIndex != fixedSide)

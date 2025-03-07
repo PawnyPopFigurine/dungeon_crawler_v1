@@ -1,0 +1,261 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3fde8c3adbf8c48a248544e2a78ce7, type: 3}
+  m_Name: testLevelGrammar_MultipleExits
+  m_EditorClassIdentifier: 
+  _definition:
+    _id: testLevelGrammar_MultipleExits
+    _useFixedSeed: 1
+    _fixedSeed: 444
+    _baseLevelTheme: 2
+    _nodes:
+    - _nodeId: 0 - start room
+      _guidString: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 3
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 0
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+        _useFixedSide: 0
+        _fixedSide: 2
+        _parentNode: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
+    - _nodeId: 1 - first combat room with ghost
+      _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+      _useFixedId: 1
+      _fixedId: Circle_Shape_Room_20x20
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns:
+      - _enemyId: ghost_PatrolDiamond
+        _useFixedCoords: 1
+        _fixedCoords: {x: 5, y: -2}
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 10
+        _poolRestrictType: 0
+        _poolIds:
+        - frankenstein_PatrolLeftRight
+        - frankenstein_PatrolUpDown
+        _poolThemes: 01000000
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+        _useFixedSide: 1
+        _fixedSide: 0
+        _parentNode: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+      - _linkToNode:
+          _guidString: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
+        _useFixedSide: 0
+        _fixedSide: 0
+        _parentNode: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+      - _linkToNode:
+          _guidString: b07b03c8-55b0-4475-93bc-02e50bb734a7
+        _useFixedSide: 0
+        _fixedSide: 3
+        _parentNode: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+    - _nodeId: 2 - second combat room
+      _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 20
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 139292dc-4281-4420-911e-35730707dc4c
+        _useFixedSide: 1
+        _fixedSide: 0
+        _parentNode: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+      - _linkToNode:
+          _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+        _useFixedSide: 1
+        _fixedSide: 2
+        _parentNode: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+      - _linkToNode:
+          _guidString: db2fa0c3-5799-4440-922a-b8dd82549993
+        _useFixedSide: 1
+        _fixedSide: 3
+        _parentNode: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+    - _nodeId: 3 - empty hallway
+      _guidString: 139292dc-4281-4420-911e-35730707dc4c
+      _useFixedId: 1
+      _fixedId: RectRoom_4x16
+      _useFixedRoomType: 0
+      _fixedRoomType: 2
+      _useOverrideTheme: 1
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
+        _useFixedSide: 1
+        _fixedSide: 0
+        _parentNode: 139292dc-4281-4420-911e-35730707dc4c
+      - _linkToNode:
+          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+        _useFixedSide: 1
+        _fixedSide: 2
+        _parentNode: 139292dc-4281-4420-911e-35730707dc4c
+    - _nodeId: 4 - third combat room
+      _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
+        _useFixedSide: 1
+        _fixedSide: 0
+        _parentNode: 1a8b5446-6030-4138-a37f-d280bb78e345
+      - _linkToNode:
+          _guidString: 139292dc-4281-4420-911e-35730707dc4c
+        _useFixedSide: 1
+        _fixedSide: 2
+        _parentNode: 1a8b5446-6030-4138-a37f-d280bb78e345
+      - _linkToNode:
+          _guidString: cf8be385-1254-4310-a56e-25681eeca15c
+        _useFixedSide: 1
+        _fixedSide: 3
+        _parentNode: 1a8b5446-6030-4138-a37f-d280bb78e345
+    - _nodeId: 5 - end room
+      _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 4
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
+        _useFixedSide: 1
+        _fixedSide: 2
+        _parentNode: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
+    - _nodeId: 2a - apple side room
+      _guidString: db2fa0c3-5799-4440-922a-b8dd82549993
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 1
+      _overrideTheme: 1
+      _fixedEnemySpawns:
+      - _enemyId: apple_Green
+        _useFixedCoords: 0
+        _fixedCoords: {x: 0, y: 0}
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+        _useFixedSide: 1
+        _fixedSide: 1
+        _parentNode: db2fa0c3-5799-4440-922a-b8dd82549993
+    - _nodeId: 4a - item room
+      _guidString: cf8be385-1254-4310-a56e-25681eeca15c
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 5
+      _useOverrideTheme: 0
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
+        _useFixedSide: 1
+        _fixedSide: 1
+        _parentNode: cf8be385-1254-4310-a56e-25681eeca15c
+    - _nodeId: 1a - side exit
+      _guidString: b07b03c8-55b0-4475-93bc-02e50bb734a7
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 4
+      _useOverrideTheme: 0
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 11
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+        _useFixedSide: 0
+        _fixedSide: 1
+        _parentNode: b07b03c8-55b0-4475-93bc-02e50bb734a7
