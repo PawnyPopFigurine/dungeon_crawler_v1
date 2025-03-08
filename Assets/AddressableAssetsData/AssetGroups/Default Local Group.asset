@@ -17,6 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: c805c52bc6783b44fbc1e6899904ddbd
   m_SerializeEntries:
+  - m_GUID: 00c56fb8898c1194d960d898a12c8ff3
+    m_Address: Assets/Data/Items/key.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0152404778df2384a86957605d179880
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/ChilliFire.prefab
     m_ReadOnly: 0
