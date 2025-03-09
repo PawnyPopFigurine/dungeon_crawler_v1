@@ -16,6 +16,7 @@ namespace JZK.Gameplay
 		[SerializeField] Collider2D _openCollisionLeft;
 		[SerializeField] Collider2D _openCollisionRight;
 		[SerializeField] GameObject _corridorGO;
+		[SerializeField] SpriteRenderer _lockSprite;
 
 		bool _doorEnabled;
 		public bool DoorEnabled => _doorEnabled;
@@ -77,6 +78,8 @@ namespace JZK.Gameplay
 		{
 			_lockedByKey = lockedByKey;
 			_keyIndex = keyindex;
+
+			_lockSprite.enabled = _lockedByKey && _keyIndex > -1;
 		}
 
 		public void SetIsOpen(bool isOpen)
@@ -151,6 +154,7 @@ namespace JZK.Gameplay
 			Debug.Log("[DOOR] player collected key " + keyIndex + " - opening door");
 
 			SetIsOpen(true);
+			_lockSprite.enabled = false;
 		}
 	}
 }
