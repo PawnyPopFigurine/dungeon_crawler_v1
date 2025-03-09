@@ -41,43 +41,7 @@ namespace JZK.Level
             DrawPropertyField(ref contentRect, prop_UseFixedSide, new("Use Fixed Side"), ref numProperties);
             if(prop_UseFixedSide.boolValue != useFixedSide)
 			{
-                Guid linkToNodeGuid = new(prop_LinkToNode.FindPropertyRelative("_guidString").stringValue);
-
-                LevelGrammarDefinition def = LevelGrammarDefinitionPropertyDrawer.Definition;
-
-                foreach (LevelGrammarNodeDefinition node in def.Nodes)
-                {
-                    if (node.NodeGuid != linkToNodeGuid)
-                    {
-                        continue;
-                    }
-
-                    foreach (RoomLinkData linkData in node.RoomLinkData)
-                    {
-                        if (linkData.LinkToNode.Id != parentNode)
-                        {
-                            continue;
-                        }
-
-                        linkData.UseFixedSide = prop_UseFixedSide.boolValue;
-
-                        EOrthogonalDirection oppositeLinkSide = GameplayHelper.GetOppositeDirection((EOrthogonalDirection)prop_FixedSide.enumValueIndex);
-
-                        RoomLinkUpdateData updateData = new()
-                        {
-                            ParentNodeId = linkToNodeGuid,
-                            LinkToNodeId = parentNode,
-                            UpdateUseFixedSide = true,
-                            NewFixedSide = prop_UseFixedSide.boolValue,
-                            UpdateFixedSideEnum = true,
-                            NewFixedSideEnum = oppositeLinkSide
-                        };
-
-                        LevelGrammarDefinitionPropertyDrawer.AddRoomLinkDataForUpdate(updateData);
-
-                    }
-
-                }
+                TriggerUpdateOnMatchingLinkData(property);
             }
 
             if(useFixedSide)
@@ -86,43 +50,30 @@ namespace JZK.Level
                 DrawPropertyField(ref contentRect, prop_FixedSide, new("Fixed Side"), ref numProperties);
                 if((EOrthogonalDirection)prop_FixedSide.enumValueIndex != fixedSide)
 				{
-                    EOrthogonalDirection oppositeLinkSide = GameplayHelper.GetOppositeDirection((EOrthogonalDirection)prop_FixedSide.enumValueIndex);
-
-                    Guid linkToNodeGuid = new(prop_LinkToNode.FindPropertyRelative("_guidString").stringValue);
-
-                    LevelGrammarDefinition def = LevelGrammarDefinitionPropertyDrawer.Definition;
-
-                    foreach (LevelGrammarNodeDefinition node in def.Nodes)
-                    {
-                        if (node.NodeGuid != linkToNodeGuid)
-                        {
-                            continue;
-                        }
-
-                        foreach (RoomLinkData linkData in node.RoomLinkData)
-                        {
-                            if (linkData.LinkToNode.Id != parentNode)
-                            {
-                                continue;
-                            }
-
-                            linkData.UseFixedSide = prop_UseFixedSide.boolValue;
-
-                            RoomLinkUpdateData updateData = new()
-                            {
-                                ParentNodeId = linkToNodeGuid,
-                                LinkToNodeId = parentNode,
-                                UpdateFixedSideEnum = true,
-                                NewFixedSideEnum = oppositeLinkSide
-                            };
-
-                            LevelGrammarDefinitionPropertyDrawer.AddRoomLinkDataForUpdate(updateData);
-
-                        }
-
-                    }
+                    TriggerUpdateOnMatchingLinkData(property);
                 }
             }
+
+            SerializedProperty prop_LockedByKey = property.FindPropertyRelative("_lockedByKey");
+            bool lockedByKey = prop_LockedByKey.boolValue;
+            DrawPropertyField(ref contentRect, prop_LockedByKey, new("Locked By Key"), ref numProperties);
+
+            if(lockedByKey != prop_LockedByKey.boolValue)
+            {
+                TriggerUpdateOnMatchingLinkData(property);
+            }
+
+            if(lockedByKey)
+            {
+                SerializedProperty prop_KeyIndex = property.FindPropertyRelative("_keyIndex");
+                int keyIndex = prop_KeyIndex.intValue;
+                DrawPropertyField(ref contentRect, prop_KeyIndex, new("Key Index"), ref numProperties);
+                if(keyIndex != prop_KeyIndex.intValue)
+                {
+                    TriggerUpdateOnMatchingLinkData(property);
+                }
+            }
+
 
             float propertyHeight = GetHeightForPropertyCount(numProperties);
 
@@ -136,6 +87,56 @@ namespace JZK.Level
             }
 
             EditorGUI.EndProperty();
+        }
+
+        void TriggerUpdateOnMatchingLinkData(SerializedProperty property)
+        {
+            SerializedProperty prop_LinkToNode = property.FindPropertyRelative("_linkToNode");
+            SerializedProperty prop_FixedSide = property.FindPropertyRelative("_fixedSide");
+            SerializedProperty prop_UseFixedSide = property.FindPropertyRelative("_useFixedSide");
+            SerializedProperty prop_ParentNode = property.FindPropertyRelative("_parentNode");
+            SerializedProperty prop_LockedByKey = property.FindPropertyRelative("_lockedByKey");
+            SerializedProperty prop_KeyIndex = property.FindPropertyRelative("_keyIndex");
+
+            Guid parentNode = new(prop_ParentNode.stringValue);
+
+            EOrthogonalDirection oppositeLinkSide = GameplayHelper.GetOppositeDirection((EOrthogonalDirection)prop_FixedSide.enumValueIndex);
+
+            Guid linkToNodeGuid = new(prop_LinkToNode.FindPropertyRelative("_guidString").stringValue);
+
+            LevelGrammarDefinition def = LevelGrammarDefinitionPropertyDrawer.Definition;
+
+            foreach (LevelGrammarNodeDefinition node in def.Nodes)
+            {
+                if (node.NodeGuid != linkToNodeGuid)
+                {
+                    continue;
+                }
+
+                foreach (RoomLinkData linkData in node.RoomLinkData)
+                {
+                    if (linkData.LinkToNode.Id != parentNode)
+                    {
+                        continue;
+                    }
+
+                    linkData.UseFixedSide = prop_UseFixedSide.boolValue;
+
+                    RoomLinkUpdateData updateData = new()
+                    {
+                        ParentNodeId = linkToNodeGuid,
+                        LinkToNodeId = parentNode,
+                        NewFixedSideEnum = oppositeLinkSide,
+                        NewFixedSide = prop_UseFixedSide.boolValue,
+                        NewLocked = prop_LockedByKey.boolValue,
+                        NewKeyIndex = prop_KeyIndex.intValue,
+                    };
+
+                    LevelGrammarDefinitionPropertyDrawer.AddRoomLinkDataForUpdate(updateData);
+
+                }
+
+            }
         }
 
         void DrawPropertyField(ref Rect contentRect, SerializedProperty property, GUIContent label, ref int numProperties)

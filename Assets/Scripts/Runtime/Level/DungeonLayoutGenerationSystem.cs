@@ -870,12 +870,25 @@ namespace JZK.Level
 
             //assign item rooms with item IDs
             List<Guid> itemRoomIds = layoutData.GetAllRoomsOfType(ERoomType.StandardItem);
-            foreach (Guid itemId in itemRoomIds)
+            foreach (Guid roomId in itemRoomIds)
             {
-                GenerationRoomData itemRoom = layoutData.Room_LUT[itemId];
+				Guid nodeId = genDataIdToNodeId_LUT[roomId];
+				LevelGrammarNodeDefinition node = grammar.Nodes_LUT[nodeId];
+                GenerationRoomData itemRoom = layoutData.Room_LUT[roomId];
+
                 itemRoom.SpawnItemIds.Clear();
-                ItemDefinition itemDef = ItemLoadSystem.Instance.GetRandomDefinition(random);
-                itemRoom.SpawnItemIds.Add(itemDef.Id);
+				foreach(ItemSpawnDataEntry entry in node.ItemSpawnData)
+				{
+					if(entry.UseFixedId)
+					{
+						itemRoom.SpawnItemIds.Add(entry.ItemId);
+					}
+					else
+					{
+                        ItemDefinition itemDef = ItemLoadSystem.Instance.GetRandomDefinition(random);
+                        itemRoom.SpawnItemIds.Add(itemDef.Id);
+                    }
+				}
             }
 
             float generationEndTime = Time.realtimeSinceStartup;

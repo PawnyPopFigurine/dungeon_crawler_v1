@@ -225,6 +225,12 @@ namespace JZK.Level
         [SerializeField] EOrthogonalDirection _fixedSide;
         public EOrthogonalDirection FixedSide => _fixedSide;
 
+        [SerializeField] bool _lockedByKey;
+        public bool LockedByKey => _lockedByKey;
+
+        [SerializeField] int _keyIndex;
+        public int KeyIndex => _keyIndex;
+
         [SerializeField] [HideInInspector]
         private string _parentNode;
         public string ParentNode
@@ -244,16 +250,11 @@ namespace JZK.Level
 #if UNITY_EDITOR
         public void RefreshForUpdateData(RoomLinkUpdateData updateData)
 		{
-            if(updateData.UpdateUseFixedSide)
-			{
-                _useFixedSide = updateData.NewFixedSide;
-			}
-
-            if(updateData.UpdateFixedSideEnum)
-			{
-                _fixedSide = updateData.NewFixedSideEnum;
-			}
-		}
+            _useFixedSide = updateData.NewFixedSide;
+            _fixedSide = updateData.NewFixedSideEnum;
+            _keyIndex = updateData.NewKeyIndex;
+            _lockedByKey = updateData.NewLocked;
+        }
 #endif
     }
 
@@ -262,10 +263,10 @@ namespace JZK.Level
     {
         public Guid ParentNodeId;
         public Guid LinkToNodeId;
-        public bool UpdateUseFixedSide;
         public bool NewFixedSide;
-        public bool UpdateFixedSideEnum;
         public EOrthogonalDirection NewFixedSideEnum;
+        public bool NewLocked;
+        public int NewKeyIndex;
     }
 
     [System.Serializable]

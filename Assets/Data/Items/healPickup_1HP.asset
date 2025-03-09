@@ -16,4 +16,5 @@ MonoBehaviour:
     _weighting: 10
     _id: healPickup_1HP
     _hideInGame: 0
+    _excludeFromRandom: 0
     _itemPrefab: {fileID: 8742438608701582673, guid: 6009e9ccbe581f84d8e45c85305d45bd, type: 3}

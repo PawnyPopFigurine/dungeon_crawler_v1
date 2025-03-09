@@ -358,9 +358,14 @@ namespace Levels
                     
                 case "_roomLinkData":
                     {
-                        int baseNum = 2;
-                        SerializedProperty prop_UseFixedCoords = property.FindPropertyRelative("_useFixedSide");
-                        if (prop_UseFixedCoords.boolValue)
+                        int baseNum = 3;
+                        SerializedProperty prop_UseFixedSide = property.FindPropertyRelative("_useFixedSide");
+                        if (prop_UseFixedSide.boolValue)
+                        {
+                            baseNum++;
+                        }
+                        SerializedProperty prop_LockedByKey = property.FindPropertyRelative("_lockedByKey");
+                        if (prop_LockedByKey.boolValue)
                         {
                             baseNum++;
                         }
