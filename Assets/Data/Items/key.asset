@@ -16,4 +16,5 @@ MonoBehaviour:
     _weighting: 0
     _id: key
     _hideInGame: 0
+    _excludeFromRandom: 1
     _itemPrefab: {fileID: 8742438608701582673, guid: 5b821af6c5cf569409282cfa3288d388, type: 3}

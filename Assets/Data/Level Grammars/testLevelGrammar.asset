@@ -40,6 +40,7 @@ MonoBehaviour:
         _useFixedSide: 0
         _fixedSide: 2
         _parentNode: cfda0ad4-31ed-4ce0-86bf-6e81c490fd77
+      _itemSpawnData: []
     - _nodeId: 1 - first combat room with ghost
       _guidString: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
       _useFixedId: 1
@@ -72,6 +73,7 @@ MonoBehaviour:
         _useFixedSide: 0
         _fixedSide: 0
         _parentNode: 3a35a23f-0fb2-49f0-8b93-e7e6f248905b
+      _itemSpawnData: []
     - _nodeId: 2 - second combat room
       _guidString: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
       _useFixedId: 0
@@ -104,6 +106,7 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 3
         _parentNode: ae74abf6-bbf7-4b53-b094-1e1b4fc9e8e9
+      _itemSpawnData: []
     - _nodeId: 3 - empty hallway
       _guidString: 139292dc-4281-4420-911e-35730707dc4c
       _useFixedId: 1
@@ -131,6 +134,7 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 2
         _parentNode: 139292dc-4281-4420-911e-35730707dc4c
+      _itemSpawnData: []
     - _nodeId: 4 - third combat room
       _guidString: 1a8b5446-6030-4138-a37f-d280bb78e345
       _useFixedId: 0
@@ -163,6 +167,7 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 3
         _parentNode: 1a8b5446-6030-4138-a37f-d280bb78e345
+      _itemSpawnData: []
     - _nodeId: 5 - end room
       _guidString: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
       _useFixedId: 0
@@ -185,6 +190,7 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 2
         _parentNode: c7cfbbfc-71cd-4b18-b3e6-1b24d4640c2a
+      _itemSpawnData: []
     - _nodeId: 2a - apple side room
       _guidString: db2fa0c3-5799-4440-922a-b8dd82549993
       _useFixedId: 0
@@ -210,6 +216,7 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 1
         _parentNode: db2fa0c3-5799-4440-922a-b8dd82549993
+      _itemSpawnData: []
     - _nodeId: 4a - item room
       _guidString: cf8be385-1254-4310-a56e-25681eeca15c
       _useFixedId: 0
@@ -232,3 +239,6 @@ MonoBehaviour:
         _useFixedSide: 1
         _fixedSide: 1
         _parentNode: cf8be385-1254-4310-a56e-25681eeca15c
+      _itemSpawnData:
+      - _useFixedId: 1
+        _itemId: 

@@ -35,6 +35,9 @@ namespace JZK.Gameplay
         List<string> _allIds = new();
         Dictionary<string, ItemDefinition> _definition_LUT = new();
 
+        List<ItemDefinition> _randomListItems = new();
+
+
         public ItemDefinition GetDefinition(string id)
         {
             if (_definition_LUT.ContainsKey(id))
@@ -47,26 +50,9 @@ namespace JZK.Gameplay
 
         public ItemDefinition GetRandomDefinition(System.Random random)
 		{
-            List<WeightedListItem> allDefs = new(_definition_LUT.Values);
+            List<WeightedListItem> allDefs = new(_randomListItems);
             return (ItemDefinition)GameplayHelper.GetWeightedListItem(allDefs, random);
 		}
-
-        public string GetRandomId(System.Random random)
-		{
-            return GetRandomDefinition(random).Id;
-		}
-
-        /*public string GetRandomItemId(System.Random random)
-		{
-            int idIndex = random.Next(0, _allIds.Count);
-            return _allIds[idIndex];
-		}
-
-        public ItemDefinition GetRandomDefinition(System.Random random)
-		{
-            string randomId = GetRandomItemId(random);
-            return GetDefinition(randomId);
-		}*/
 
 
         #region Load
@@ -93,6 +79,7 @@ namespace JZK.Gameplay
 
             _allIds.Clear();
             _definition_LUT.Clear();
+            _randomListItems.Clear();
 
             foreach (ItemDefinitionSO defSO in definitionSOs)
             {
@@ -103,6 +90,10 @@ namespace JZK.Gameplay
                 {
                     _allIds.Add(def.Id);
                     _definition_LUT.Add(def.Id, def);
+                    if(!def.ExcludeFromRandom)
+                    {
+                        _randomListItems.Add(def);
+                    }
                     Debug.Log("[ITEMLOAD] added definition with ID " + def.Id + " to LUT");
 
                     ItemPoolingSystem.Instance.CreatePoolFromDef(def);

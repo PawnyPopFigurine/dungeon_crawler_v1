@@ -81,22 +81,27 @@ namespace Levels
                 EditorGUI.indentLevel--;
             }
 
-            if(roomType == ERoomType.StandardCombat)
+            switch(roomType)
             {
-                SerializedProperty prop_FixedEnemySpawns = property.FindPropertyRelative("_fixedEnemySpawns");
-                DrawPropertyField(ref contentRect, prop_FixedEnemySpawns, new("Fixed Enemy Spawns"), ref numProperties);
+                case ERoomType.StandardCombat:
+                    SerializedProperty prop_FixedEnemySpawns = property.FindPropertyRelative("_fixedEnemySpawns");
+                    DrawPropertyField(ref contentRect, prop_FixedEnemySpawns, new("Fixed Enemy Spawns"), ref numProperties);
 
-                SerializedProperty prop_SpawnRandomEnemies = property.FindPropertyRelative("_spawnRandomEnemies");
-                bool spawnRandomEnemies = prop_SpawnRandomEnemies.boolValue;
-                DrawPropertyField(ref contentRect, prop_SpawnRandomEnemies, new("Spawn Random Enemies"), ref numProperties);
+                    SerializedProperty prop_SpawnRandomEnemies = property.FindPropertyRelative("_spawnRandomEnemies");
+                    bool spawnRandomEnemies = prop_SpawnRandomEnemies.boolValue;
+                    DrawPropertyField(ref contentRect, prop_SpawnRandomEnemies, new("Spawn Random Enemies"), ref numProperties);
 
-                if (spawnRandomEnemies)
-                {
-                    SerializedProperty prop_RandomEnemySpawnData = property.FindPropertyRelative("_randomEnemySpawnData");
-                    DrawPropertyField(ref contentRect, prop_RandomEnemySpawnData, new("Random Enemy Spawn Data"), ref numProperties);
-                }
+                    if (spawnRandomEnemies)
+                    {
+                        SerializedProperty prop_RandomEnemySpawnData = property.FindPropertyRelative("_randomEnemySpawnData");
+                        DrawPropertyField(ref contentRect, prop_RandomEnemySpawnData, new("Random Enemy Spawn Data"), ref numProperties);
+                    }
+                    break;
+                case ERoomType.StandardItem:
+                    SerializedProperty prop_ItemSpawns = property.FindPropertyRelative("_itemSpawnData");
+                    DrawPropertyField(ref contentRect, prop_ItemSpawns, new("Item Spawns"), ref numProperties);
+                    break;
             }
-
 
             SerializedProperty prop_RoomLinkData = property.FindPropertyRelative("_roomLinkData");
             DrawPropertyField(ref contentRect, prop_RoomLinkData, new("Link Data"), ref numProperties);
@@ -262,6 +267,30 @@ namespace Levels
                         }
                     }
                     break;
+                case "_itemSpawnData":
+                    lineCount = 2;
+                    if (property.isExpanded)
+                    {
+                        lineCount += 1;
+                        lineCount += property.arraySize;
+
+                        if (property.arraySize == 0)
+                        {
+                            lineCount += 1;
+                        }
+                        else
+                        {
+                            for (int arrayIndex = 0; arrayIndex < property.arraySize; arrayIndex++)
+                            {
+                                SerializedProperty prop_ArrayElement = property.GetArrayElementAtIndex(arrayIndex);
+
+                                int subLineCount = GetLineCountForProperty(property.name, prop_ArrayElement);
+
+                                lineCount += subLineCount;
+                            }
+                        }
+                    }
+                    break;
             }
 
             return lineCount;
@@ -331,6 +360,16 @@ namespace Levels
                     {
                         int baseNum = 2;
                         SerializedProperty prop_UseFixedCoords = property.FindPropertyRelative("_useFixedSide");
+                        if (prop_UseFixedCoords.boolValue)
+                        {
+                            baseNum++;
+                        }
+                        return baseNum;
+                    }
+                case "_itemSpawnData":
+                    {
+                        int baseNum = 1;
+                        SerializedProperty prop_UseFixedCoords = property.FindPropertyRelative("_useFixedId");
                         if (prop_UseFixedCoords.boolValue)
                         {
                             baseNum++;

@@ -21,6 +21,9 @@ namespace JZK.Gameplay
         [SerializeField] bool _hideInGame;
         public bool HideInGame => _hideInGame;
 
+        [SerializeField] bool _excludeFromRandom;
+        public bool ExcludeFromRandom => _excludeFromRandom;
+
         [SerializeField] GameObject _itemPrefab;
         public GameObject ItemPrefab => _itemPrefab;
 
@@ -36,6 +39,7 @@ namespace JZK.Gameplay
                 _id = _id,
                 _hideInGame = _hideInGame,
                 _itemPrefab = _itemPrefab,
+                _excludeFromRandom = _excludeFromRandom,
             };
 
             copy.SetWeighting(Weighting);

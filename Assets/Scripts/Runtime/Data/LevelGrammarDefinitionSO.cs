@@ -146,6 +146,9 @@ namespace JZK.Level
 
         [SerializeField] List<RoomLinkData> _roomLinkData = new();
         public List<RoomLinkData> RoomLinkData => _roomLinkData;
+
+        [SerializeField] List<ItemSpawnDataEntry> _itemSpawnData = new();
+        public List<ItemSpawnDataEntry > ItemSpawnData => _itemSpawnData;
     }
 
     [System.Serializable]
@@ -159,6 +162,16 @@ namespace JZK.Level
 
         [SerializeField] Vector2Int _fixedCoords;
         public Vector2Int FixedCoords => _fixedCoords;
+    }
+
+    [System.Serializable]
+    public class ItemSpawnDataEntry
+    {
+        [SerializeField] bool _useFixedId;
+        public bool UseFixedId => _useFixedId;
+
+        [SerializeField] string _itemId;
+        public string ItemId => _itemId;
     }
 
     [System.Serializable]
