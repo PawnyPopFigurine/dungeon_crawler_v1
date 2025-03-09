@@ -11,6 +11,9 @@ namespace JZK.Gameplay
 
         bool _initialised;
 
+        int _itemIndex;
+        public int ItemIndex => _itemIndex;
+
         public void Initialise()
         {
             if (_initialised)
@@ -48,5 +51,10 @@ namespace JZK.Gameplay
 		{
             ItemPoolingSystem.Instance.ClearController(this);
 		}
+
+        public void SetItemIndex(int itemIndex)
+        {
+            _itemIndex = itemIndex;
+        }
     }
 }

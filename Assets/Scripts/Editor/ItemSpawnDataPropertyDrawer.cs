@@ -36,6 +36,9 @@ namespace Levels
                 EditorGUI.indentLevel++;
                 SerializedProperty prop_ItemId = property.FindPropertyRelative("_itemId");
                 DrawPropertyField(ref contentRect, prop_ItemId, new("Item ID"), ref numProperties);
+
+                SerializedProperty prop_ItemIndex = property.FindPropertyRelative("_itemIndex");
+                DrawPropertyField(ref contentRect, prop_ItemIndex, new("Item Index"), ref numProperties);
                 EditorGUI.indentLevel--;
             }
 

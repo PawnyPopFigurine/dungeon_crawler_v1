@@ -13,7 +13,7 @@ namespace JZK.Gameplay
             if (collision.tag == "PlayerTrigger")
             {
                 //trigger some key logic here
-
+                GameplaySystem.Instance.OnKeyCollected(_parentController.ItemIndex);
                 _parentController.OnCollected();
             }
         }

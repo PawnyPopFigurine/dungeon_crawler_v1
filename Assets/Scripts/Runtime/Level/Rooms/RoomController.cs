@@ -434,13 +434,34 @@ namespace JZK.Gameplay
 			_hasClearedRoom = true;
 		}
 
-		public void OpenAllDoors()
+		public void OnKeyCollected(int keyIndex)
+		{
+			foreach(RoomDoor door in _doors)
+			{
+				if(!door.DoorEnabled)
+				{
+					continue;
+				}
+
+				door.OnKeyCollected(keyIndex);
+			}
+		}
+
+		public void OpenAllDoors(bool includeLocked = false)
 		{
 			foreach (RoomDoor door in _doors)
 			{
 				if (!door.DoorEnabled)
 				{
 					continue;
+				}
+
+				if(door.LockedByKey && !includeLocked)
+				{
+					if(!GameplaySystem.Instance.HasKey(door.KeyIndex))
+					{
+                        continue;
+                    }
 				}
 
 				door.SetIsOpen(true);

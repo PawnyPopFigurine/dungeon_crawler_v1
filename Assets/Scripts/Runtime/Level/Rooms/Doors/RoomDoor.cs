@@ -34,6 +34,11 @@ namespace JZK.Gameplay
 		bool _isLinked = false;
 		public bool IsLinked => _isLinked;
 
+		bool _lockedByKey;
+		public bool LockedByKey => _lockedByKey;
+
+		int _keyIndex = -1;
+		public int KeyIndex => _keyIndex;
 
         public void Initialise()
 		{
@@ -66,6 +71,12 @@ namespace JZK.Gameplay
 			{
 				_corridorGO.SetActive(enabled);
 			}
+		}
+
+		public void SetKeyData(bool lockedByKey, int keyindex)
+		{
+			_lockedByKey = lockedByKey;
+			_keyIndex = keyindex;
 		}
 
 		public void SetIsOpen(bool isOpen)
@@ -123,6 +134,23 @@ namespace JZK.Gameplay
 		{
 			_openSprite = openSprite;
 			_shutSprite = shutSprite;
+		}
+
+		public void OnKeyCollected(int keyIndex)
+		{
+			if(!_lockedByKey)
+			{
+				return;
+			}
+
+			if(keyIndex != _keyIndex)
+			{
+				return;
+			}
+
+			Debug.Log("[DOOR] player collected key " + keyIndex + " - opening door");
+
+			SetIsOpen(true);
 		}
 	}
 }

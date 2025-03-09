@@ -196,9 +196,9 @@ namespace JZK.Framework
 				RoomController controller = _generationData_Controller_LUT[id];
 				GenerationRoomData roomData = data.Room_LUT[id];
 
-				foreach(string itemId in roomData.SpawnItemIds)
+				foreach(ItemSpawnData itemSpawnData in roomData.ItemSpawnData)
 				{
-					if(!ItemPoolingSystem.Instance.RequestController(itemId, out ItemController itemController))
+					if(!ItemPoolingSystem.Instance.RequestController(itemSpawnData.ItemId, out ItemController itemController))
 					{
 						//complainHere
 						continue;
@@ -206,6 +206,7 @@ namespace JZK.Framework
 
 					ItemSpawnPoint spawnPoint = controller.ItemSpawnPoint;
 
+					itemController.SetItemIndex(itemSpawnData.ItemIndex);
 					itemController.transform.parent = spawnPoint.transform;
 					itemController.transform.localPosition = Vector3.zero;
 					itemController.gameObject.SetActive(true);
@@ -310,12 +311,10 @@ namespace JZK.Framework
 					Debug.LogError("[GENERATION] DOOR DATA HAS INVALID INDEX " + doorData.IndexInRoom + " FOR ROOM " + _generationData_Controller_LUT[doorData.ParentRoomId].Id);
 					continue;
 				}
-				/*if(!_generationData_Controller_LUT[doorData.ParentRoomId].Doors.ContainsKey(doorData.IndexInRoom))
-				{
 
-				}*/
 				RoomDoor door = _generationData_Controller_LUT[doorData.ParentRoomId].Doors[doorData.IndexInRoom];
 				door.SetDoorEnabled(doorData.Enabled);
+				door.SetKeyData(doorData.LockedByKey, doorData.KeyIndex);
 				Guid linkDoorId = doorData.LinkDoorId;
 				if (linkDoorId != Guid.Empty)
 				{

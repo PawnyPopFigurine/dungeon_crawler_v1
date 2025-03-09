@@ -73,7 +73,14 @@ namespace JZK.Level
 		}
 	}
 
-	[System.Serializable]
+    [System.Serializable]
+    public class ItemSpawnData
+    {
+        public string ItemId;
+        public int ItemIndex;
+    }
+
+    [System.Serializable]
 	public class GenerationRoomData
 	{
 		//TODO: override theme enum
@@ -90,7 +97,7 @@ namespace JZK.Level
 		public List<Vector3Int> AllFloorPositions = new();
 		public List<Vector3Int> AllFloorEdgePositions = new();
 		public List<List<Vector3Int>> BSPDividedFloorPositions = new();
-		public List<string> SpawnItemIds = new();
+		public List<ItemSpawnData> ItemSpawnData = new();
 		public ELevelTheme OverrideRoomTheme;
 		public Guid GrammarNodeId = Guid.Empty;
 
@@ -323,6 +330,8 @@ namespace JZK.Level
 		public bool Enabled;
 		public Guid ParentRoomId;
 		public int IndexInRoom;
+		public bool LockedByKey;
+		public int KeyIndex = -1;
 
 
 		public void LinkToDoor(GenerationDoorData newDestination, bool updateLinkingDoor = true)
@@ -355,8 +364,6 @@ namespace JZK.Level
 	[System.Serializable]
 	public class GenerationNodeLinkData
 	{
-		/*public Guid OutwardNodeId;
-		public Guid InwardNodeId;*/
 		public Guid NodeID;
 
 		public Dictionary<Guid, OuterLink> OuterLink_LUT = new();
@@ -368,7 +375,10 @@ namespace JZK.Level
 			public EOrthogonalDirection FixedDirection = EOrthogonalDirection.Invalid;
 			public List<EOrthogonalDirection> PossibleDirections = new();
 
-			public void FixLinkDirection(EOrthogonalDirection direction, Dictionary<Guid, GenerationNodeLinkData> nodeLinks_LUT)
+            public bool LockedByKey;
+            public int KeyIndex;
+
+            public void FixLinkDirection(EOrthogonalDirection direction, Dictionary<Guid, GenerationNodeLinkData> nodeLinks_LUT)
 			{
 				FixedDirection = direction;
 
@@ -478,6 +488,10 @@ namespace JZK.Level
 					GenerationNodeLinkData.OuterLink outerLinkData = new();
 					outerLinkData.NodeID = linkToNode;
 					outerLinkData.FromNodeID = linkData.NodeID;
+
+					outerLinkData.LockedByKey = roomLinkDef.LockedByKey;
+					outerLinkData.KeyIndex = roomLinkDef.KeyIndex;
+
 					if(roomLinkDef.UseFixedSide)
 					{
 						outerLinkData.FixedDirection = roomLinkDef.FixedSide;
@@ -701,6 +715,12 @@ namespace JZK.Level
 						thisRoomDoor.Enabled = true;
 						otherRoomDoor.Enabled = true;
 
+						thisRoomDoor.LockedByKey = outerLink.LockedByKey;
+						thisRoomDoor.KeyIndex = outerLink.KeyIndex;
+
+						otherRoomDoor.LockedByKey = outerLink.LockedByKey;
+						otherRoomDoor.KeyIndex = outerLink.KeyIndex;
+
 						(Guid, Guid) successLink = new(linkToNodeId, roomNode.NodeGuid);
 						successfulLinks.Add(successLink);
 
@@ -876,17 +896,27 @@ namespace JZK.Level
 				LevelGrammarNodeDefinition node = grammar.Nodes_LUT[nodeId];
                 GenerationRoomData itemRoom = layoutData.Room_LUT[roomId];
 
-                itemRoom.SpawnItemIds.Clear();
+                itemRoom.ItemSpawnData.Clear();
 				foreach(ItemSpawnDataEntry entry in node.ItemSpawnData)
 				{
 					if(entry.UseFixedId)
 					{
-						itemRoom.SpawnItemIds.Add(entry.ItemId);
+						itemRoom.ItemSpawnData.Add(
+							new()
+							{
+								ItemId = entry.ItemId,
+								ItemIndex = entry.ItemIndex
+                            }
+							);
 					}
 					else
 					{
                         ItemDefinition itemDef = ItemLoadSystem.Instance.GetRandomDefinition(random);
-                        itemRoom.SpawnItemIds.Add(itemDef.Id);
+                        itemRoom.ItemSpawnData.Add(new()
+						{
+							ItemId = itemDef.Id,
+							ItemIndex = -1,
+						});
                     }
 				}
             }
@@ -1275,9 +1305,13 @@ namespace JZK.Level
 			foreach(Guid itemId in itemRoomIds)
 			{
 				GenerationRoomData itemRoom = layoutData.Room_LUT[itemId];
-				itemRoom.SpawnItemIds.Clear();
+				itemRoom.ItemSpawnData.Clear();
 				ItemDefinition itemDef = ItemLoadSystem.Instance.GetRandomDefinition(random);
-				itemRoom.SpawnItemIds.Add(itemDef.Id);
+				itemRoom.ItemSpawnData.Add(new()
+				{
+					ItemId = itemDef.Id,
+					ItemIndex = -1,
+				});
 			}
 
 			float generationEndTime = Time.realtimeSinceStartup;

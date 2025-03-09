@@ -367,7 +367,7 @@ namespace Levels
                         SerializedProperty prop_LockedByKey = property.FindPropertyRelative("_lockedByKey");
                         if (prop_LockedByKey.boolValue)
                         {
-                            baseNum++;
+                            baseNum += 2;
                         }
                         return baseNum;
                     }

@@ -172,6 +172,9 @@ namespace JZK.Level
 
         [SerializeField] string _itemId;
         public string ItemId => _itemId;
+
+        [SerializeField] int _itemIndex;
+        public int ItemIndex => _itemIndex;
     }
 
     [System.Serializable]

@@ -21,6 +21,25 @@ namespace JZK.Gameplay
 
         private List<RoomController> _allActiveRooms = new List<RoomController>();
 
+        private List<int> _foundKeyIndexes = new();
+
+        public bool HasKey(int keyIndex)
+        {
+            return _foundKeyIndexes.Contains(keyIndex);
+        }
+
+        public void OnKeyCollected(int keyIndex)
+        {
+            foreach (RoomController room in _allActiveRooms)
+            {
+                room.OnKeyCollected(keyIndex);
+            }
+
+            _foundKeyIndexes.Add(keyIndex);
+        }
+
+    
+
         public void Debug_SetActiveRoomList(List<RoomController> roomList)
         {
             _allActiveRooms.Clear();
@@ -54,18 +73,9 @@ namespace JZK.Gameplay
                 _currentPlayerOccupiedRoom.ClearRoom();
 
                 OpenAllRoomDoors();
-
-                /*if(SceneInit.CurrentSceneInit is PlayerTestSceneInit playerSceneInit)
-				{
-                    playerSceneInit.OpenAllRoomDoors();
-				}*/
-
-                /*if(SceneInit.CurrentSceneInit is LayoutGenerationTestSceneInit layoutGenerationSceneInit)
-                {
-                    layoutGenerationSceneInit.OpenAllDoors();
-                }*/
             }
         }
+
 
         public void OpenAllRoomDoors()
         {
@@ -83,6 +93,8 @@ namespace JZK.Gameplay
 			{
                 layoutInit.RestartLevel();
 			}
+
+            _foundKeyIndexes.Clear();
 		}
     }
 }
