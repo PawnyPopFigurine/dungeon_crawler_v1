@@ -447,7 +447,9 @@ namespace JZK.Level
 
             LayoutData layoutData = new();
 
-			layoutData.Theme = grammar.BaseLevelTheme;
+			layoutData.Theme = grammar.BaseLevelTheme == ELevelTheme.None ? GameplayHelper.GetRandomLevelTheme(random) : grammar.BaseLevelTheme;
+
+			
 
 			Dictionary<Guid, GenerationNodeLinkData> nodeLinks_LUT = new();
 

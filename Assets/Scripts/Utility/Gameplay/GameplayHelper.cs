@@ -2,6 +2,7 @@ using JZK.Level;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace JZK.Gameplay
 {
@@ -31,6 +32,11 @@ namespace JZK.Gameplay
 
     public static class GameplayHelper
     {
+        public static ELevelTheme GetRandomLevelTheme(System.Random random)
+		{
+            return (ELevelTheme)random.Next(1, Enum.GetValues(typeof(ELevelTheme)).Length);
+        }
+
 		public static Vector2 INVALID_PLAYER_POS = new(-1, -1);
 
         public static EOrthogonalDirection GetRandomDirection(System.Random random)
