@@ -457,8 +457,11 @@ namespace JZK.Level
 			foreach (LevelGrammarNodeDefinition roomNode in grammar.Nodes)
 			{
 				GenerationRoomData roomData = new GenerationRoomData();
-				roomData.Initialise(layoutData, -1, false);
+				roomData.Initialise(layoutData, int.MaxValue, false);	//assign crit path index as max value here for BFS function later
 				roomData.GrammarNodeId = roomNode.NodeGuid;
+				roomData.CriticalPathIndex = roomNode.CritPathIndex;
+
+				Debug.Log("[GRAMMARGEN] node " + roomNode.Id + " has crit path index " + roomData.CriticalPathIndex);
 
 				if (roomNode.OverrideTheme != ELevelTheme.None && roomNode.UseOverrideTheme)
 				{
@@ -504,6 +507,8 @@ namespace JZK.Level
 
 				nodeLinks_LUT.Add(roomNode.NodeGuid, linkData);
 			}
+
+			
 
 			//Fix linking directions of all rooms linking into one with a preset definition, so we know random prefabs we find will definitely
 			//	A) be able to link and
@@ -659,6 +664,7 @@ namespace JZK.Level
 				else
 				{
 					roomData.SetDefinition(roomDef);
+					Debug.Log("[GRAMMARGEN] set room def for node " + roomNode.Id + " type " + roomType.ToString() + " as " + roomDef.Id);
 				}
 			}
 

@@ -35,6 +35,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1da42b014a4fe5744a04965559fbe2a7
+    m_Address: Assets/Prefabs/Environment/Rooms/Empty/Empty_RectRoom_10x14.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2a70759c393750a46a614e84dd03cf1f
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/BlackTomatoProjectile.prefab
     m_ReadOnly: 0
@@ -70,6 +76,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88d78f7c7958d784db1fb6f668854a70
+    m_Address: Assets/Data/Rooms/Empty/Empty_RectRoom_10x14.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ba6688b6b8465e40bcfac76d5cf82a3
     m_Address: Assets/Data/Items/healPickup_1HP.asset

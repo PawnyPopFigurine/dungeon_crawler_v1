@@ -56,6 +56,38 @@ namespace JZK.Level
             {
                 _nodes_LUT.Add(node.NodeGuid, node);
             }
+
+            InitialiseCritPathIndexes();
+        }
+
+        void InitialiseCritPathIndexes()
+        {
+            //work out critical path positions of rooms
+            Queue<LevelGrammarNodeDefinition> bfs_NodeQueue = new();
+            foreach (LevelGrammarNodeDefinition roomNode in _nodes)
+            {
+                if (roomNode.UseFixedRoomType && roomNode.FixedRoomType == ERoomType.Start)
+                {
+                    roomNode.SetCritPathIndex(0);
+                    bfs_NodeQueue.Enqueue(roomNode);
+                }
+            }
+
+            while (bfs_NodeQueue.Count > 0)
+            {
+                LevelGrammarNodeDefinition currentRoom = bfs_NodeQueue.Dequeue();
+                
+                foreach(RoomLinkData linkData in currentRoom.RoomLinkData)
+                {
+                    Guid neighbourRoomId = linkData.LinkToNode.Id;
+                    LevelGrammarNodeDefinition neighbourRoom = _nodes_LUT[neighbourRoomId];
+                    if (neighbourRoom.CritPathIndex > currentRoom.CritPathIndex + 1)
+                    {
+                        neighbourRoom.SetCritPathIndex(currentRoom.CritPathIndex + 1);
+                        bfs_NodeQueue.Enqueue(neighbourRoom);
+                    }
+                }
+            }
         }
 
         public RoomLinkData GetOppositeLinkData(RoomLinkData inData, LevelGrammarNodeDefinition inDataParent)
@@ -149,6 +181,14 @@ namespace JZK.Level
 
         [SerializeField] List<ItemSpawnDataEntry> _itemSpawnData = new();
         public List<ItemSpawnDataEntry > ItemSpawnData => _itemSpawnData;
+
+        int _critPathIndex = int.MaxValue;
+        public int CritPathIndex => _critPathIndex;
+
+        public void SetCritPathIndex(int index)
+        {
+            _critPathIndex = index;
+        }
     }
 
     [System.Serializable]

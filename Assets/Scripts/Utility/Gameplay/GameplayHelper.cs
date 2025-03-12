@@ -158,8 +158,9 @@ namespace JZK.Gameplay
 
         public static ERoomType GetRandomRoomTypeForGrammarNode(System.Random random)
         {
-            int typeIndex = random.Next(ROOM_TYPES_FOR_RANDOM_NODES.Count);
-            return ROOM_TYPES_FOR_RANDOM_NODES[typeIndex];
+            /*int typeIndex = random.Next(ROOM_TYPES_FOR_RANDOM_NODES.Count);
+            return ROOM_TYPES_FOR_RANDOM_NODES[typeIndex];*/
+            return ERoomType.StandardCombat;
         }
 
         public static List<EOrthogonalDirection> GetFourDirections()

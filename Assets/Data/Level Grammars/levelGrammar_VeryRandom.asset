@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _definition:
     _id: levelGrammar_VeryRandom
-    _useFixedSeed: 0
-    _fixedSeed: 0
+    _useFixedSeed: 1
+    _fixedSeed: 333
     _baseLevelTheme: 0
     _nodes:
     - _nodeId: 0 - start
