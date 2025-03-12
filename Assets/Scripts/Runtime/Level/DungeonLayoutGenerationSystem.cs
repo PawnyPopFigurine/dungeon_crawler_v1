@@ -434,6 +434,9 @@ namespace JZK.Level
 		const int SET_ENEMY_ATTEMPTS = 200;
 		const int SET_ENEMY_POS_ATTEMPTS = 500;
 
+		const int GRAMMARGEN_SCALING_ENEMY_POINTS_START = 10;
+		const float GRAMMARGEN_SCALING_ENEMY_POINTS_INCREMENT = 2f;
+
 		public LayoutData GenerateDungeonLayout(LevelGrammarDefinition grammar, System.Random random, out bool generationSuccess)
 		{
             float generationStartTime = Time.realtimeSinceStartup;
@@ -448,8 +451,6 @@ namespace JZK.Level
             LayoutData layoutData = new();
 
 			layoutData.Theme = grammar.BaseLevelTheme == ELevelTheme.None ? GameplayHelper.GetRandomLevelTheme(random) : grammar.BaseLevelTheme;
-
-			
 
 			Dictionary<Guid, GenerationNodeLinkData> nodeLinks_LUT = new();
 
@@ -508,8 +509,6 @@ namespace JZK.Level
 				nodeLinks_LUT.Add(roomNode.NodeGuid, linkData);
 			}
 
-			
-
 			//Fix linking directions of all rooms linking into one with a preset definition, so we know random prefabs we find will definitely
 			//	A) be able to link and
 			//	B) want to link the right way
@@ -523,22 +522,17 @@ namespace JZK.Level
 				{
 					RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetDefinition(roomData.PrefabId);
 					RoomController linkToPrefabController = roomDef.PrefabController.GetComponent<RoomController>();
-
 					List<Guid> shuffledLinkNodeIds = linkData.OuterLink_LUT.Keys.OrderBy(x => random.NextDouble()).ToList();
-
 					List<RoomDoor> availableDoors = new(linkToPrefabController.Doors);
-
 					foreach(Guid linkToNodeId in shuffledLinkNodeIds)
 					{
 						GenerationNodeLinkData.OuterLink outerLink = linkData.OuterLink_LUT[linkToNodeId];
-
 						bool fixedLinkSuccess = false;
 
 						//if outer link has fixed direction, still need to find available door to assign here
 						if (outerLink.FixedDirection != EOrthogonalDirection.Invalid)
 						{
 							List<RoomDoor> availableDoorsOnFixedSide = new();
-
 							List<RoomDoor> doorListOnFixedSide = linkToPrefabController.GetDoorListForSide(outerLink.FixedDirection);
 							if(doorListOnFixedSide.Count == 0)
 							{
@@ -570,7 +564,6 @@ namespace JZK.Level
 									EOrthogonalDirection outerSetDirection = roomDoor.SideOfRoom;
 									outerLink.FixLinkDirection(outerSetDirection, nodeLinks_LUT);
 									availableDoors.Remove(roomDoor);
-
 									fixedLinkSuccess = true;
 								}
 							}
@@ -672,22 +665,15 @@ namespace JZK.Level
 			foreach (Guid linkDataId in nodeLinks_LUT.Keys)
 			{
 				GenerationNodeLinkData linkData = nodeLinks_LUT[linkDataId];
-
 				LevelGrammarNodeDefinition roomNode = grammar.Nodes_LUT[linkData.NodeID];
 				Guid roomDataId = nodeIdToGenDataId_LUT[linkData.NodeID];
-
-
 				GenerationRoomData roomData = layoutData.Room_LUT[roomDataId];
-
 				foreach (Guid linkToNodeId in linkData.OuterLink_LUT.Keys)
 				{
 					GenerationNodeLinkData.OuterLink outerLink = linkData.OuterLink_LUT[linkToNodeId];
-
 					Guid linkToRoomGuid = nodeIdToGenDataId_LUT[linkToNodeId];
 					GenerationRoomData linkToRoomData = layoutData.Room_LUT[linkToRoomGuid];
-
 					LevelGrammarNodeDefinition linkToNode = grammar.Nodes_LUT[linkToNodeId];
-
 
 					bool identicalLinkFound = false;
 
@@ -810,17 +796,27 @@ namespace JZK.Level
 					}
 				}
 
+				bool spawnRandomEnemies = node.SpawnRandomEnemies;
+				if(!spawnRandomEnemies && node.FixedEnemySpawns.Count == 0)
+				{
+					spawnRandomEnemies = true;
+				}
+
 				//Random enemy spawns
-				if(node.SpawnRandomEnemies)
+				if(spawnRandomEnemies)
 				{
 					int roomPointsToSpend = node.RandomEnemySpawnData.DifficultyPoints;
+					if(roomPointsToSpend == 0)
+					{
+						roomPointsToSpend = GRAMMARGEN_SCALING_ENEMY_POINTS_START + (int)(node.CritPathIndex * GRAMMARGEN_SCALING_ENEMY_POINTS_INCREMENT);
+					}
 
 					Debug.Log("[ENEMYGEN] have " +
 					roomPointsToSpend.ToString() + " enemy points for room with index " + roomData.CriticalPathIndex);
 
-					ELevelTheme theme = (node.OverrideTheme != ELevelTheme.None && node.UseOverrideTheme) ? node.OverrideTheme : grammar.BaseLevelTheme;
+					ELevelTheme theme = (node.OverrideTheme != ELevelTheme.None && node.UseOverrideTheme) ? node.OverrideTheme : layoutData.Theme;
 
-					List<EnemyDefinition> roomEnemyPool = GetAvailableEnemiesForRandomNodeSpawn(node.RandomEnemySpawnData, theme);
+					List<EnemyDefinition> roomEnemyPool = GetAvailableEnemiesForRandomNodeSpawn(node.RandomEnemySpawnData, theme, roomPointsToSpend);
 
 					for (int setEnemyAttempt = 0; setEnemyAttempt < SET_ENEMY_ATTEMPTS; ++setEnemyAttempt)
 					{
@@ -1351,7 +1347,7 @@ namespace JZK.Level
 			}
 		}
 
-		List<EnemyDefinition> GetAvailableEnemiesForRandomNodeSpawn(RandomEnemySpawnData spawnData, ELevelTheme roomTheme)
+		List<EnemyDefinition> GetAvailableEnemiesForRandomNodeSpawn(RandomEnemySpawnData spawnData, ELevelTheme roomTheme, int difficultyPoints)
 		{
 			List<EnemyDefinition> validDefs = new();
 
@@ -1386,7 +1382,7 @@ namespace JZK.Level
 			List<EnemyDefinition> validCache = new(validDefs);
 			foreach(EnemyDefinition def in validCache)
 			{
-				if(def.DifficultyPoints > spawnData.DifficultyPoints)
+				if(def.DifficultyPoints > difficultyPoints)
 				{
 					validDefs.Remove(def);
 				}

@@ -15,7 +15,7 @@ MonoBehaviour:
   _definition:
     _id: levelGrammar_VeryRandom
     _useFixedSeed: 1
-    _fixedSeed: 333
+    _fixedSeed: 1111
     _baseLevelTheme: 0
     _nodes:
     - _nodeId: 0 - start
@@ -73,7 +73,7 @@ MonoBehaviour:
       _useFixedId: 0
       _fixedId: 
       _useFixedRoomType: 0
-      _fixedRoomType: 4
+      _fixedRoomType: 1
       _useOverrideTheme: 0
       _overrideTheme: 0
       _fixedEnemySpawns: []
