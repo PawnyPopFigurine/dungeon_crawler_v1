@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 366be871682d8744894e1ee153c8ebdb, type: 3}
+  m_Name: bat_Follow_Var1
+  m_EditorClassIdentifier: 
+  _definition:
+    _weighting: 2
+    _id: bat_Follow_Var1
+    _hideInGame: 0
+    _enemyPrefab: {fileID: 7768730045968935509, guid: 3ac2f00224cd3a245a6952112b47b3b5, type: 3}
+    _difficultyPoints: 10
+    _theme: 0
+    _maxPerRoom: 0
+    _maxPerLevel: 0
