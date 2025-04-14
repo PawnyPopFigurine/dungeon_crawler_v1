@@ -4,6 +4,7 @@ using UnityEngine;
 using JZK.Gameplay;
 using System;
 using Unity.VisualScripting;
+using Unity.Collections;
 
 namespace JZK.Level
 {
@@ -126,7 +127,7 @@ namespace JZK.Level
         [SerializeField] string _nodeId;
         public string Id => _nodeId;
 
-        [SerializeField][HideInInspector] string _guidString = Guid.NewGuid().ToString();
+        [SerializeField][ReadOnly] string _guidString = Guid.NewGuid().ToString();
         public Guid NodeGuid => string.IsNullOrEmpty(_guidString) ? Guid.Empty : Guid.Parse(_guidString);
 
 #if UNITY_EDITOR

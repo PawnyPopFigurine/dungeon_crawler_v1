@@ -457,10 +457,10 @@ MonoBehaviour:
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
   _useDebugSeed: 1
-  _debugSeed: 649
+  _debugSeed: 21
   _printDebug: 0
   _generationMode: 2
-  _grammarDef: {fileID: 11400000, guid: 0b45b297f2fafbb4d99a1f267c0b5e0f, type: 2}
+  _grammarDef: {fileID: 11400000, guid: fce9d059678357f45b8569cf1b2651c7, type: 2}
   _settings:
     Seed: 0
     Theme: 2

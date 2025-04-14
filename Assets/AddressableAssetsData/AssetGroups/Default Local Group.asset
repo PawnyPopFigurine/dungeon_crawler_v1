@@ -148,6 +148,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fce9d059678357f45b8569cf1b2651c7
+    m_Address: Assets/Data/Level Grammars/Evaluation/splitFork.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 37ffdec0b092d5c4da8db0587f413deb, type: 2}
   m_SchemaSet:

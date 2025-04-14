@@ -19,8 +19,6 @@ namespace JZK.Level
         public static Dictionary<Guid, string> LevelGrammarNodeGuidToId_LUT => _levelGrammarNodeGuidToId_LUT;
         public static Dictionary<string, Guid> LevelGrammarNodeIdToGuid_LUT => _levelGrammarNodeIdToGuid_LUT;
 
-        public bool HelloWorld;
-
         static List<RoomLinkUpdateData> _updateData = new();
 
         
