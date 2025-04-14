@@ -106,7 +106,7 @@ MonoBehaviour:
         _parentNode: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
       - _linkToNode:
           _guidString: 330421ac-d0d6-408c-bbab-21c2af9b4bea
-        _useFixedSide: 0
+        _useFixedSide: 1
         _fixedSide: 0
         _lockedByKey: 0
         _keyIndex: 0
@@ -131,8 +131,8 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
-        _useFixedSide: 0
-        _fixedSide: 0
+        _useFixedSide: 1
+        _fixedSide: 2
         _lockedByKey: 0
         _keyIndex: 0
         _parentNode: 330421ac-d0d6-408c-bbab-21c2af9b4bea
@@ -236,8 +236,8 @@ MonoBehaviour:
         _parentNode: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
       - _linkToNode:
           _guidString: 41a200a1-6790-419e-8d33-09dd50dbc39b
-        _useFixedSide: 0
-        _fixedSide: 0
+        _useFixedSide: 1
+        _fixedSide: 2
         _lockedByKey: 0
         _keyIndex: 0
         _parentNode: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
@@ -268,7 +268,7 @@ MonoBehaviour:
       _roomLinkData:
       - _linkToNode:
           _guidString: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
-        _useFixedSide: 0
+        _useFixedSide: 1
         _fixedSide: 0
         _lockedByKey: 0
         _keyIndex: 0
