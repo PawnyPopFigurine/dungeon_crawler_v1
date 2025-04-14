@@ -59,6 +59,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - item_definition
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d3edc91abed6bc4e974c576068c48e9
+    m_Address: Assets/Data/Rooms/Empty/Empty_8_Shape_Room_12x30.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6ac4b13e96268dc45aa3283a41a44581
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/SnakeProjectile.prefab
     m_ReadOnly: 0
@@ -117,6 +123,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - theme_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd20d5a39a99985448b966e30e29553c
+    m_Address: Assets/Prefabs/Environment/Rooms/Empty/Empty_8_Shape_Room_12x30.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df3c36d64fd87924695d981f2af72839
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/GhostProjectile.prefab
