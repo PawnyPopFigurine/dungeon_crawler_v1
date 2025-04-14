@@ -114,7 +114,7 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 8
+        _difficultyPoints: 5
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 02000000
@@ -139,7 +139,7 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 8
+        _difficultyPoints: 5
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 02000000
@@ -164,7 +164,7 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 8
+        _difficultyPoints: 5
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 02000000
@@ -224,7 +224,7 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 8
+        _difficultyPoints: 5
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 02000000
@@ -249,7 +249,7 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 8
+        _difficultyPoints: 12
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 01000000
@@ -281,7 +281,7 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 8
+        _difficultyPoints: 16
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 01000000
@@ -313,7 +313,7 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 8
+        _difficultyPoints: 20
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 01000000
