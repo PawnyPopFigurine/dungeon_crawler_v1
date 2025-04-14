@@ -836,6 +836,12 @@ namespace JZK.Level
 							}
 						}
 
+						if(defsLeftForPoints.Count == 0)
+						{
+                            Debug.Log("[ENEMYGEN] spent all enemy points for room " + roomData.Id.ToString() + " after " + setEnemyAttempt.ToString() + " attempts");
+                            break;
+                        }
+
 						List<WeightedListItem> listItems = new();
 						foreach (EnemyDefinition enemyDef in defsLeftForPoints)
 						{

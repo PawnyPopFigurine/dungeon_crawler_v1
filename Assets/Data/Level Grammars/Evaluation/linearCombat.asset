@@ -1,0 +1,338 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3fde8c3adbf8c48a248544e2a78ce7, type: 3}
+  m_Name: linearCombat
+  m_EditorClassIdentifier: 
+  _definition:
+    _id: linearCombat
+    _useFixedSeed: 0
+    _fixedSeed: 0
+    _baseLevelTheme: 0
+    _nodes:
+    - _nodeId: start
+      _guidString: 9da116b5-4844-4d69-9bcb-62725f07c01c
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 3
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 0
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: ea1c5b42-f522-4c0e-bef3-425248bea28d
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 9da116b5-4844-4d69-9bcb-62725f07c01c
+      _itemSpawnData: []
+    - _nodeId: combat 1 - tomatoes
+      _guidString: ea1c5b42-f522-4c0e-bef3-425248bea28d
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 1
+      _overrideTheme: 2
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 6
+        _poolRestrictType: 1
+        _poolIds:
+        - tomato_Move_Var1
+        - tomato_Move_Var2
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 9da116b5-4844-4d69-9bcb-62725f07c01c
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: ea1c5b42-f522-4c0e-bef3-425248bea28d
+      - _linkToNode:
+          _guidString: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: ea1c5b42-f522-4c0e-bef3-425248bea28d
+      _itemSpawnData: []
+    - _nodeId: combat 2 - skeletons
+      _guidString: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 1
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 4
+        _poolRestrictType: 1
+        _poolIds:
+        - skeleton_PatrolLeftRight
+        - skeleton_PatrolSquare
+        - skeleton_PatrolUpDown
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: ea1c5b42-f522-4c0e-bef3-425248bea28d
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
+      - _linkToNode:
+          _guidString: 330421ac-d0d6-408c-bbab-21c2af9b4bea
+        _useFixedSide: 0
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
+      _itemSpawnData: []
+    - _nodeId: item 2A
+      _guidString: 330421ac-d0d6-408c-bbab-21c2af9b4bea
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 5
+      _useOverrideTheme: 1
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 0
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
+        _useFixedSide: 0
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 330421ac-d0d6-408c-bbab-21c2af9b4bea
+      _itemSpawnData:
+      - _useFixedId: 0
+        _itemId: 
+        _itemIndex: 0
+    - _nodeId: combat 3 - aubergines
+      _guidString: f532068a-0386-4007-af00-cce065c5552d
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 1
+      _overrideTheme: 2
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 4
+        _poolRestrictType: 1
+        _poolIds:
+        - aubergine_Move
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 4d1c8bc0-7d2d-4008-be4c-40ad921e08c5
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: f532068a-0386-4007-af00-cce065c5552d
+      - _linkToNode:
+          _guidString: 3b7db600-dd48-431f-b410-68e54b56d4a3
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: f532068a-0386-4007-af00-cce065c5552d
+      _itemSpawnData: []
+    - _nodeId: combat 4 - frankenstein
+      _guidString: 3b7db600-dd48-431f-b410-68e54b56d4a3
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 1
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 12
+        _poolRestrictType: 1
+        _poolIds:
+        - frankenstein_PatrolLeftRight
+        - frankenstein_PatrolUpDown
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: f532068a-0386-4007-af00-cce065c5552d
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 3b7db600-dd48-431f-b410-68e54b56d4a3
+      - _linkToNode:
+          _guidString: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 3b7db600-dd48-431f-b410-68e54b56d4a3
+      _itemSpawnData: []
+    - _nodeId: combat 5 - chillis
+      _guidString: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 1
+      _overrideTheme: 2
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 6
+        _poolRestrictType: 1
+        _poolIds:
+        - chilli_FireBreath_Aim
+        - chilli_FireBreath_Left
+        - chilli_FireBreath_Right
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 3b7db600-dd48-431f-b410-68e54b56d4a3
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
+      - _linkToNode:
+          _guidString: 41a200a1-6790-419e-8d33-09dd50dbc39b
+        _useFixedSide: 0
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
+      - _linkToNode:
+          _guidString: 49c1d787-5593-4f88-bed7-56ab77c73fa7
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
+      _itemSpawnData: []
+    - _nodeId: item 5A
+      _guidString: 41a200a1-6790-419e-8d33-09dd50dbc39b
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 5
+      _useOverrideTheme: 1
+      _overrideTheme: 2
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 0
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
+        _useFixedSide: 0
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 41a200a1-6790-419e-8d33-09dd50dbc39b
+      _itemSpawnData:
+      - _useFixedId: 0
+        _itemId: 
+        _itemIndex: 0
+    - _nodeId: combat 6 - ghosts
+      _guidString: 49c1d787-5593-4f88-bed7-56ab77c73fa7
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 1
+      _useOverrideTheme: 1
+      _overrideTheme: 1
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 18
+        _poolRestrictType: 1
+        _poolIds:
+        - ghost_PatrolDiamond
+        - green_Ghost_PatrolDiamond
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: c0bd082b-abb9-4b0e-bd14-af89c3a8a9ec
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 49c1d787-5593-4f88-bed7-56ab77c73fa7
+      - _linkToNode:
+          _guidString: 0ac7f26a-9716-4819-bb86-987277910e0a
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 49c1d787-5593-4f88-bed7-56ab77c73fa7
+      _itemSpawnData: []
+    - _nodeId: end
+      _guidString: 0ac7f26a-9716-4819-bb86-987277910e0a
+      _useFixedId: 0
+      _fixedId: 
+      _useFixedRoomType: 1
+      _fixedRoomType: 4
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 0
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 49c1d787-5593-4f88-bed7-56ab77c73fa7
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 0ac7f26a-9716-4819-bb86-987277910e0a
+      _itemSpawnData: []

@@ -457,10 +457,10 @@ MonoBehaviour:
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
   _useDebugSeed: 1
-  _debugSeed: 2787
+  _debugSeed: 21
   _printDebug: 0
   _generationMode: 2
-  _grammarDef: {fileID: 11400000, guid: 7a17e9bb96b493647b9f587f8962c4ee, type: 2}
+  _grammarDef: {fileID: 11400000, guid: 7d81ad1acb7fcba4e8c623545a5435ee, type: 2}
   _settings:
     Seed: 0
     Theme: 2
@@ -478,13 +478,6 @@ MonoBehaviour:
     UseRoomDefMaxPerLevel: 1
     UseEnemyDefMaxPerRoom: 1
     UseEnemyDefMaxPerLevel: 1
-  _noEnemySpawnTile: {fileID: 11400000, guid: c69cf56a97c450b4496de63ce8f7e6b4, type: 2}
-  _paintNoEnemySpawnTiles: 0
-  _debugSpawnData:
-    EnemyId: testEnemyEasy
-    FloorTilePos: {x: 0, y: 0, z: 0}
-  _testSpawnEnemies: 0
-  _paintFloorEdges: 0
   _playerInvincible: 0
 --- !u!1 &2096566227
 GameObject:

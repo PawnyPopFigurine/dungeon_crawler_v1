@@ -59,17 +59,8 @@ namespace JZK.Framework
 
 		StartPortal _currentStartPoint;
 
-		[SerializeField] TileBase _noEnemySpawnTile;
-
-		[SerializeField] bool _paintNoEnemySpawnTiles;
-
-		[SerializeField] EnemySpawnData _debugSpawnData;
-
-		[SerializeField] bool _testSpawnEnemies;
-
 		Dictionary<Guid, RoomController> _generationData_Controller_LUT = new();
 
-		[SerializeField] bool _paintFloorEdges;
 		[SerializeField] bool _playerInvincible;
 
 		public void Start()
@@ -124,6 +115,13 @@ namespace JZK.Framework
                         {
                             grammarSeed = _grammarDef.Definition.FixedSeed;
                         }
+						else
+						{
+							if(_useDebugSeed)
+							{
+								grammarSeed = _debugSeed;
+							}
+						}
 
                         System.Random random = new(grammarSeed);
 						Debug.Log("[GENERATION] Grammar seed " + grammarSeed);
@@ -152,36 +150,9 @@ namespace JZK.Framework
 			CreateLayoutFromData(data);
 			GameplaySystem.Instance.Debug_SetActiveRoomList(_activeRoomControllers);
 			GameplaySystem.Instance.OpenAllRoomDoors();
-			if (_paintNoEnemySpawnTiles)
-			{
-				PaintNoEnemySpawnTiles();
-			}
-			if (_testSpawnEnemies)
-			{
-				SpawnTestEnemyInEachCombatRoom();
-			}
-			else
-			{
-				SpawnEnemiesFromData(data);
-			}
+            SpawnEnemiesFromData(data);
 
-			if (_paintFloorEdges)
-			{
-				PaintFloorEdges();
-			}
-
-			SpawnItemsFromData(data);
-		}
-
-		void PaintFloorEdges()
-		{
-			foreach(RoomController controller in _activeRoomControllers)
-			{
-				foreach(Vector3Int edgePos in controller.FloorEdgePositions)
-				{
-					controller.FloorTilemap.SetTile(edgePos, _noEnemySpawnTile);
-				}
-			}
+            SpawnItemsFromData(data);
 		}
 
 		public void SpawnItemsFromData(LayoutData data)
@@ -399,12 +370,6 @@ namespace JZK.Framework
                                 tilesToPaint.Add(doormatPos);
                             }
                         }
-
-
-                        foreach (Vector3Int pos in tilesToPaint)
-                        {
-                            floorTiles.SetTile(pos, _noEnemySpawnTile);
-                        }
                     }
                 }
             }
@@ -455,39 +420,5 @@ namespace JZK.Framework
 			Gameplay.PlayerSystem.Instance.SetInvincibleCheat(_playerInvincible);
 			Gameplay.PlayerSystem.Instance.StartForPlayerTestScene(_currentStartPoint.transform);
         }
-
-		public void SpawnTestEnemyInEachCombatRoom()
-		{
-			foreach(RoomController activeRoom in _activeRoomControllers)
-			{
-				RoomDefinition roomDef = RoomDefinitionLoadSystem.Instance.GetDefinition(activeRoom.Id);
-				if(roomDef.RoomType != ERoomType.StandardCombat)
-				{
-					continue;
-				}
-
-				EnemyDefinition testEnemyDef = EnemyLoadSystem.Instance.GetDefinition(_debugSpawnData.EnemyId);
-
-				if(!EnemyPoolingSystem.Instance.RequestEnemy(_debugSpawnData.EnemyId, out EnemyController controller))
-				{
-					continue;
-				}
-
-				if(!activeRoom.FloorTilemap.HasTile(_debugSpawnData.FloorTilePos))
-				{
-					continue;
-				}
-
-                controller.transform.position = activeRoom.FloorTilemap.CellToWorld(_debugSpawnData.FloorTilePos);
-				controller.gameObject.SetActive(true);
-
-				List<EnemyController> enemyList = new()
-				{
-					controller
-				};
-
-				activeRoom.SetEnemies(enemyList);
-            }
-		}
 	}
 }
