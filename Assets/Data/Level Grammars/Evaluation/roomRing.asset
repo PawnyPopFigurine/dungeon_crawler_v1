@@ -93,9 +93,11 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 5
-        _poolRestrictType: 0
-        _poolIds: []
+        _difficultyPoints: 3
+        _poolRestrictType: 1
+        _poolIds:
+        - snake_PatrolSquare
+        - bat_Follow
         _poolThemes: 
         _excludeIds: []
       _roomLinkData:
@@ -125,9 +127,11 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 12
-        _poolRestrictType: 0
-        _poolIds: []
+        _difficultyPoints: 8
+        _poolRestrictType: 1
+        _poolIds:
+        - snake_PatrolSquare
+        - bat_Follow
         _poolThemes: 
         _excludeIds: []
       _roomLinkData:
@@ -157,17 +161,13 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 18
-        _poolRestrictType: 0
-        _poolIds: []
-        _poolThemes: 
-        _excludeIds:
-        - skeleton_PatrolLeftRight
-        - skeleton_PatrolSquare
-        - skeleton_PatrolUpDown
-        - apple_Green
-        - bat_Follow
+        _difficultyPoints: 14
+        _poolRestrictType: 1
+        _poolIds:
         - snake_PatrolSquare
+        - bat_Follow
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: c7710901-cd4f-47e3-8a09-e229619e1fc1
@@ -230,17 +230,13 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 18
-        _poolRestrictType: 0
-        _poolIds: []
-        _poolThemes: 
-        _excludeIds:
-        - skeleton_PatrolLeftRight
-        - skeleton_PatrolSquare
-        - skeleton_PatrolUpDown
-        - apple_Green
-        - bat_Follow
+        _difficultyPoints: 14
+        _poolRestrictType: 1
+        _poolIds:
         - snake_PatrolSquare
+        - bat_Follow
+        _poolThemes: 
+        _excludeIds: []
       _roomLinkData:
       - _linkToNode:
           _guidString: 9d1210d1-006c-4c34-b114-d57455fa4942
@@ -268,9 +264,11 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 12
-        _poolRestrictType: 0
-        _poolIds: []
+        _difficultyPoints: 8
+        _poolRestrictType: 1
+        _poolIds:
+        - snake_PatrolSquare
+        - bat_Follow
         _poolThemes: 
         _excludeIds: []
       _roomLinkData:
@@ -300,9 +298,11 @@ MonoBehaviour:
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
-        _difficultyPoints: 5
-        _poolRestrictType: 0
-        _poolIds: []
+        _difficultyPoints: 3
+        _poolRestrictType: 1
+        _poolIds:
+        - snake_PatrolSquare
+        - bat_Follow
         _poolThemes: 
         _excludeIds: []
       _roomLinkData:
