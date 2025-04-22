@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6eb65312d6744e48a2e098d5bad5e15, type: 3}
-  m_Name: Cross_Shape_Room_10x10
+  m_Name: Start_Cross_Shape_Room_10x10
   m_EditorClassIdentifier: 
   _definition:
     _weighting: 10
-    _id: Cross_Shape_Room_10x10
-    _prefabController: {fileID: 2667284999973894481, guid: 455987fd0820c4c48b17c5fe953972e8, type: 3}
+    _id: Start_Cross_Shape_Room_10x10
+    _prefabController: {fileID: 2667284999973894481, guid: 0c482ad34fbb48e4b9d2ccb45ef5cd92, type: 3}
     _hideInGame: 0
-    _roomType: 1
-    _maxPerLevel: 2
+    _roomType: 3
+    _maxPerLevel: 0

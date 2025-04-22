@@ -1,0 +1,510 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3fde8c3adbf8c48a248544e2a78ce7, type: 3}
+  m_Name: crossroadMaze
+  m_EditorClassIdentifier: 
+  _definition:
+    _id: crossroadMaze
+    _useFixedSeed: 0
+    _fixedSeed: 0
+    _baseLevelTheme: 0
+    _nodes:
+    - _nodeId: (0,0) start
+      _guidString: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+      _useFixedId: 1
+      _fixedId: Start_Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 0
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+      - _linkToNode:
+          _guidString: 4208eeff-d00c-4861-8269-0b1161a9191b
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+      - _linkToNode:
+          _guidString: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+      - _linkToNode:
+          _guidString: a34149be-9e51-47a6-9dc9-58bb66aeb40d
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+      _itemSpawnData: []
+    - _nodeId: (0, -1) combat
+      _guidString: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 6
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
+      - _linkToNode:
+          _guidString: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
+      - _linkToNode:
+          _guidString: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
+      _itemSpawnData: []
+    - _nodeId: (0, 1) combat
+      _guidString: 4208eeff-d00c-4861-8269-0b1161a9191b
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 6
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: bd17a41f-47ca-4f6e-8068-36ffd13bed91
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 4208eeff-d00c-4861-8269-0b1161a9191b
+      - _linkToNode:
+          _guidString: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 4208eeff-d00c-4861-8269-0b1161a9191b
+      _itemSpawnData: []
+    - _nodeId: (1,0) combat
+      _guidString: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 6
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+      - _linkToNode:
+          _guidString: 16d87245-29c5-4f87-933d-9e44fa8c9907
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+      - _linkToNode:
+          _guidString: bd17a41f-47ca-4f6e-8068-36ffd13bed91
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+      - _linkToNode:
+          _guidString: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+      _itemSpawnData: []
+    - _nodeId: (-1,0) empty
+      _guidString: a34149be-9e51-47a6-9dc9-58bb66aeb40d
+      _useFixedId: 1
+      _fixedId: Empty_Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 6
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: a34149be-9e51-47a6-9dc9-58bb66aeb40d
+      _itemSpawnData: []
+    - _nodeId: (1, 1) key
+      _guidString: bd17a41f-47ca-4f6e-8068-36ffd13bed91
+      _useFixedId: 1
+      _fixedId: Item_Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 6
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: bd17a41f-47ca-4f6e-8068-36ffd13bed91
+      - _linkToNode:
+          _guidString: 4208eeff-d00c-4861-8269-0b1161a9191b
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: bd17a41f-47ca-4f6e-8068-36ffd13bed91
+      _itemSpawnData:
+      - _useFixedId: 1
+        _itemId: key
+        _itemIndex: 0
+    - _nodeId: (1, -1) combat
+      _guidString: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 10
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+      - _linkToNode:
+          _guidString: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+      - _linkToNode:
+          _guidString: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+      - _linkToNode:
+          _guidString: a4953e54-8ab3-4673-b26e-0d358f783bb2
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+      _itemSpawnData:
+      - _useFixedId: 0
+        _itemId: 
+        _itemIndex: 0
+    - _nodeId: (2, -1) combat
+      _guidString: a4953e54-8ab3-4673-b26e-0d358f783bb2
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 12
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 16d87245-29c5-4f87-933d-9e44fa8c9907
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: a4953e54-8ab3-4673-b26e-0d358f783bb2
+      - _linkToNode:
+          _guidString: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: a4953e54-8ab3-4673-b26e-0d358f783bb2
+      - _linkToNode:
+          _guidString: 4c3cda07-bce0-460c-b93f-b898ff4d07c9
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 1
+        _keyIndex: 0
+        _parentNode: a4953e54-8ab3-4673-b26e-0d358f783bb2
+      _itemSpawnData:
+      - _useFixedId: 0
+        _itemId: 
+        _itemIndex: 0
+    - _nodeId: (1, -2) combat
+      _guidString: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 12
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: ee7ed41c-eb06-4aca-9291-6c273c4372b7
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
+      - _linkToNode:
+          _guidString: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
+      - _linkToNode:
+          _guidString: 4c3cda07-bce0-460c-b93f-b898ff4d07c9
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 1
+        _keyIndex: 1
+        _parentNode: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
+      _itemSpawnData:
+      - _useFixedId: 0
+        _itemId: 
+        _itemIndex: 0
+    - _nodeId: (2, -2) end
+      _guidString: 4c3cda07-bce0-460c-b93f-b898ff4d07c9
+      _useFixedId: 1
+      _fixedId: End_Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 12
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: a4953e54-8ab3-4673-b26e-0d358f783bb2
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 1
+        _keyIndex: 0
+        _parentNode: 4c3cda07-bce0-460c-b93f-b898ff4d07c9
+      - _linkToNode:
+          _guidString: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 1
+        _keyIndex: 1
+        _parentNode: 4c3cda07-bce0-460c-b93f-b898ff4d07c9
+      _itemSpawnData:
+      - _useFixedId: 0
+        _itemId: 
+        _itemIndex: 0
+    - _nodeId: (0, -2) combat
+      _guidString: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 12
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
+        _useFixedSide: 1
+        _fixedSide: 1
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
+      - _linkToNode:
+          _guidString: 663ddfb3-f1a7-4305-8a65-b00a8822b641
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
+      - _linkToNode:
+          _guidString: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
+      _itemSpawnData: []
+    - _nodeId: (0, -3) key
+      _guidString: 663ddfb3-f1a7-4305-8a65-b00a8822b641
+      _useFixedId: 1
+      _fixedId: Item_Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 0
+      _randomEnemySpawnData:
+        _difficultyPoints: 12
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
+        _useFixedSide: 1
+        _fixedSide: 0
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 663ddfb3-f1a7-4305-8a65-b00a8822b641
+      _itemSpawnData:
+      - _useFixedId: 1
+        _itemId: key
+        _itemIndex: 1
+    - _nodeId: (2, 0) combat
+      _guidString: 16d87245-29c5-4f87-933d-9e44fa8c9907
+      _useFixedId: 1
+      _fixedId: Cross_Shape_Room_10x10
+      _useFixedRoomType: 0
+      _fixedRoomType: 0
+      _useOverrideTheme: 0
+      _overrideTheme: 0
+      _fixedEnemySpawns: []
+      _spawnRandomEnemies: 1
+      _randomEnemySpawnData:
+        _difficultyPoints: 12
+        _poolRestrictType: 0
+        _poolIds: []
+        _poolThemes: 
+        _excludeIds: []
+      _roomLinkData:
+      - _linkToNode:
+          _guidString: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
+        _useFixedSide: 1
+        _fixedSide: 3
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 16d87245-29c5-4f87-933d-9e44fa8c9907
+      - _linkToNode:
+          _guidString: a4953e54-8ab3-4673-b26e-0d358f783bb2
+        _useFixedSide: 1
+        _fixedSide: 2
+        _lockedByKey: 0
+        _keyIndex: 0
+        _parentNode: 16d87245-29c5-4f87-933d-9e44fa8c9907
+      _itemSpawnData: []

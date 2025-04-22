@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c482ad34fbb48e4b9d2ccb45ef5cd92
+    m_Address: Assets/Prefabs/Environment/Rooms/Start/Start_Cross_Shape_Room_10x10.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0ca7bb9102152e0408fc652918fe3465
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/TestEnemyProjectile.prefab
     m_ReadOnly: 0
@@ -52,6 +58,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46849ffdd8cc4bc41b55d3151d42de2b
+    m_Address: Assets/Prefabs/Environment/Rooms/Empty/Empty_Cross_Shape_Room_10x10.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5b93d3289ff1e3446bfb2a29f1043b04
     m_Address: Assets/Data/Items/healPickup_MaxHP.asset
@@ -77,11 +89,29 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75fe186f84c10684b9260da64f84683a
+    m_Address: Assets/Prefabs/Environment/Rooms/End/End_Cross_Shape_Room_10x10.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7f309cb184683ee41a6fbf22bd2a4ef0
     m_Address: Assets/Prefabs/Gameplay/Projectiles/Enemies/ChilliFireAutoRotate.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - projectile_prefabs
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85113a25aa5eac2488ab3d880627a8f8
+    m_Address: Assets/Data/Rooms/End/End_Cross_Shape_Room_10x10.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 872d8e39e0479ac4f9e6c35cdecdb10a
+    m_Address: Assets/Data/Rooms/Start/Start_Cross_Shape_Room_10x10.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 88d78f7c7958d784db1fb6f668854a70
     m_Address: Assets/Data/Rooms/Empty/Empty_RectRoom_10x14.asset
@@ -107,6 +137,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - projectile_prefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a6da5440fffd3f43988a12d2b80bdab
+    m_Address: Assets/Data/Rooms/Empty/Empty_Cross_Shape_Room_10x10.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f884097d951df14d89ef77981d995fd
+    m_Address: Assets/Data/Rooms/StandardItem/Item_Cross_Shape_Room_10x10.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - room_definition
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a759432ce67992541a94bf3a52c28c0e
     m_Address: Assets/Prefabs/Player/Player.prefab
     m_ReadOnly: 0
@@ -117,6 +159,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - input
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3f787d0963298f49aa7c7dc5c03a92f
+    m_Address: Assets/Prefabs/Environment/Rooms/StandardItem/Item_Cross_Shape_Room_10x10.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - game_room_prefab
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c692d3e5076c243409ff60867fc1c633
     m_Address: Assets/Data/Themes/FoodTheme.asset
