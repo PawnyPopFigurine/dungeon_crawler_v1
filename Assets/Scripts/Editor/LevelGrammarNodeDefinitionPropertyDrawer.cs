@@ -58,6 +58,24 @@ namespace Levels
                 SerializedProperty prop_FixedId = property.FindPropertyRelative("_fixedId");
                 DrawPropertyField(ref contentRect, prop_FixedId, new("Room Prefab ID"), ref numProperties);
                 EditorGUI.indentLevel--;
+
+                //draw combat def stuff
+                SerializedProperty prop_FixedEnemySpawns = property.FindPropertyRelative("_fixedEnemySpawns");
+                DrawPropertyField(ref contentRect, prop_FixedEnemySpawns, new("Fixed Enemy Spawns"), ref numProperties);
+
+                SerializedProperty prop_SpawnRandomEnemies = property.FindPropertyRelative("_spawnRandomEnemies");
+                bool spawnRandomEnemies = prop_SpawnRandomEnemies.boolValue;
+                DrawPropertyField(ref contentRect, prop_SpawnRandomEnemies, new("Spawn Random Enemies"), ref numProperties);
+
+                if (spawnRandomEnemies)
+                {
+                    SerializedProperty prop_RandomEnemySpawnData = property.FindPropertyRelative("_randomEnemySpawnData");
+                    DrawPropertyField(ref contentRect, prop_RandomEnemySpawnData, new("Random Enemy Spawn Data"), ref numProperties);
+                }
+
+                //draw item def stuff
+                SerializedProperty prop_ItemSpawns = property.FindPropertyRelative("_itemSpawnData");
+                DrawPropertyField(ref contentRect, prop_ItemSpawns, new("Item Spawns"), ref numProperties);
             }
 
             else

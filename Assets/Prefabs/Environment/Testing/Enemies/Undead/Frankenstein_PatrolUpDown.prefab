@@ -901,7 +901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5776bf542a4c7247b5cefdb58a8694b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 5
+  _maxHealth: 10
   _controller: {fileID: 6711677943753088457}
 --- !u!114 &8538759671814575478
 MonoBehaviour:
@@ -950,7 +950,7 @@ MonoBehaviour:
   _projectileType: 2
   _behaviourType: 1
   _patternType: 4
-  _autoFireInterval: 5
+  _autoFireInterval: 2.5
   _projectileSpeed: 2
   _projectileLifetime: 4
   _straightSpreadShotDistance: 0.4

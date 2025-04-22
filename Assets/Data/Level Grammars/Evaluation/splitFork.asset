@@ -307,7 +307,13 @@ MonoBehaviour:
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 01000000
-        _excludeIds: []
+        _excludeIds:
+        - skeleton_PatrolLeftRight
+        - skeleton_PatrolSquare
+        - skeleton_PatrolUpDown
+        - apple_Green
+        - bat_Follow
+        - snake_PatrolSquare
       _roomLinkData:
       - _linkToNode:
           _guidString: dd0659a6-6473-4a2b-b526-6f48dbb2e1a8
@@ -370,7 +376,13 @@ MonoBehaviour:
         _poolRestrictType: 2
         _poolIds: []
         _poolThemes: 02000000
-        _excludeIds: []
+        _excludeIds:
+        - skeleton_PatrolLeftRight
+        - skeleton_PatrolSquare
+        - skeleton_PatrolUpDown
+        - apple_Green
+        - bat_Follow
+        - snake_PatrolSquare
       _roomLinkData:
       - _linkToNode:
           _guidString: a9742efa-dce4-4c31-a58b-9bb64ee0acd9
