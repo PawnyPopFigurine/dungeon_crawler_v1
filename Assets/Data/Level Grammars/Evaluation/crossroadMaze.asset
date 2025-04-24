@@ -91,7 +91,7 @@ MonoBehaviour:
       - _linkToNode:
           _guidString: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
         _useFixedSide: 1
-        _fixedSide: 3
+        _fixedSide: 2
         _lockedByKey: 0
         _keyIndex: 0
         _parentNode: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
@@ -155,7 +155,7 @@ MonoBehaviour:
       - _linkToNode:
           _guidString: 22f1f72d-9cda-4d8f-8c2f-2151c51cc779
         _useFixedSide: 1
-        _fixedSide: 2
+        _fixedSide: 3
         _lockedByKey: 0
         _keyIndex: 0
         _parentNode: 066e62e0-0b33-4430-8e4d-d133fbf64ef8
@@ -359,7 +359,7 @@ MonoBehaviour:
       - _linkToNode:
           _guidString: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
         _useFixedSide: 1
-        _fixedSide: 2
+        _fixedSide: 3
         _lockedByKey: 0
         _keyIndex: 0
         _parentNode: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
@@ -429,7 +429,7 @@ MonoBehaviour:
       - _linkToNode:
           _guidString: 6217b334-6ce1-46d4-ba27-4665c67c9a1c
         _useFixedSide: 1
-        _fixedSide: 1
+        _fixedSide: 0
         _lockedByKey: 0
         _keyIndex: 0
         _parentNode: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8
@@ -443,7 +443,7 @@ MonoBehaviour:
       - _linkToNode:
           _guidString: 99496ad2-bb6d-46c6-9505-d146b7ac7fb5
         _useFixedSide: 1
-        _fixedSide: 0
+        _fixedSide: 1
         _lockedByKey: 0
         _keyIndex: 0
         _parentNode: 6e2b7f01-3a8f-40ee-9fd8-3d114b586ed8

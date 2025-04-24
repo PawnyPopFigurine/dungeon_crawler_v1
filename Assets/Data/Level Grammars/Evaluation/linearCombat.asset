@@ -24,8 +24,8 @@ MonoBehaviour:
       _fixedId: 
       _useFixedRoomType: 1
       _fixedRoomType: 3
-      _useOverrideTheme: 0
-      _overrideTheme: 0
+      _useOverrideTheme: 1
+      _overrideTheme: 1
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 0
       _randomEnemySpawnData:
@@ -317,8 +317,8 @@ MonoBehaviour:
       _fixedId: 
       _useFixedRoomType: 1
       _fixedRoomType: 4
-      _useOverrideTheme: 0
-      _overrideTheme: 0
+      _useOverrideTheme: 1
+      _overrideTheme: 2
       _fixedEnemySpawns: []
       _spawnRandomEnemies: 0
       _randomEnemySpawnData:

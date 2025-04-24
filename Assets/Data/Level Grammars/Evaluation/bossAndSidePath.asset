@@ -193,8 +193,9 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 12
-        _poolRestrictType: 2
-        _poolIds: []
+        _poolRestrictType: 1
+        _poolIds:
+        - ghost_PatrolDiamond
         _poolThemes: 01000000
         _excludeIds: []
       _roomLinkData:
@@ -218,8 +219,9 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 12
-        _poolRestrictType: 2
-        _poolIds: []
+        _poolRestrictType: 1
+        _poolIds:
+        - ghost_PatrolDiamond
         _poolThemes: 01000000
         _excludeIds: []
       _roomLinkData:
@@ -250,8 +252,9 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 12
-        _poolRestrictType: 2
-        _poolIds: []
+        _poolRestrictType: 1
+        _poolIds:
+        - ghost_PatrolDiamond
         _poolThemes: 01000000
         _excludeIds: []
       _roomLinkData:
