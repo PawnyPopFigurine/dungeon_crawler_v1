@@ -52,6 +52,11 @@ namespace Levels
             SerializedProperty prop_FixedRoomType = property.FindPropertyRelative("_fixedRoomType");
             ERoomType roomType = (ERoomType)prop_FixedRoomType.enumValueIndex;
 
+            bool fixedSpawnsDrawn = false;
+            bool randomSpawnsToggleDrawn = false;
+            bool randomSpawnsDrawn = false;
+            bool itemSpawnsDrawn = false;
+
             if (useFixedID)
             {
                 EditorGUI.indentLevel++;
@@ -62,20 +67,25 @@ namespace Levels
                 //draw combat def stuff
                 SerializedProperty prop_FixedEnemySpawns = property.FindPropertyRelative("_fixedEnemySpawns");
                 DrawPropertyField(ref contentRect, prop_FixedEnemySpawns, new("Fixed Enemy Spawns"), ref numProperties);
+                fixedSpawnsDrawn = true;
 
                 SerializedProperty prop_SpawnRandomEnemies = property.FindPropertyRelative("_spawnRandomEnemies");
                 bool spawnRandomEnemies = prop_SpawnRandomEnemies.boolValue;
                 DrawPropertyField(ref contentRect, prop_SpawnRandomEnemies, new("Spawn Random Enemies"), ref numProperties);
+                randomSpawnsToggleDrawn = true;
 
                 if (spawnRandomEnemies)
                 {
                     SerializedProperty prop_RandomEnemySpawnData = property.FindPropertyRelative("_randomEnemySpawnData");
                     DrawPropertyField(ref contentRect, prop_RandomEnemySpawnData, new("Random Enemy Spawn Data"), ref numProperties);
+
+                    randomSpawnsDrawn = true;
                 }
 
                 //draw item def stuff
                 SerializedProperty prop_ItemSpawns = property.FindPropertyRelative("_itemSpawnData");
                 DrawPropertyField(ref contentRect, prop_ItemSpawns, new("Item Spawns"), ref numProperties);
+                itemSpawnsDrawn = true;
             }
 
             else
@@ -108,22 +118,40 @@ namespace Levels
             switch(roomType)
             {
                 case ERoomType.StandardCombat:
-                    SerializedProperty prop_FixedEnemySpawns = property.FindPropertyRelative("_fixedEnemySpawns");
-                    DrawPropertyField(ref contentRect, prop_FixedEnemySpawns, new("Fixed Enemy Spawns"), ref numProperties);
+                    if(!fixedSpawnsDrawn)
+                    {
+                        SerializedProperty prop_FixedEnemySpawns = property.FindPropertyRelative("_fixedEnemySpawns");
+                        DrawPropertyField(ref contentRect, prop_FixedEnemySpawns, new("Fixed Enemy Spawns"), ref numProperties);
+
+                        fixedSpawnsDrawn = true;
+                    }
 
                     SerializedProperty prop_SpawnRandomEnemies = property.FindPropertyRelative("_spawnRandomEnemies");
                     bool spawnRandomEnemies = prop_SpawnRandomEnemies.boolValue;
-                    DrawPropertyField(ref contentRect, prop_SpawnRandomEnemies, new("Spawn Random Enemies"), ref numProperties);
 
-                    if (spawnRandomEnemies)
+                    if (!randomSpawnsToggleDrawn)
+                    {
+                        DrawPropertyField(ref contentRect, prop_SpawnRandomEnemies, new("Spawn Random Enemies"), ref numProperties);
+                        randomSpawnsToggleDrawn = true;
+                    }
+                    
+
+                    if (spawnRandomEnemies && !randomSpawnsDrawn)
                     {
                         SerializedProperty prop_RandomEnemySpawnData = property.FindPropertyRelative("_randomEnemySpawnData");
                         DrawPropertyField(ref contentRect, prop_RandomEnemySpawnData, new("Random Enemy Spawn Data"), ref numProperties);
+
+                        randomSpawnsDrawn = true;
                     }
                     break;
                 case ERoomType.StandardItem:
-                    SerializedProperty prop_ItemSpawns = property.FindPropertyRelative("_itemSpawnData");
-                    DrawPropertyField(ref contentRect, prop_ItemSpawns, new("Item Spawns"), ref numProperties);
+                    if(!itemSpawnsDrawn)
+                    {
+                        SerializedProperty prop_ItemSpawns = property.FindPropertyRelative("_itemSpawnData");
+                        DrawPropertyField(ref contentRect, prop_ItemSpawns, new("Item Spawns"), ref numProperties);
+
+                        itemSpawnsDrawn = true;
+                    }
                     break;
             }
 

@@ -167,13 +167,6 @@ namespace JZK.Level
 
 		public bool CanPlaceEnemyAtPoint(EnemyDefinition def, Vector3Int startPoint)
 		{
-			/*if(def.PlaceAtEdge)
-			{
-				if(!AllFloorEdgePositions.Contains(startPoint))
-				{
-					return false;
-				}
-			}*/
 			foreach(Vector3Int occupyPos in def.OccupyPoints)
 			{
 				Vector3Int relativeOccupyPos = startPoint + occupyPos;
@@ -858,7 +851,6 @@ namespace JZK.Level
 
 						EnemySpawnData spawnData = new();
 						spawnData.EnemyId = def.Id;
-
 						spawnData.FloorTilePos = validPos;
 
 						foreach (Vector3Int occupyPos in def.OccupyPoints)

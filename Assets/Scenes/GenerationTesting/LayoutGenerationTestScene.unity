@@ -456,11 +456,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentLoadingState: 0
   _printFirstUnloadedSystem: 0
-  _useDebugSeed: 1
-  _debugSeed: 179
+  _useDebugSeed: 0
+  _debugSeed: 0
   _printDebug: 0
   _generationMode: 2
-  _grammarDef: {fileID: 11400000, guid: 7d81ad1acb7fcba4e8c623545a5435ee, type: 2}
+  _grammarDef: {fileID: 11400000, guid: 4190b3c2c4a33bb4e90c75d0258c74d9, type: 2}
   _settings:
     Seed: 0
     Theme: 2
@@ -478,7 +478,7 @@ MonoBehaviour:
     UseRoomDefMaxPerLevel: 1
     UseEnemyDefMaxPerRoom: 1
     UseEnemyDefMaxPerLevel: 1
-  _playerInvincible: 1
+  _playerInvincible: 0
 --- !u!1 &2096566227
 GameObject:
   m_ObjectHideFlags: 0

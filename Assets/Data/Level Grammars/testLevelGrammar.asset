@@ -163,8 +163,11 @@ MonoBehaviour:
       _spawnRandomEnemies: 1
       _randomEnemySpawnData:
         _difficultyPoints: 11
-        _poolRestrictType: 0
-        _poolIds: []
+        _poolRestrictType: 1
+        _poolIds:
+        - ghost_PatrolDiamond
+        - frankenstein_PatrolLeftRight
+        - frankenstein_PatrolUpDown
         _poolThemes: 
         _excludeIds: []
       _roomLinkData:
@@ -270,3 +273,4 @@ MonoBehaviour:
       _itemSpawnData:
       - _useFixedId: 1
         _itemId: key
+        _itemIndex: 0

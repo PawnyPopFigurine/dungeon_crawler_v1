@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1006ac36d1d38448e2bd94afc5051e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 15
+  _walkSpeed: 7
   _projectileSpeed: 10
   _projectileLifetime: 2
   _maxHealth: 4
